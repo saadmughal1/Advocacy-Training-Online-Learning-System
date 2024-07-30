@@ -12,12 +12,14 @@
         rel="stylesheet" />
 
 
-    <link rel="stylesheet" type="text/css" href="../vendors/styles/core.css" />
-    <link rel="stylesheet" type="text/css" href="../vendors/styles/icon-font.min.css" />
-    <link rel="stylesheet" type="text/css" href="../src/plugins/datatables/css/dataTables.bootstrap4.min.css" />
-    <link rel="stylesheet" type="text/css" href="../src/plugins/datatables/css/responsive.bootstrap4.min.css" />
-    <link rel="stylesheet" type="text/css" href="../vendors/styles/style.css" />
-    <link rel="stylesheet" type="text/css" href="../vendors/styles/my-style.css" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('vendors/styles/core.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('vendors/styles/icon-font.min.css') }}" />
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('src/plugins/datatables/css/dataTables.bootstrap4.min.css') }}" />
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('src/plugins/datatables/css/responsive.bootstrap4.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('vendors/styles/style.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('vendors/styles/my-style.css') }}" />
 
     @stack('styles')
 
@@ -37,11 +39,14 @@
     </div>
 
 
-    <script src="../vendors/scripts/core.js"></script>
-    <script src="../vendors/scripts/script.min.js"></script>
-    <script src="../vendors/scripts/process.js"></script>
-    <script src="../vendors/scripts/layout-settings.js"></script>
+    <script src="{{ asset('vendors/scripts/core.js') }}"></script>
+    <script src="{{ asset('vendors/scripts/script.min.js') }}"></script>
+    <script src="{{ asset('vendors/scripts/process.js') }}"></script>
+    <script src="{{ asset('vendors/scripts/layout-settings.js') }}"></script>
+
 
 </body>
+
+@stack('scripts')
 
 </html>

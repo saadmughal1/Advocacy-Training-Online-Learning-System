@@ -8,46 +8,83 @@
     @includeIf('admin.partials._sidebar')
 
     <div class="pd-20 card-box mb-30 overflow-auto">
+        @if (session('message'))
+            <div class="alert alert-success" id="success-message">
+                {{ session('message') }}
+            </div>
+        @endif
+
         <div class="clearfix mb-20">
             <div class="pull-left">
                 <h4 class="text-blue h4">Advisors</h4>
             </div>
         </div>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Username</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Ph Number</th>
-                    <th scope="col">Password</th>
-                    <th scope="col">Edit</th>
-                    <th scope="col">Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php for ($i = 0; $i < 10; $i++) { ?>
 
-                <tr>
-                    <th scope="row"><?php echo $i + 1; ?></th>
-                    <td>advisor - <?php echo $i + 1; ?></td>
-                    <td>Advisor@gmail.com</td>
-                    <td>00-00-00</td>
-                    <td>******</td>
-                    <td><a href="edit-advisor"><span class="badge badge-primary">Edit</span></a></td>
-                    <td><a href="#"><span class="badge badge-danger">Delete</span></a></td>
-                </tr>
-
-                <?php } ?>
-
-
-            </tbody>
-        </table>
+        @if ($advisors->isEmpty())
+            <p class="text-center"><b>No advisors found.</b>
+                <br>
+                <a href="{{ route('admin.create-advisor-account') }}">Create Advisor Account</a>
+            </p>
+        @else
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone Number</th>
+                        <th scope="col">Password</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($advisors as $index => $advisor)
+                        <tr>
+                            <th scope="row">{{ $index + 1 }}</th>
+                            <td>{{ $advisor->username }}</td>
+                            <td>{{ $advisor->email }}</td>
+                            <td>{{ $advisor->phone_number }}</td>
+                            <td>{{ $advisor->password }}</td>
+                            <td>
+                                <a href="{{ route('admin.edit-advisor-account', $advisor->id) }}">
+                                    <span class="badge badge-primary border-0">Edit</span>
+                                </a>
+                            </td>
+                            <td>
+                                <form action="{{ route('admin.deleteAdvisor', $advisor->id) }}" method="POST"
+                                    onsubmit="return confirm('Are you sure you want to delete this advisor?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="badge badge-danger border-0">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
 
     </div>
-    
+
 @endsection
 
 @push('styles')
-   
+@endpush
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const successMessage = document.getElementById('success-message');
+            if (successMessage) {
+                setTimeout(function() {
+                    successMessage.style.transition = 'opacity 1s ease-out';
+                    successMessage.style.opacity = '0';
+                    setTimeout(function() {
+                        successMessage.remove();
+                    }, 1000); 
+                }, 2000);
+            }
+        });
+    </script>
 @endpush

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Middleware\AuthenticateAdmin;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -8,22 +10,35 @@ Route::get('/', function () {
 
 
 
-Route::prefix('admin')->group(function () {
-    Route::get('/', function () {
-        return view('admin.index');
-    })->name("admin.home");
+Route::prefix('admin')->middleware(AuthenticateAdmin::class)->group(function () {
 
-    Route::get('/login', function () {
-        return view('admin.login');
-    })->name("admin.login");
+    Route::view('/', 'admin.index')->name('admin.home');
 
-    Route::get('/create-advisor-account', function () {
-        return view('admin.create-advisor-account');
-    })->name("admin.create-advisor-account");
+    Route::view('/login', 'admin.login')->name('admin.login');
+    Route::post('/login', [AdminController::class, "login"])->name("admin.login");
+    Route::get('/logout', [AdminController::class, "logout"])->name("admin.logout");
 
-    Route::get('/view-advisors', function () {
-        return view('admin.view-advisors');
-    })->name("admin.view-advisors");
+    Route::view('/create-advisor-account', 'admin.create-advisor-account')->name('admin.create-advisor-account');
+    Route::post('/create-advisor-account', [AdminController::class, "createAdvisorAccount"])->name("admin.admin.create-advisor-account");
+
+    Route::get('/view-advisors', [AdminController::class, "viewAdvisorAccounts"])->name("admin.view-advisors");
+
+    Route::delete('/delete-advisor/{id}', [AdminController::class, "deleteAdvisor"])->name("admin.deleteAdvisor");
+
+
+    Route::get('/edit-advisor-account/{id}', [AdminController::class, "editAdvisorAccount"])->name("admin.edit-advisor-account");
+
+    Route::put('/edit-advisor-account/{id}', [AdminController::class, "saveEditAdvisorAccount"])->name("admin.edit-advisor-account");
+
+
+
+
+
+
+
+
+
+
 
     Route::get('/create-student-account', function () {
         return view('admin.create-student-account');
@@ -33,6 +48,8 @@ Route::prefix('admin')->group(function () {
         return view('admin.view-students');
     })->name("admin.view-students");
 
+
+
     Route::get('/initiate-case', function () {
         return view('admin.initiate-case');
     })->name("admin.initiate-case");
@@ -41,6 +58,9 @@ Route::prefix('admin')->group(function () {
         return view('admin.assign-case');
     })->name("admin.assign-case");
 });
+
+
+
 
 Route::prefix('advisor')->group(function () {
 

@@ -14,27 +14,45 @@
                         <div class="login-title">
                             <h2 class="text-center text-primary">Login To Advocacy</h2>
                         </div>
-                        <form>
-                            <div class="input-group custom">
-                                <input type="text" class="form-control form-control-lg" placeholder="Username" />
+
+                        <form action="{{ route('admin.login') }}" method="POST">
+                            @csrf
+                            <div class="input-group custom mb-0 mt-4">
+                                <input type="text" class="form-control form-control-lg" placeholder="Username"
+                                    name="username" value="{{ old('username') }}" />
                                 <div class="input-group-append custom">
                                     <span class="input-group-text"><i class="icon-copy dw dw-user1"></i></span>
                                 </div>
                             </div>
-                            <div class="input-group custom">
-                                <input type="password" class="form-control form-control-lg" placeholder="**********" />
+                            @error('username')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+
+                            <div class="input-group custom mb-0 mt-4">
+                                <input type="password" class="form-control form-control-lg" placeholder="**********"
+                                    name="password" />
                                 <div class="input-group-append custom">
                                     <span class="input-group-text"><i class="dw dw-padlock1"></i></span>
                                 </div>
                             </div>
-                            <div class="row">
+                            @error('password')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+
+                            <div class="row mt-4">
                                 <div class="col-sm-12">
                                     <div class="input-group mb-0">
-                                        <a class="btn btn-primary btn-lg btn-block" href="../#">Sign In</a>
+                                        <button class="btn btn-primary btn-lg btn-block" type="submit">Sign In</button>
                                     </div>
                                 </div>
                             </div>
                         </form>
+
+                        @if (session('error'))
+                            <span class="text-danger mt-3 text-center">
+                                {{ session('error') }}
+                            </span>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -43,5 +61,4 @@
 @endsection
 
 @push('styles')
-    
 @endpush
