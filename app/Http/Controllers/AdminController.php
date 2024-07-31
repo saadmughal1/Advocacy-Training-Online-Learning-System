@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -28,13 +29,11 @@ class AdminController extends Controller
 
         return redirect()->back()->with('message', 'Advisor account created successfully.');
     }
-
     public function viewAdvisorAccounts()
     {
         $advisors = DB::table('advisors')->get();
         return view('admin.view-advisors', ['advisors' => $advisors]);
     }
-
     public function deleteAdvisor(string $id)
     {
         $deleted = DB::table('advisors')->where('id', $id)->delete();
@@ -45,7 +44,6 @@ class AdminController extends Controller
             return redirect()->route('admin.view-advisors')->with(['error' => 'Advisor not found.']);
         }
     }
-
     public function editAdvisorAccount(string $id)
     {
         $advisor = DB::table('advisors')->where('id', $id)->first();
@@ -56,7 +54,6 @@ class AdminController extends Controller
 
         return view('admin.edit-advisor-account', ['advisor' => $advisor]);
     }
-
     public function saveEditAdvisorAccount(Request $request, string $id)
     {
 
@@ -101,13 +98,11 @@ class AdminController extends Controller
 
         return redirect()->back()->with('message', 'Student account created successfully.');
     }
-
     public function viewStudentAccounts()
     {
         $students = DB::table('students')->get();
         return view('admin.view-students', ['students' => $students]);
     }
-
     public function deleteStudent(string $id)
     {
         $deleted = DB::table('students')->where('id', $id)->delete();
@@ -118,7 +113,6 @@ class AdminController extends Controller
             return redirect()->route('admin.view-students')->with(['error' => 'Student not found.']);
         }
     }
-
     public function editStudentAccount(string $id)
     {
         $student = DB::table('students')->where('id', $id)->first();
@@ -129,7 +123,6 @@ class AdminController extends Controller
 
         return view('admin.edit-student-account', ['student' => $student]);
     }
-
     public function saveEditStudentAccount(Request $request, string $id)
     {
 
@@ -155,6 +148,210 @@ class AdminController extends Controller
             ->with('message', 'Student account updated successfully.');
     }
 
+
+    // public function initiateFamilyLawCase(Request $request)
+    // {
+
+    //     $request->validate([
+    //         'case-name' => 'required|string|max:255',
+    //         'step-1-introduction' => 'required|string',
+    //         'step-1-instructions' => 'required|string',
+    //         'step-1-video' => 'nullable|file|mimes:mp4,avi,mpg|max:20480',
+    //         'step-2-introduction' => 'required|string',
+    //         'step-2-instructions' => 'required|string',
+    //         'step-3-introduction' => 'required|string',
+    //         'step-3-instructions' => 'required|string',
+    //         'step-4-introduction' => 'required|string',
+    //         'step-4-instructions' => 'required|string',
+    //         'step-5-introduction' => 'required|string',
+    //         'step-5-instructions' => 'required|string',
+    //         'step-6-introduction' => 'required|string',
+    //         'step-6-instructions' => 'required|string',
+    //         'step-7-introduction' => 'required|string',
+    //         'step-7-instructions' => 'required|string',
+    //         'step-7-video' => 'nullable|file|mimes:mp4,avi,mpg|max:20480',
+    //         'step-8-introduction' => 'required|string',
+    //         'step-8-instructions' => 'required|string',
+    //         'step-9-introduction' => 'required|string',
+    //         'step-9-instructions' => 'required|string',
+    //         'step-9-video' => 'nullable|file|mimes:mp4,avi,mpg|max:20480',
+    //         'step-10-introduction' => 'required|string',
+    //         'step-10-instructions' => 'required|string',
+    //         'step-10-video' => 'nullable|file|mimes:mp4,avi,mpg|max:20480',
+    //         'step-11-introduction' => 'required|string',
+    //         'step-11-instructions' => 'required|string',
+    //         'step-11-video' => 'nullable|file|mimes:mp4,avi,mpg|max:20480',
+    //         'step-12-introduction' => 'required|string',
+    //         'step-12-instructions' => 'required|string',
+    //         'step-12-video' => 'nullable|file|mimes:mp4,avi,mpg|max:20480',
+    //         'step-13-introduction' => 'required|string',
+    //         'step-13-instructions' => 'required|string',
+    //         'step-14-introduction' => 'required|string',
+    //         'step-14-instructions' => 'required|string',
+    //     ]);
+
+        
+        
+    //     $step1VideoPath = $request->file('step-1-video') ? $request->file('step-1-video')->store('videos') : null;
+    //     $step7VideoPath = $request->file('step-7-video') ? $request->file('step-7-video')->store('videos') : null;
+    //     $step9VideoPath = $request->file('step-9-video') ? $request->file('step-9-video')->store('videos') : null;
+    //     $step10VideoPath = $request->file('step-10-video') ? $request->file('step-10-video')->store('videos') : null;
+    //     $step11VideoPath = $request->file('step-11-video') ? $request->file('step-11-video')->store('videos') : null;
+    //     $step12VideoPath = $request->file('step-12-video') ? $request->file('step-12-video')->store('videos') : null;
+
+    //     DB::table('cases')->insert([
+    //         'case_name' => $request->input('case-name'),
+    //         'step_1_introduction' => $request->input('step-1-introduction'),
+    //         'step_1_instructions' => $request->input('step-1-instructions'),
+    //         'step_1_video' => $step1VideoPath,
+    //         'step_2_introduction' => $request->input('step-2-introduction'),
+    //         'step_2_instructions' => $request->input('step-2-instructions'),
+    //         'step_3_introduction' => $request->input('step-3-introduction'),
+    //         'step_3_instructions' => $request->input('step-3-instructions'),
+    //         'step_4_introduction' => $request->input('step-4-introduction'),
+    //         'step_4_instructions' => $request->input('step-4-instructions'),
+    //         'step_5_introduction' => $request->input('step-5-introduction'),
+    //         'step_5_instructions' => $request->input('step-5-instructions'),
+    //         'step_6_introduction' => $request->input('step-6-introduction'),
+    //         'step_6_instructions' => $request->input('step-6-instructions'),
+    //         'step_7_introduction' => $request->input('step-7-introduction'),
+    //         'step_7_instructions' => $request->input('step-7-instructions'),
+    //         'step_7_video' => $step7VideoPath,
+    //         'step_8_introduction' => $request->input('step-8-introduction'),
+    //         'step_8_instructions' => $request->input('step-8-instructions'),
+    //         'step_9_introduction' => $request->input('step-9-introduction'),
+    //         'step_9_instructions' => $request->input('step-9-instructions'),
+    //         'step_9_video' => $step9VideoPath,
+    //         'step_10_introduction' => $request->input('step-10-introduction'),
+    //         'step_10_instructions' => $request->input('step-10-instructions'),
+    //         'step_10_video' => $step10VideoPath,
+    //         'step_11_introduction' => $request->input('step-11-introduction'),
+    //         'step_11_instructions' => $request->input('step-11-instructions'),
+    //         'step_11_video' => $step11VideoPath,
+    //         'step_12_introduction' => $request->input('step-12-introduction'),
+    //         'step_12_instructions' => $request->input('step-12-instructions'),
+    //         'step_12_video' => $step12VideoPath,
+    //         'step_13_introduction' => $request->input('step-13-introduction'),
+    //         'step_13_instructions' => $request->input('step-13-instructions'),
+    //         'step_14_introduction' => $request->input('step-14-introduction'),
+    //         'step_14_instructions' => $request->input('step-14-instructions'),
+    //         'created_at' => now(),
+    //         'updated_at' => now(),
+    //     ]);
+
+        
+        
+    //     return redirect()->back()
+    //     ->with('success', 'Case initiated successfully!');
+    // }
+
+
+    public function initiateFamilyLawCase(Request $request)
+{
+    // Define validation rules
+    $rules = [
+        'case-name' => 'required|string|max:255',
+        'step-1-introduction' => 'required|string',
+        'step-1-instructions' => 'required|string',
+        'step-1-video' => 'nullable|file|mimes:mp4,avi,mpg|max:20480',
+        'step-2-introduction' => 'required|string',
+        'step-2-instructions' => 'required|string',
+        'step-3-introduction' => 'required|string',
+        'step-3-instructions' => 'required|string',
+        'step-4-introduction' => 'required|string',
+        'step-4-instructions' => 'required|string',
+        'step-5-introduction' => 'required|string',
+        'step-5-instructions' => 'required|string',
+        'step-6-introduction' => 'required|string',
+        'step-6-instructions' => 'required|string',
+        'step-7-introduction' => 'required|string',
+        'step-7-instructions' => 'required|string',
+        'step-7-video' => 'nullable|file|mimes:mp4,avi,mpg|max:20480',
+        'step-8-introduction' => 'required|string',
+        'step-8-instructions' => 'required|string',
+        'step-9-introduction' => 'required|string',
+        'step-9-instructions' => 'required|string',
+        'step-9-video' => 'nullable|file|mimes:mp4,avi,mpg|max:20480',
+        'step-10-introduction' => 'required|string',
+        'step-10-instructions' => 'required|string',
+        'step-10-video' => 'nullable|file|mimes:mp4,avi,mpg|max:20480',
+        'step-11-introduction' => 'required|string',
+        'step-11-instructions' => 'required|string',
+        'step-11-video' => 'nullable|file|mimes:mp4,avi,mpg|max:20480',
+        'step-12-introduction' => 'required|string',
+        'step-12-instructions' => 'required|string',
+        'step-12-video' => 'nullable|file|mimes:mp4,avi,mpg|max:20480',
+        'step-13-introduction' => 'required|string',
+        'step-13-instructions' => 'required|string',
+        'step-14-introduction' => 'required|string',
+        'step-14-instructions' => 'required|string',
+    ];
+
+    // Validate the request
+    $validator = Validator::make($request->all(), $rules);
+
+    if ($validator->fails()) {
+        // Redirect back with errors, old input, and custom data
+        return redirect()->back()
+            ->withErrors($validator)
+            ->withInput()
+            ->with('case_type', 'family-law');
+    }
+
+    // Handle file uploads
+    $step1VideoPath = $request->file('step-1-video') ? $request->file('step-1-video')->store('videos') : null;
+    $step7VideoPath = $request->file('step-7-video') ? $request->file('step-7-video')->store('videos') : null;
+    $step9VideoPath = $request->file('step-9-video') ? $request->file('step-9-video')->store('videos') : null;
+    $step10VideoPath = $request->file('step-10-video') ? $request->file('step-10-video')->store('videos') : null;
+    $step11VideoPath = $request->file('step-11-video') ? $request->file('step-11-video')->store('videos') : null;
+    $step12VideoPath = $request->file('step-12-video') ? $request->file('step-12-video')->store('videos') : null;
+
+    // Insert data into the database
+    DB::table('family_law_cases')->insert([
+        'case_name' => $request->input('case-name'),
+        'step_1_introduction' => $request->input('step-1-introduction'),
+        'step_1_instructions' => $request->input('step-1-instructions'),
+        'step_1_video' => $step1VideoPath,
+        'step_2_introduction' => $request->input('step-2-introduction'),
+        'step_2_instructions' => $request->input('step-2-instructions'),
+        'step_3_introduction' => $request->input('step-3-introduction'),
+        'step_3_instructions' => $request->input('step-3-instructions'),
+        'step_4_introduction' => $request->input('step-4-introduction'),
+        'step_4_instructions' => $request->input('step-4-instructions'),
+        'step_5_introduction' => $request->input('step-5-introduction'),
+        'step_5_instructions' => $request->input('step-5-instructions'),
+        'step_6_introduction' => $request->input('step-6-introduction'),
+        'step_6_instructions' => $request->input('step-6-instructions'),
+        'step_7_introduction' => $request->input('step-7-introduction'),
+        'step_7_instructions' => $request->input('step-7-instructions'),
+        'step_7_video' => $step7VideoPath,
+        'step_8_introduction' => $request->input('step-8-introduction'),
+        'step_8_instructions' => $request->input('step-8-instructions'),
+        'step_9_introduction' => $request->input('step-9-introduction'),
+        'step_9_instructions' => $request->input('step-9-instructions'),
+        'step_9_video' => $step9VideoPath,
+        'step_10_introduction' => $request->input('step-10-introduction'),
+        'step_10_instructions' => $request->input('step-10-instructions'),
+        'step_10_video' => $step10VideoPath,
+        'step_11_introduction' => $request->input('step-11-introduction'),
+        'step_11_instructions' => $request->input('step-11-instructions'),
+        'step_11_video' => $step11VideoPath,
+        'step_12_introduction' => $request->input('step-12-introduction'),
+        'step_12_instructions' => $request->input('step-12-instructions'),
+        'step_12_video' => $step12VideoPath,
+        'step_13_introduction' => $request->input('step-13-introduction'),
+        'step_13_instructions' => $request->input('step-13-instructions'),
+        'step_14_introduction' => $request->input('step-14-introduction'),
+        'step_14_instructions' => $request->input('step-14-instructions'),
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
+    // Redirect back with success message
+    return redirect()->back()
+        ->with('success', 'Case initiated successfully!');
+}
+
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -167,7 +364,6 @@ class AdminController extends Controller
         }
         return redirect()->back()->with('error', 'Invalid Username or password');
     }
-
     public function logout()
     {
         Auth::guard('admin')->logout();

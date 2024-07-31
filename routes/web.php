@@ -31,9 +31,11 @@ Route::prefix('admin')->middleware(AuthenticateAdmin::class)->group(function () 
     Route::get('/edit-student-account/{id}', [AdminController::class, "editStudentAccount"])->name("admin.edit-student-account");
     Route::put('/edit-student-account/{id}', [AdminController::class, "saveEditStudentAccount"])->name("admin.edit-student-account");
 
-    Route::get('/initiate-case', function () {
-        return view('admin.initiate-case');
-    })->name("admin.initiate-case");
+
+    Route::view('/initiate-case', 'admin.initiate-case')->name('admin.initiate-case');
+    Route::post('/initiate-family-law-case', [AdminController::class, "initiateFamilyLawCase"])->name("admin.initiate-family-law-case");
+
+    
 
     Route::get('/assign-case', function () {
         return view('admin.assign-case');
