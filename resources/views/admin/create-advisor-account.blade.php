@@ -11,6 +11,7 @@
         @if (session('message'))
             <div class="alert alert-success" id="success-message">
                 {{ session('message') }}
+                <a href="{{ route('admin.view-advisors') }}">View Advisors</a>
             </div>
         @endif
         <div class="clearfix">
@@ -26,7 +27,7 @@
                 <label class="col-sm-12 col-md-2 col-form-label">Username</label>
                 <div class="col-sm-12 col-md-10">
                     <input class="form-control @error('username') is-invalid @enderror" type="text"
-                        placeholder="Enter Advisor username" name="username" value="{{ old('username') }}" />
+                        placeholder="Enter advisor username" name="username" value="{{ old('username') }}" />
                     @error('username')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror

@@ -14,6 +14,12 @@
             </div>
         @endif
 
+        @if (session('error'))
+            <div class="alert alert-danger" id="error-message">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <div class="clearfix mb-20">
             <div class="pull-left">
                 <h4 class="text-blue h4">Advisors</h4>
@@ -52,7 +58,7 @@
                                 </a>
                             </td>
                             <td>
-                                <form action="{{ route('admin.deleteAdvisor', $advisor->id) }}" method="POST"
+                                <form action="{{ route('admin.delete-advisor', $advisor->id) }}" method="POST"
                                     onsubmit="return confirm('Are you sure you want to delete this advisor?');">
                                     @csrf
                                     @method('DELETE')
@@ -82,7 +88,18 @@
                     successMessage.style.opacity = '0';
                     setTimeout(function() {
                         successMessage.remove();
-                    }, 1000); 
+                    }, 1000);
+                }, 2000);
+            }
+
+            const errorMessage = document.getElementById('error-message');
+            if (errorMessage) {
+                setTimeout(function() {
+                    errorMessage.style.transition = 'opacity 1s ease-out';
+                    errorMessage.style.opacity = '0';
+                    setTimeout(function() {
+                        errorMessage.remove();
+                    }, 1000);
                 }, 2000);
             }
         });

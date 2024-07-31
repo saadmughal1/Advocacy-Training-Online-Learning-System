@@ -42,7 +42,7 @@ class AdminController extends Controller
         if ($deleted) {
             return redirect()->route('admin.view-advisors')->with('message', 'Advisor deleted successfully.');
         } else {
-            return redirect()->route('admin.view-advisors')->withErrors(['error' => 'Advisor not found.']);
+            return redirect()->route('admin.view-advisors')->with(['error' => 'Advisor not found.']);
         }
     }
 
@@ -56,7 +56,6 @@ class AdminController extends Controller
 
         return view('admin.edit-advisor-account', ['advisor' => $advisor]);
     }
-
 
     public function saveEditAdvisorAccount(Request $request, string $id)
     {
@@ -78,11 +77,83 @@ class AdminController extends Controller
         DB::table('advisors')
             ->where('id', $id)
             ->update($updateData);
-            
+
         return redirect()->route('admin.view-advisors')
             ->with('message', 'Advisor account updated successfully.');
     }
+    public function createStudentAccount(Request $request)
+    {
+        $validatedData = $request->validate([
+            'username' => 'required|string|unique:students,username',
+            'email' => 'required|string|email',
+            'phno' => 'required|string',
+            'password' => 'required|alpha_num:ascii',
+        ]);
 
+        DB::table('students')->insert([
+            'username' => $validatedData['username'],
+            'email' => $validatedData['email'],
+            'phone_number' => $validatedData['phno'],
+            'password' => $validatedData['password'],
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->back()->with('message', 'Student account created successfully.');
+    }
+
+    public function viewStudentAccounts()
+    {
+        $students = DB::table('students')->get();
+        return view('admin.view-students', ['students' => $students]);
+    }
+
+    public function deleteStudent(string $id)
+    {
+        $deleted = DB::table('students')->where('id', $id)->delete();
+
+        if ($deleted) {
+            return redirect()->route('admin.view-students')->with('message', 'Student deleted successfully.');
+        } else {
+            return redirect()->route('admin.view-students')->with(['error' => 'Student not found.']);
+        }
+    }
+
+    public function editStudentAccount(string $id)
+    {
+        $student = DB::table('students')->where('id', $id)->first();
+
+        if (!$student) {
+            return redirect()->route('admin.view-students')->with('error', 'Student not found.');
+        }
+
+        return view('admin.edit-student-account', ['student' => $student]);
+    }
+
+    public function saveEditStudentAccount(Request $request, string $id)
+    {
+
+        $validatedData = $request->validate([
+            'username' => 'required|string|unique:students,username,' . $id,
+            'email' => 'required|string|email',
+            'phno' => 'required|string',
+            'password' => 'required|alpha_num',
+        ]);
+
+        $updateData = [
+            'username' => $validatedData['username'],
+            'email' => $validatedData['email'],
+            'phone_number' => $validatedData['phno'],
+            'password' => $validatedData['password'],
+        ];
+
+        DB::table('students')
+            ->where('id', $id)
+            ->update($updateData);
+
+        return redirect()->route('admin.view-students')
+            ->with('message', 'Student account updated successfully.');
+    }
 
     public function login(Request $request)
     {
@@ -96,6 +167,7 @@ class AdminController extends Controller
         }
         return redirect()->back()->with('error', 'Invalid Username or password');
     }
+
     public function logout()
     {
         Auth::guard('admin')->logout();

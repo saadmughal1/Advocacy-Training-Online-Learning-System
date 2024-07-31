@@ -9,7 +9,6 @@ Route::get('/', function () {
 });
 
 
-
 Route::prefix('admin')->middleware(AuthenticateAdmin::class)->group(function () {
 
     Route::view('/', 'admin.index')->name('admin.home');
@@ -19,36 +18,18 @@ Route::prefix('admin')->middleware(AuthenticateAdmin::class)->group(function () 
     Route::get('/logout', [AdminController::class, "logout"])->name("admin.logout");
 
     Route::view('/create-advisor-account', 'admin.create-advisor-account')->name('admin.create-advisor-account');
-    Route::post('/create-advisor-account', [AdminController::class, "createAdvisorAccount"])->name("admin.admin.create-advisor-account");
-
+    Route::post('/create-advisor-account', [AdminController::class, "createAdvisorAccount"])->name("admin.create-advisor-account");
     Route::get('/view-advisors', [AdminController::class, "viewAdvisorAccounts"])->name("admin.view-advisors");
-
-    Route::delete('/delete-advisor/{id}', [AdminController::class, "deleteAdvisor"])->name("admin.deleteAdvisor");
-
-
+    Route::delete('/delete-advisor/{id}', [AdminController::class, "deleteAdvisor"])->name("admin.delete-advisor");
     Route::get('/edit-advisor-account/{id}', [AdminController::class, "editAdvisorAccount"])->name("admin.edit-advisor-account");
-
     Route::put('/edit-advisor-account/{id}', [AdminController::class, "saveEditAdvisorAccount"])->name("admin.edit-advisor-account");
 
-
-
-
-
-
-
-
-
-
-
-    Route::get('/create-student-account', function () {
-        return view('admin.create-student-account');
-    })->name("admin.create-student-account");
-
-    Route::get('/view-students', function () {
-        return view('admin.view-students');
-    })->name("admin.view-students");
-
-
+    Route::view('/create-student-account', 'admin.create-student-account')->name('admin.create-student-account');
+    Route::post('/create-student-account', [AdminController::class, "createStudentAccount"])->name("admin.create-student-account");
+    Route::get('/view-students', [AdminController::class, "viewStudentAccounts"])->name("admin.view-students");
+    Route::delete('/delete-student/{id}', [AdminController::class, "deleteStudent"])->name("admin.delete-student");
+    Route::get('/edit-student-account/{id}', [AdminController::class, "editStudentAccount"])->name("admin.edit-student-account");
+    Route::put('/edit-student-account/{id}', [AdminController::class, "saveEditStudentAccount"])->name("admin.edit-student-account");
 
     Route::get('/initiate-case', function () {
         return view('admin.initiate-case');
