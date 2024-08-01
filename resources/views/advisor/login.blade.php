@@ -1,6 +1,6 @@
 @extends('../layouts/login-app')
 
-@section('page-title', 'Admin - Login')
+@section('page-title', 'Advisor - Login')
 
 @section('content')
     <div class="login-wrap d-flex align-items-center flex-wrap justify-content-center">
@@ -15,7 +15,7 @@
                             <h2 class="text-center text-primary">Login To Advocacy</h2>
                         </div>
 
-                        <form action="{{ route('admin.login') }}" method="POST">
+                        <form action="{{ route('advisor.login') }}" method="POST">
                             @csrf
                             <div class="input-group custom mb-0 mt-4">
                                 <input type="text" class="form-control form-control-lg" placeholder="Username"

@@ -7,43 +7,39 @@
     @includeIf('advisor.partials._navbar')
     @includeIf('advisor.partials._sidebar')
 
-    <div class="pd-20 card-box mb-30">
-        <div class="clearfix mb-20">
-            <div class="pull-left">
-                <h4 class="text-blue h4">Advisor Caseload</h4>
-            </div>
+    <div class="row pb-10">
+        <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+            <a href="{{ route('advisor.advisor-caseload') }}">
+                <div class="card-box height-100-p widget-style3">
+                    <div class="d-flex flex-wrap justify-content-center">
+                        <div class="widget-data text-center">
+                            <div class="weight-700 font-24 text-light">Advisor Caseload</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
         </div>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Case Name</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php for ($i = 0; $i < 10; $i++) { ?>
 
-                <tr>
-                    <th scope="row"><?php echo $i + 1; ?></th>
-                    <td>Case - <?php echo $i + 1; ?></td>
-                    <td><a class="btn btn-primary" href="{{route("advisor.view-students")}}">Allocate Case</a></td>
-                </tr>
-
-                <?php } ?>
-
-
-            </tbody>
-        </table>
+        <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+            <a href="{{ route('advisor.student-caseload') }}">
+                <div class="card-box height-100-p widget-style3">
+                    <div class="d-flex flex-wrap justify-content-center">
+                        <div class="widget-data text-center">
+                            <div class="weight-700 font-24 text-light">Students Caseload</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
 
     </div>
-
 @endsection
 
 @push('styles')
     <style>
         a>.card-box {
-            background-image: linear-gradient(45deg, #23074d, #cc5333) !important;
+            background-image: linear-gradient(45deg, #0f0c29, #302b63, #24243e) !important;
+            padding: 10px !important;
         }
     </style>
 @endpush

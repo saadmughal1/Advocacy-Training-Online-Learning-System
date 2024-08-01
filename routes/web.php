@@ -1,12 +1,12 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdvisorController;
 use App\Http\Middleware\AuthenticateAdmin;
+use App\Http\Middleware\AuthenticateAdvisor;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('login');
-});
+Route::view('/', 'index')->name("home");
 
 
 Route::prefix('admin')->middleware(AuthenticateAdmin::class)->group(function () {
@@ -36,11 +36,7 @@ Route::prefix('admin')->middleware(AuthenticateAdmin::class)->group(function () 
     Route::post('/initiate-family-law-case', [AdminController::class, "initiateFamilyLawCase"])->name("admin.initiate-family-law-case");
 
     Route::post('/get-cases-by-type', [AdminController::class, 'getCasesByType'])->name('admin.get-cases-by-type');
-
-
-
     Route::view('/assign-case', 'admin.assign-case')->name("admin.assign-case");
-
 
     Route::post('/get-advisors-by-case', [AdminController::class, 'getAdvisorsByCase'])->name('admin.get-advisors-by-case');
     Route::post('/get-students', [AdminController::class, 'getStudents'])->name('admin.get-students');
@@ -51,19 +47,26 @@ Route::prefix('admin')->middleware(AuthenticateAdmin::class)->group(function () 
 
 
 
-Route::prefix('advisor')->group(function () {
+Route::prefix('advisor')->middleware(AuthenticateAdvisor::class)->group(function () {
 
-    Route::get('/', function () {
-        return view('advisor.index');
-    })->name("advisor.home");
+    Route::view('/', 'advisor.index')->name('advisor.home');
 
-    Route::get('/view-students', function () {
-        return view('advisor.view-students');
-    })->name("advisor.view-students");
+    Route::view('/login', 'advisor.login')->name('advisor.login');
+    Route::post('/login', [AdvisorController::class, "login"])->name("advisor.login");
+    Route::get('/logout', [AdvisorController::class, "logout"])->name("advisor.logout");
+
+    Route::get('/advisor-caseload',[AdvisorController::class,"advisorCaseLoad"])->name("advisor.advisor-caseload");
+
 
     Route::get('/student-caseload', function () {
         return view('advisor.student-caseload');
     })->name("advisor.student-caseload");
+
+    Route::get('/view-students',[AdvisorController::class,'displayStudents'])->name('advisor.view-students');
+    Route::post('/assign-case',[AdvisorController::class,'assignStudents'])->name('advisor.assign-case');
+
+
+
 
     Route::get('/students-in-case', function () {
         return view('advisor.students-in-case');
