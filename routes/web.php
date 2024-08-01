@@ -35,11 +35,17 @@ Route::prefix('admin')->middleware(AuthenticateAdmin::class)->group(function () 
     Route::view('/initiate-case', 'admin.initiate-case')->name('admin.initiate-case');
     Route::post('/initiate-family-law-case', [AdminController::class, "initiateFamilyLawCase"])->name("admin.initiate-family-law-case");
 
-    
+    Route::post('/get-cases-by-type', [AdminController::class, 'getCasesByType'])->name('admin.get-cases-by-type');
 
-    Route::get('/assign-case', function () {
-        return view('admin.assign-case');
-    })->name("admin.assign-case");
+
+
+    Route::view('/assign-case', 'admin.assign-case')->name("admin.assign-case");
+
+
+    Route::post('/get-advisors-by-case', [AdminController::class, 'getAdvisorsByCase'])->name('admin.get-advisors-by-case');
+    Route::post('/get-students', [AdminController::class, 'getStudents'])->name('admin.get-students');
+
+    Route::post('/assign-case', [AdminController::class, 'assignCase'])->name('admin.assign-case');
 });
 
 
