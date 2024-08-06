@@ -77,34 +77,21 @@ class AdvisorController extends Controller
             ->where('advisor_id', $advisorId)
             ->get();
 
-        $cases = $advisorCases->filter(function ($case) {
-            $unassignedStudentsCount = DB::table('advisor_case_student')
-                ->where('advisor_case_id', $case->id)
-                ->whereNotIn('student_id', function ($query) use ($case) {
-                    $query->select('student_id')
-                        ->from('student_cases')
-                        ->where('advisor_case_id', $case->id);
-                })
-                ->count();
-
-            if ($unassignedStudentsCount > 0) {
-                if ($case->case_type == 'family_law') {
-                    $caseDetails = DB::table('family_law_cases')
-                        ->where('id', $case->case_id)
-                        ->select('case_name')
-                        ->first();
-                } else if ($case->case_type == 'early_bird_moot') {
-                    $caseDetails = DB::table('early_bird_moot_cases')
-                        ->where('id', $case->case_id)
-                        ->select('case_name')
-                        ->first();
-                }
-                $case->case_name = $caseDetails ? $caseDetails->case_name : 'Unknown';
-                return $case;
+        $cases = $advisorCases->map(function ($case) {
+            if ($case->case_type == 'family_law') {
+                $caseDetails = DB::table('family_law_cases')
+                    ->where('id', $case->case_id)
+                    ->select('case_name')
+                    ->first();
+            } else if ($case->case_type == 'early_bird_moot') {
+                $caseDetails = DB::table('early_bird_moot_cases')
+                    ->where('id', $case->case_id)
+                    ->select('case_name')
+                    ->first();
             }
-
-            return null;
-        })->filter();
+            $case->case_name = $caseDetails ? $caseDetails->case_name : 'Unknown';
+            return $case;
+        });
 
         return view('advisor.student-caseload', ['cases' => $cases]);
     }

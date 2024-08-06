@@ -36,9 +36,21 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('admin.display-cases') }}" class="dropdown-toggle no-arrow">
+                        <span class="micon bi bi-calendar4-week"></span><span class="mtext">Display Cases</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('admin.assign-case') }}" class="dropdown-toggle no-arrow">
                         <span class="micon bi bi-calendar4-week"></span><span class="mtext text-wrap">Assigning Cases to
                             Advisors</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('admin.advisor-caseload') }}" class="dropdown-toggle no-arrow">
+                        <span class="micon bi bi-calendar4-week"></span><span class="mtext text-wrap">
+                            Advisor Caseload</span>
                     </a>
                 </li>
             </ul>

@@ -92,7 +92,7 @@
                 var selectedCaseType = $('#caseTypeSelect').val();
                 var getCasesByTypeUrl = "{{ route('admin.get-cases-by-type') }}";
 
-                if (selectedCaseType.trim() === '' || selectedCaseType === 'early-bird-moot') {
+                if (selectedCaseType.trim() === '') {
                     $('#cases-names').hide();
                     $('#advisor-names').hide();
                     $('#student-names').hide();
@@ -180,6 +180,9 @@
             }
 
             $('#caseTypeSelect').change(function() {
+                $('#cases-names').hide();
+                $('#advisor-names').hide();
+                $('#student-names').hide();
                 updateCases();
             });
 
@@ -223,7 +226,7 @@
                     alert('Please select an advisor.');
                     return;
                 }
-                
+
                 if (formData["students"].length === 0) {
                     alert('Please select at least one student.');
                     return;

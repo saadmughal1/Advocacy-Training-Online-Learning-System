@@ -148,7 +148,6 @@ class AdminController extends Controller
         return redirect()->route('admin.view-students')
             ->with('message', 'Student account updated successfully.');
     }
-
     public function initiateFamilyLawCase(Request $request)
     {
         $rules = [
@@ -248,7 +247,30 @@ class AdminController extends Controller
         return redirect()->back()
             ->with('success', 'Case initiated successfully!');
     }
+    public function initiateEarlyBirdMoot(Request $request)
+    {
+        $rules = [
+            'case-name' => 'required|string|max:255',
+        ];
 
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('case_type', 'early-bird-moot');
+        }
+
+        DB::table('early_bird_moot_cases')->insert([
+            'case_name' => $request->input('case-name'),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->back()
+            ->with('success', 'Case initiated successfully!');
+    }
     public function getCasesByType(Request $request)
     {
         $request->validate([
@@ -260,11 +282,10 @@ class AdminController extends Controller
         if ($caseType === 'family-law') {
             $cases = DB::table('family_law_cases')->get();
             return response()->json($cases);
-        }
-        // else if ($caseType === 'early-bird-moot'){
-
-        // }
-        else {
+        } else if ($caseType === 'early-bird-moot') {
+            $cases = DB::table('early_bird_moot_cases')->get();
+            return response()->json($cases);
+        } else {
             return response()->json([
                 'message' => 'Invalid case type',
             ], 400);
@@ -287,7 +308,6 @@ class AdminController extends Controller
         Auth::guard('admin')->logout();
         return redirect()->route('admin.login');
     }
-
     public function getAdvisorsByCase(Request $request)
     {
         $caseId = $request->input('case_id');
@@ -300,14 +320,12 @@ class AdminController extends Controller
         $students = DB::table('students')->get();
         return response()->json($students);
     }
-
-
     public function assignCase(Request $request)
     {
         $request->validate([
             'advisor_id' => 'required|exists:advisors,id',
             'case_id' => 'required|integer',
-            'case_type' => 'required|string|in:family_law,criminal_law',
+            'case_type' => 'required|string|in:family_law,early_bird_moot',
             'students' => 'required|array',
             'students.*' => 'exists:students,id'
         ]);
@@ -347,16 +365,63 @@ class AdminController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Case assigned successfully.']);
     }
-
     private function getCaseTableName($caseType)
     {
         switch ($caseType) {
             case 'family_law':
                 return 'family_law_cases';
-            case 'criminal_law':
-                return 'criminal_law_cases';
+            case 'early_bird_moot':
+                return 'early_bird_moot_cases';
             default:
                 throw new \InvalidArgumentException('Invalid case type.');
         }
+    }
+    public function displayCases()
+    {
+        $earlyBirdMootCases = DB::table('early_bird_moot_cases')
+            ->select('case_name')
+            ->get()
+            ->map(function ($case) {
+                return [
+                    'case_name' => $case->case_name,
+                    'case_type' => 'Early Bird Moot'
+                ];
+            });
+        $familyLawCases = DB::table('family_law_cases')
+            ->select('case_name')
+            ->get()
+            ->map(function ($case) {
+                return [
+                    'case_name' => $case->case_name,
+                    'case_type' => 'Family Law'
+                ];
+            });
+        $cases = $earlyBirdMootCases->merge($familyLawCases);
+        return view('admin.display-cases', compact('cases'));
+    }
+
+    public function advisorCaseLoad()
+    {
+        // Retrieve all advisors with their assigned cases and case names
+        $advisorCases = DB::table('advisors')
+            ->join('advisor_cases', 'advisors.id', '=', 'advisor_cases.advisor_id')
+            ->leftJoin('family_law_cases', function ($join) {
+                $join->on('advisor_cases.case_id', '=', 'family_law_cases.id')
+                    ->where('advisor_cases.case_type', 'family_law');
+            })
+            ->leftJoin('early_bird_moot_cases', function ($join) {
+                $join->on('advisor_cases.case_id', '=', 'early_bird_moot_cases.id')
+                    ->where('advisor_cases.case_type', 'early_bird_moot');
+            })
+            ->select(
+                'advisors.id as advisor_id',
+                'advisors.username',
+                'advisor_cases.case_id',
+                'advisor_cases.case_type',
+                DB::raw('COALESCE(family_law_cases.case_name, early_bird_moot_cases.case_name) as case_name')
+            )
+            ->get();
+
+        return view('admin.advisor-caseload', ['advisorCases' => $advisorCases]);
     }
 }

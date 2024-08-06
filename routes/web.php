@@ -35,7 +35,14 @@ Route::prefix('admin')->middleware(AuthenticateAdmin::class)->group(function () 
 
 
     Route::view('/initiate-case', 'admin.initiate-case')->name('admin.initiate-case');
+    Route::get('/display-cases', [AdminController::class, 'displayCases'])->name('admin.display-cases');
+
+
+
     Route::post('/initiate-family-law-case', [AdminController::class, "initiateFamilyLawCase"])->name("admin.initiate-family-law-case");
+    Route::post('/initiate-early-bird-moot', [AdminController::class, "initiateEarlyBirdMoot"])->name("admin.initiate-early-bird-moot");
+
+    
 
     Route::post('/get-cases-by-type', [AdminController::class, 'getCasesByType'])->name('admin.get-cases-by-type');
     Route::view('/assign-case', 'admin.assign-case')->name("admin.assign-case");
@@ -44,6 +51,8 @@ Route::prefix('admin')->middleware(AuthenticateAdmin::class)->group(function () 
     Route::post('/get-students', [AdminController::class, 'getStudents'])->name('admin.get-students');
 
     Route::post('/assign-case', [AdminController::class, 'assignCase'])->name('admin.assign-case');
+
+    Route::get('/advisor-caseload', [AdminController::class, "advisorCaseLoad"])->name("admin.advisor-caseload");
 });
 
 Route::prefix('advisor')->middleware(AuthenticateAdvisor::class)->group(function () {
@@ -78,8 +87,6 @@ Route::prefix('student')->middleware(AuthenticateStudent::class)->group(function
     Route::get('/logout', [StudentController::class, "logout"])->name("student.logout");
 
     Route::view('/my-caseload', 'student.my-caseload')->name('student.my-caseload');
-
-
 
 
     Route::get('/family-law-step-1', function () {

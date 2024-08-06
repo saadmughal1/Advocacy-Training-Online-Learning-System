@@ -69,6 +69,18 @@
         </div>
 
         <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+            <a href="{{ route('admin.display-cases') }}">
+                <div class="card-box height-100-p widget-style3">
+                    <div class="d-flex flex-wrap justify-content-center">
+                        <div class="widget-data text-center">
+                            <div class="weight-700 font-24 text-light">Display All Cases</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
             <a href="{{ route('admin.assign-case') }}">
                 <div class="card-box height-100-p widget-style3">
                     <div class="d-flex flex-wrap justify-content-center">
@@ -80,6 +92,18 @@
             </a>
         </div>
 
+        <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+            <a href="{{ route('admin.advisor-caseload') }}">
+                <div class="card-box height-100-p widget-style3">
+                    <div class="d-flex flex-wrap justify-content-center">
+                        <div class="widget-data text-center">
+                            <div class="weight-700 font-24 text-light">Advisor Caseload</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+ 
     </div>
 @endsection
 

@@ -52,9 +52,13 @@
                 </table>
             @endif
 
-            <div class="form-group row d-flex justify-content-end">
-                <button type="submit" class="btn btn-primary">Assign</button>
-            </div>
+
+            @if (!$studentsNotInStudentCases->isEmpty())
+                <div class="form-group row d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Assign</button>
+                </div>
+            @endif
+
         </form>
 
     </div>

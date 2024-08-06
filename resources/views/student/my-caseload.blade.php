@@ -1,6 +1,6 @@
 @extends('../layouts/app')
 
-@section('page-title', 'Student - Home')
+@section('page-title', 'Assigned Cases')
 
 @section('content')
 

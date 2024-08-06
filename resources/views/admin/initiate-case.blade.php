@@ -561,12 +561,34 @@
     </div>
 
     <div id="early-bird-moot" class="case-content" style="display: none;">
-        <form action="">
+        <form action="{{ route('admin.initiate-early-bird-moot') }}" method="POST" enctype="multipart/form-data">
+            @csrf
             <h3 class="pd-20 text-center mb-30">Early Bird Moot</h3>
-            <div class="text-center">
-                <p>The form fields for Early Bird Moot will be added soon.</p>
-                <p>Please check back later.</p>
+
+            <div class="pd-20 card-box mb-30">
+                <div class="clearfix">
+                    <div class="pull-left">
+                        <!-- <h4 class="text-blue h4">---</h4> -->
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-12 col-md-2 col-form-label">Enter the name of case</label>
+                    <div class="col-sm-12 col-md-10">
+                        <input class="form-control" type="text" name="case-name" placeholder="Enter the name of case" />
+                        @error('case-name')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                </div>
+
             </div>
+
+
+            <div class="form-group row d-flex justify-content-center">
+                <button class="btn btn-primary">Initiate the case</button>
+            </div>
+
         </form>
     </div>
 
