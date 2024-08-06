@@ -55,27 +55,26 @@ Route::prefix('advisor')->middleware(AuthenticateAdvisor::class)->group(function
     Route::post('/login', [AdvisorController::class, "login"])->name("advisor.login");
     Route::get('/logout', [AdvisorController::class, "logout"])->name("advisor.logout");
 
-    Route::get('/advisor-caseload',[AdvisorController::class,"advisorCaseLoad"])->name("advisor.advisor-caseload");
+    Route::get('/advisor-caseload', [AdvisorController::class, "advisorCaseLoad"])->name("advisor.advisor-caseload");
 
+    Route::get('/view-students', [AdvisorController::class, 'displayStudents'])->name('advisor.view-students');
+    Route::post('/assign-case', [AdvisorController::class, 'assignStudents'])->name('advisor.assign-case');
 
-    Route::get('/student-caseload', function () {
-        return view('advisor.student-caseload');
-    })->name("advisor.student-caseload");
+    Route::get('/student-caseload', [AdvisorController::class, "studentCaseLoad"])->name("advisor.student-caseload");
 
-    Route::get('/view-students',[AdvisorController::class,'displayStudents'])->name('advisor.view-students');
-    Route::post('/assign-case',[AdvisorController::class,'assignStudents'])->name('advisor.assign-case');
+    Route::get('/advisor/case/{caseId}/students', [AdvisorController::class, 'getAssignedStudentsByCaseId'])->name('advisor.students-in-case');
 
-
-
-
-    Route::get('/students-in-case', function () {
-        return view('advisor.students-in-case');
-    })->name("advisor.students-in-case");
 
     Route::get('/student-feedback', function () {
         return view('advisor.student-feedback');
     })->name("advisor.student-feedback");
 });
+
+
+
+
+
+
 
 Route::prefix('student')->group(function () {
 

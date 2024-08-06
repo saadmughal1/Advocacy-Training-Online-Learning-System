@@ -13,8 +13,8 @@
                 <h4 class="text-blue h4">Advisor Caseload</h4>
             </div>
         </div>
-        
-        @if($cases->isEmpty())
+
+        @if ($cases->isEmpty())
             <p class="text-center">No cases found.</p>
         @else
             <table class="table table-bordered">
@@ -27,9 +27,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($cases as $index => $case)
+                    @php $index = 0; @endphp
+                    @foreach ($cases as $case)
                         <tr>
-                            <th scope="row">{{ $index + 1 }}</th>
+                            <th scope="row">{{ ++$index }}</th>
                             <td>{{ ucfirst(str_replace('_', ' ', $case->case_type)) }}</td>
                             <td>{{ $case->case_name }}</td>
                             <td>

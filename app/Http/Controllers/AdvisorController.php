@@ -38,23 +38,75 @@ class AdvisorController extends Controller
             ->where('advisor_id', $advisorId)
             ->get();
 
-        $cases = $advisorCases->map(function ($case) {
-            if ($case->case_type == 'family_law') {
-                $caseDetails = DB::table('family_law_cases')
-                    ->where('id', $case->case_id)
-                    ->select('case_name')
-                    ->first();
-            } else if ($case->case_type == 'early_bird_moot') {
-                $caseDetails = DB::table('early_bird_moot_cases')
-                    ->where('id', $case->case_id)
-                    ->select('case_name')
-                    ->first();
+        $cases = $advisorCases->filter(function ($case) {
+            $unassignedStudentsCount = DB::table('advisor_case_student')
+                ->where('advisor_case_id', $case->id)
+                ->whereNotIn('student_id', function ($query) use ($case) {
+                    $query->select('student_id')
+                        ->from('student_cases')
+                        ->where('advisor_case_id', $case->id);
+                })
+                ->count();
+
+            if ($unassignedStudentsCount > 0) {
+                if ($case->case_type == 'family_law') {
+                    $caseDetails = DB::table('family_law_cases')
+                        ->where('id', $case->case_id)
+                        ->select('case_name')
+                        ->first();
+                } else if ($case->case_type == 'early_bird_moot') {
+                    $caseDetails = DB::table('early_bird_moot_cases')
+                        ->where('id', $case->case_id)
+                        ->select('case_name')
+                        ->first();
+                }
+                $case->case_name = $caseDetails ? $caseDetails->case_name : 'Unknown';
+                return $case;
             }
-            $case->case_name = $caseDetails ? $caseDetails->case_name : 'Unknown';
-            return $case;
-        });
+
+            return null;
+        })->filter();
 
         return view('advisor.advisor-caseload', ['cases' => $cases]);
+    }
+    public function studentCaseLoad()
+    {
+        $advisorId = Auth::guard('advisor')->id();
+
+        $advisorCases = DB::table('advisor_cases')
+            ->where('advisor_id', $advisorId)
+            ->get();
+
+        $cases = $advisorCases->filter(function ($case) {
+            $unassignedStudentsCount = DB::table('advisor_case_student')
+                ->where('advisor_case_id', $case->id)
+                ->whereNotIn('student_id', function ($query) use ($case) {
+                    $query->select('student_id')
+                        ->from('student_cases')
+                        ->where('advisor_case_id', $case->id);
+                })
+                ->count();
+
+            if ($unassignedStudentsCount > 0) {
+                if ($case->case_type == 'family_law') {
+                    $caseDetails = DB::table('family_law_cases')
+                        ->where('id', $case->case_id)
+                        ->select('case_name')
+                        ->first();
+                } else if ($case->case_type == 'early_bird_moot') {
+                    $caseDetails = DB::table('early_bird_moot_cases')
+                        ->where('id', $case->case_id)
+                        ->select('case_name')
+                        ->first();
+                }
+                $case->case_name = $caseDetails ? $caseDetails->case_name : 'Unknown';
+                return $case;
+            }
+
+            return null;
+        })->filter();
+
+        return view('advisor.student-caseload', ['cases' => $cases]);
     }
     public function displayStudents(Request $request)
     {
@@ -79,8 +131,6 @@ class AdvisorController extends Controller
             'studentsNotInStudentCases' => $studentsNotInStudentCases
         ]);
     }
-
-
     public function assignStudents(Request $request)
     {
         $request->validate([
@@ -111,7 +161,17 @@ class AdvisorController extends Controller
             );
         }
 
-        return redirect()->route('advisor.view-students', ['case_id' => $caseId,'case_name' => $caseName])
+        return redirect()->route('advisor.view-students', ['case_id' => $caseId, 'case_name' => $caseName])
             ->with('success', 'Students assigned successfully');
+    }
+    public function getAssignedStudentsByCaseId($caseId)
+    {
+        $students = DB::table('students')
+            ->join('student_cases', 'students.id', '=', 'student_cases.student_id')
+            ->where('student_cases.advisor_case_id', $caseId)
+            ->select('students.id', 'students.username', 'students.email', 'students.phone_number')
+            ->get();
+
+        return view('advisor.students-in-case', ['students' => $students]);
     }
 }
