@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdvisorController;
+use App\Http\Controllers\StudentController;
 use App\Http\Middleware\AuthenticateAdmin;
 use App\Http\Middleware\AuthenticateAdvisor;
+use App\Http\Middleware\AuthenticateStudent;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'index')->name("home");
@@ -44,9 +46,6 @@ Route::prefix('admin')->middleware(AuthenticateAdmin::class)->group(function () 
     Route::post('/assign-case', [AdminController::class, 'assignCase'])->name('admin.assign-case');
 });
 
-
-
-
 Route::prefix('advisor')->middleware(AuthenticateAdvisor::class)->group(function () {
 
     Route::view('/', 'advisor.index')->name('advisor.home');
@@ -70,17 +69,17 @@ Route::prefix('advisor')->middleware(AuthenticateAdvisor::class)->group(function
     })->name("advisor.student-feedback");
 });
 
+Route::prefix('student')->middleware(AuthenticateStudent::class)->group(function () {
+
+    Route::view('/', 'student.index')->name('student.home');
+
+    Route::view('/login', 'student.login')->name('student.login');
+    Route::post('/login', [StudentController::class, "login"])->name("student.login");
+    Route::get('/logout', [StudentController::class, "logout"])->name("student.logout");
+
+    Route::view('/my-caseload', 'student.my-caseload')->name('student.my-caseload');
 
 
-
-
-
-
-Route::prefix('student')->group(function () {
-
-    Route::get('/', function () {
-        return view('student.index');
-    })->name("student.home");
 
 
     Route::get('/family-law-step-1', function () {
