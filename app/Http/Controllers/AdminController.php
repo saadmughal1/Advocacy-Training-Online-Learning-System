@@ -197,12 +197,12 @@ class AdminController extends Controller
                 ->with('case_type', 'family-law');
         }
 
-        $step1VideoPath = $request->file('step-1-video') ? $request->file('step-1-video')->store('videos') : null;
-        $step7VideoPath = $request->file('step-7-video') ? $request->file('step-7-video')->store('videos') : null;
-        $step9VideoPath = $request->file('step-9-video') ? $request->file('step-9-video')->store('videos') : null;
-        $step10VideoPath = $request->file('step-10-video') ? $request->file('step-10-video')->store('videos') : null;
-        $step11VideoPath = $request->file('step-11-video') ? $request->file('step-11-video')->store('videos') : null;
-        $step12VideoPath = $request->file('step-12-video') ? $request->file('step-12-video')->store('videos') : null;
+        $step1VideoPath = $request->file('step-1-video') ? $request->file('step-1-video')->store('videos', 'public') : null;
+        $step7VideoPath = $request->file('step-7-video') ? $request->file('step-7-video')->store('videos', 'public') : null;
+        $step9VideoPath = $request->file('step-9-video') ? $request->file('step-9-video')->store('videos', 'public') : null;
+        $step10VideoPath = $request->file('step-10-video') ? $request->file('step-10-video')->store('videos', 'public') : null;
+        $step11VideoPath = $request->file('step-11-video') ? $request->file('step-11-video')->store('videos', 'public') : null;
+        $step12VideoPath = $request->file('step-12-video') ? $request->file('step-12-video')->store('videos', 'public') : null;
 
         DB::table('family_law_cases')->insert([
             'case_name' => $request->input('case-name'),

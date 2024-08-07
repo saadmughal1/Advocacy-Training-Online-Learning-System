@@ -42,7 +42,7 @@ Route::prefix('admin')->middleware(AuthenticateAdmin::class)->group(function () 
     Route::post('/initiate-family-law-case', [AdminController::class, "initiateFamilyLawCase"])->name("admin.initiate-family-law-case");
     Route::post('/initiate-early-bird-moot', [AdminController::class, "initiateEarlyBirdMoot"])->name("admin.initiate-early-bird-moot");
 
-    
+
 
     Route::post('/get-cases-by-type', [AdminController::class, 'getCasesByType'])->name('admin.get-cases-by-type');
     Route::view('/assign-case', 'admin.assign-case')->name("admin.assign-case");
@@ -86,62 +86,31 @@ Route::prefix('student')->middleware(AuthenticateStudent::class)->group(function
     Route::post('/login', [StudentController::class, "login"])->name("student.login");
     Route::get('/logout', [StudentController::class, "logout"])->name("student.logout");
 
-    Route::view('/my-caseload', 'student.my-caseload')->name('student.my-caseload');
+    Route::get('/my-caseload', [StudentController::class, 'displayMyCases'])->name('student.my-caseload');
+    Route::get('/start-case/{caseId}', [StudentController::class, 'startCase'])->name('student.start-case');
 
+    // Family Law
+    Route::get('/family-law-step-1', [StudentController::class, 'familyLawStepsPreDetail'])->name('student.family-law-step-1');
+    Route::get('/family-law-step-2', [StudentController::class, 'familyLawStepsPreDetail'])->name('student.family-law-step-2');
+    Route::get('/family-law-step-3', [StudentController::class, 'familyLawStepsPreDetail'])->name('student.family-law-step-3');
+    Route::get('/family-law-step-4', [StudentController::class, 'familyLawStepsPreDetail'])->name('student.family-law-step-4');
+    Route::get('/family-law-step-5', [StudentController::class, 'familyLawStepsPreDetail'])->name('student.family-law-step-5');
+    Route::get('/family-law-step-6', [StudentController::class, 'familyLawStepsPreDetail'])->name('student.family-law-step-6');
+    Route::get('/family-law-step-7', [StudentController::class, 'familyLawStepsPreDetail'])->name('student.family-law-step-7');
+    Route::get('/family-law-step-8', [StudentController::class, 'familyLawStepsPreDetail'])->name('student.family-law-step-8');
+    Route::get('/family-law-step-9', [StudentController::class, 'familyLawStepsPreDetail'])->name('student.family-law-step-9');
+    Route::get('/family-law-step-10', [StudentController::class, 'familyLawStepsPreDetail'])->name('student.family-law-step-10');
+    Route::get('/family-law-step-11', [StudentController::class, 'familyLawStepsPreDetail'])->name('student.family-law-step-11');
+    Route::get('/family-law-step-12', [StudentController::class, 'familyLawStepsPreDetail'])->name('student.family-law-step-12');
+    Route::get('/family-law-step-13', [StudentController::class, 'familyLawStepsPreDetail'])->name('student.family-law-step-13');
+    Route::get('/family-law-step-14', [StudentController::class, 'familyLawStepsPreDetail'])->name('student.family-law-step-14');
 
-    Route::get('/family-law-step-1', function () {
-        return view('student.family-law-step-1');
-    })->name('student.family-law-step-1');
+    // Early Bird Moot
+    Route::get('/early-bird-moot-step-1', function () {
+        return view('student.early-bird-moot-step-1');
+    })->name('student.early-bird-moot-step-1');
 
-    Route::get('/family-law-step-2', function () {
-        return view('student.family-law-step-2');
-    })->name('student.family-law-step-2');
-
-    Route::get('/family-law-step-3', function () {
-        return view('student.family-law-step-3');
-    })->name('student.family-law-step-3');
-
-    Route::get('/family-law-step-4', function () {
-        return view('student.family-law-step-4');
-    })->name('student.family-law-step-4');
-
-    Route::get('/family-law-step-5', function () {
-        return view('student.family-law-step-5');
-    })->name('student.family-law-step-5');
-
-    Route::get('/family-law-step-6', function () {
-        return view('student.family-law-step-6');
-    })->name('student.family-law-step-6');
-
-    Route::get('/family-law-step-7', function () {
-        return view('student.family-law-step-7');
-    })->name('student.family-law-step-7');
-
-    Route::get('/family-law-step-8', function () {
-        return view('student.family-law-step-8');
-    })->name('student.family-law-step-8');
-
-    Route::get('/family-law-step-9', function () {
-        return view('student.family-law-step-9');
-    })->name('student.family-law-step-9');
-
-    Route::get('/family-law-step-10', function () {
-        return view('student.family-law-step-10');
-    })->name('student.family-law-step-10');
-
-    Route::get('/family-law-step-11', function () {
-        return view('student.family-law-step-11');
-    })->name('student.family-law-step-11');
-
-    Route::get('/family-law-step-12', function () {
-        return view('student.family-law-step-12');
-    })->name('student.family-law-step-12');
-
-    Route::get('/family-law-step-13', function () {
-        return view('student.family-law-step-13');
-    })->name('student.family-law-step-13');
-
-    Route::get('/family-law-step-14', function () {
-        return view('student.family-law-step-14');
-    })->name('student.family-law-step-14');
+    Route::get('/early-bird-moot-step-2', function () {
+        return view('student.early-bird-moot-step-2');
+    })->name('student.early-bird-moot-step-2');
 });

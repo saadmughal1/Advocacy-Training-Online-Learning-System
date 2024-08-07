@@ -5,7 +5,7 @@
 @section('content')
 
     @includeIf('student.partials._navbar')
-
+    @includeIf('student.partials._sidebar')
   
     <div class="pd-20 card-box mb-30">
 
@@ -20,9 +20,7 @@
             <div class="clearfix mb-20">
                 <div class="pull-left">
                     <h5 class="text-blue">Introduction:</h5>
-                    <p>
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Excepturi delectus, dolor temporibus nam pariatur in ratione, numquam perferendis voluptates aut aspernatur quidem. Sequi eum aut maiores facere repudiandae ad aperiam facilis sapiente molestias, dignissimos quod ex adipisci ratione ducimus. Excepturi cum fuga repellat nam laboriosam blanditiis, voluptas ut odio mollitia.
-                    </p>
+                    <p>{{ $case->step_10_introduction }}</p>
                 </div>
             </div>
 
@@ -30,7 +28,7 @@
             <div class="clearfix mb-20">
                 <div class="pull-left">
                     <h5 class="text-blue">Instructions:</h5>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus minima amet totam, quasi vel consequuntur.</p>
+                    <p>{{ $case->step_10_instructions }}</p>
                 </div>
             </div>
 
@@ -39,7 +37,7 @@
             <div class="clearfix mb-20 text-center">
                 <div class="">
                     <h5 class="text-blue text-center">Role Play Video</h5>
-                    <video class="w-100" src="../vendors/documents/videos/demo.mp4" controls type="video/mp4"></video>
+                    <video class="w-100" src="{{ asset('/storage/'. $case->step_10_video) }}" controls type="video/mp4"></video>
                 </div>
             </div>
 
