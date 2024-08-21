@@ -25,6 +25,8 @@
             @csrf
             <input type="hidden" name="case_id" value="{{ request()->query('case_id') }}">
             <input type="hidden" name="case_name" value="{{ request()->query('case_name') }}">
+            <input type="hidden" name="case_type" value="{{ request()->query('case_type') }}">
+
 
             @if ($studentsNotInStudentCases->isEmpty())
                 <p class="text-center">No students available to assign.</p>
@@ -45,7 +47,7 @@
                                 <th scope="row">{{ ++$index }}</th>
                                 <td>{{ $student->username }}</td>
                                 <td>{{ $student->email }}</td>
-                                <td><input type="checkbox" name="students[]" value="{{ $student->id }}"></td>
+                                <td><input type="checkbox" name="students[]" value="{{ $student->id }}:{{ $student->acsid }}"></td>
                             </tr>
                         @endforeach
                     </tbody>

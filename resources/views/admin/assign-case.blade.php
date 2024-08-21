@@ -122,6 +122,7 @@
 
             function updateAdvisors() {
                 var selectedCaseId = $('#caseSelect').val();
+                var selectedCaseType = $('#caseTypeSelect').val();
                 var getAdvisorsUrl = "{{ route('admin.get-advisors-by-case') }}";
 
                 if (selectedCaseId.trim() === '') {
@@ -135,7 +136,8 @@
                     type: 'POST',
                     data: {
                         _token: $('meta[name="csrf-token"]').attr('content'),
-                        case_id: selectedCaseId
+                        case_id: selectedCaseId,
+                        case_type: selectedCaseType
                     },
                     success: function(response) {
                         $('#advisorSelect').empty().append('<option value="">Select Advisor</option>');

@@ -35,7 +35,12 @@
                             <td>{{ $case->case_name }}</td>
                             <td>
                                 <a class="btn btn-primary"
-                                    href="{{ route('advisor.view-students', ['case_id' => $case->id, 'case_name' => $case->case_name]) }}">
+                                    href="{{ route('advisor.view-students', [
+                                        'case_id' => $case->case_id,
+                                        'case_type' => $case->case_type,
+                                        'case_name' => $case->case_name,
+                                        'advisor_case_table_id' => $case->id,
+                                    ]) }}">
                                     Allocate Case
                                 </a>
                             </td>

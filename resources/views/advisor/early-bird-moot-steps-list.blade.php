@@ -16,8 +16,8 @@
             </div>
         </div>
 
-        @if ($students->isEmpty())
-            <p class="text-center">No Students assigned to this case.</p>
+        @if($students->isEmpty())
+        <p class="text-center">No Students available for this case.</p>
         @else
             <table class="table table-bordered">
                 <thead>
@@ -30,16 +30,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($students as $index => $student)
+                    @foreach($students as $index => $student)
                         <tr>
                             <th scope="row">{{ $index + 1 }}</th>
                             <td>{{ $student->username }}</td>
                             <td>{{ $student->email }}</td>
                             {{-- <td>{{ $student->phone_number }}</td> --}}
                             <td>
-                                <a class="btn btn-primary"
-                                    href="{{ route('advisor.student-feedback', ['caseType' => request('caseType'), 'caseId' => request('caseId'), 'sid' => $student->id]) }}">View
-                                    Feedback</a>
+                                <a class="btn btn-primary" href="">View Feedback</a>
                             </td>
                         </tr>
                     @endforeach

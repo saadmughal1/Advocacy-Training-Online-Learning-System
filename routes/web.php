@@ -55,6 +55,8 @@ Route::prefix('admin')->middleware(AuthenticateAdmin::class)->group(function () 
     Route::get('/advisor-caseload', [AdminController::class, "advisorCaseLoad"])->name("admin.advisor-caseload");
 });
 
+
+
 Route::prefix('advisor')->middleware(AuthenticateAdvisor::class)->group(function () {
 
     Route::view('/', 'advisor.index')->name('advisor.home');
@@ -70,13 +72,32 @@ Route::prefix('advisor')->middleware(AuthenticateAdvisor::class)->group(function
 
     Route::get('/student-caseload', [AdvisorController::class, "studentCaseLoad"])->name("advisor.student-caseload");
 
-    Route::get('/advisor/case/{caseId}/students', [AdvisorController::class, 'getAssignedStudentsByCaseId'])->name('advisor.students-in-case');
+    Route::get('/students-in-case', [AdvisorController::class, 'getAssignedStudentsByCaseId'])->name('advisor.students-in-case');
 
 
-    Route::get('/student-feedback', function () {
-        return view('advisor.student-feedback');
-    })->name("advisor.student-feedback");
+    
+    
+    Route::get('/student-feedback', [AdvisorController::class, 'getStudentCaseFeedback'])->name('advisor.student-feedback');
+
+    // return view('advisor.student-feedback');
+    
+    
+    // Route::get('/family-law-steps-list', [AdvisorController::class, "getStudentCurrentStep"])->name('advisor.family-law-steps-list');
+    // Route::view('/early-bird-moot-steps-list', 'advisor.early-bird-moot-steps-list')->name('advisor.early-bird-moot-steps-list');
+    // Route::get('/test', [AdvisorController::class, "getStudentCurrentStep"])->name('advisor.test');
+
+
 });
+
+
+
+
+
+
+
+
+
+
 
 Route::prefix('student')->middleware(AuthenticateStudent::class)->group(function () {
 
@@ -87,7 +108,7 @@ Route::prefix('student')->middleware(AuthenticateStudent::class)->group(function
     Route::get('/logout', [StudentController::class, "logout"])->name("student.logout");
 
     Route::get('/my-caseload', [StudentController::class, 'displayMyCases'])->name('student.my-caseload');
-    Route::get('/start-case/{caseId}', [StudentController::class, 'startCase'])->name('student.start-case');
+    Route::get('/start-case', [StudentController::class, 'startCase'])->name('student.start-case');
 
     // Family Law
     Route::get('/family-law-step-1', [StudentController::class, 'familyLawStepsPreDetail'])->name('student.family-law-step-1');
@@ -104,6 +125,25 @@ Route::prefix('student')->middleware(AuthenticateStudent::class)->group(function
     Route::get('/family-law-step-12', [StudentController::class, 'familyLawStepsPreDetail'])->name('student.family-law-step-12');
     Route::get('/family-law-step-13', [StudentController::class, 'familyLawStepsPreDetail'])->name('student.family-law-step-13');
     Route::get('/family-law-step-14', [StudentController::class, 'familyLawStepsPreDetail'])->name('student.family-law-step-14');
+
+
+    
+
+    Route::post('/insert-family-law-step-1', [StudentController::class, 'insertFamilyLawStep1'])->name('student.insert-family-law-step-1');
+    Route::post('/update-family-law-step-1', [StudentController::class, 'updateFamilyLawStep1'])->name('student.update-family-law-step-1');
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Early Bird Moot
     Route::get('/early-bird-moot-step-1', function () {

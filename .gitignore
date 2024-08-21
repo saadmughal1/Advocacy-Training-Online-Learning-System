@@ -2,7 +2,8 @@
 /node_modules
 /public/build
 /public/hot
-/public/storage
+!/storage/app/public/documents/.gitkeep
+!/storage/app/public/videos/.gitkeep
 /storage/*.key
 /vendor
 .env

@@ -9,20 +9,20 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
-        Schema::table('admins', function (Blueprint $table) {
-            $table->renameColumn('name', 'username');
+        Schema::table('student_cases', function (Blueprint $table) {
+            $table->unsignedBigInteger('acsid')->nullable()->after('id');
         });
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+    public function down()
     {
-        Schema::table('admins', function (Blueprint $table) {
-            $table->renameColumn('username', 'name');
+        Schema::table('student_cases', function (Blueprint $table) {
+            $table->dropColumn('acsid');
         });
     }
 };

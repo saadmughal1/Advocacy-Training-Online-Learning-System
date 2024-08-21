@@ -311,10 +311,25 @@ class AdminController extends Controller
     public function getAdvisorsByCase(Request $request)
     {
         $caseId = $request->input('case_id');
-        $assignedAdvisorIds = DB::table('advisor_cases')->where('case_id', $caseId)->pluck('advisor_id');
-        $advisors = DB::table('advisors')->whereNotIn('id', $assignedAdvisorIds)->get();
+        $caseType = $request->input('case_type');
+        $caseType = str_replace('-', '_', $caseType);
+
+
+        
+        $advisors = DB::table('advisors AS a')
+               ->select('a.*')
+               ->whereNotIn('a.id', function ($query) use ($caseId, $caseType) {
+                   $query->select('ac.advisor_id')
+                        ->from('advisor_cases AS ac')
+                        ->where('ac.case_id', $caseId)
+                        ->where('ac.case_type', $caseType);
+               })
+               ->get();
+
         return response()->json($advisors);
     }
+
+
     public function getStudents()
     {
         $students = DB::table('students')->get();

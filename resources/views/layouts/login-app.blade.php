@@ -25,7 +25,7 @@
     <div class="login-header box-shadow">
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <div class="brand-logo">
-                <a href="{{ url('login') }}">
+                <a href="{{ url('./') }}">
                     <h4>Advocacy</h4>
                     <!-- <img src="{{ asset('vendors/images/') }}" alt="" /> -->
                 </a>

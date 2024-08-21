@@ -35,7 +35,7 @@
                             <td>{{ $case->case_name }}</td>
                             <td>
                                 <a class="btn btn-primary"
-                                href="{{ route('advisor.students-in-case', ['caseId' => $case->id]) }}">
+                                href="{{ route('advisor.students-in-case', ['caseType'=>$case->case_type, 'caseId' => $case->case_id]) }}">
                                 View Students
                             </a>
                             </td>
