@@ -137,6 +137,8 @@ Route::prefix('student')->middleware(AuthenticateStudent::class)->group(function
     Route::post('/insert-family-law-step-4', [StudentController::class, 'insertOrUpdateFamilyLawStep4'])->name('student.insert-family-law-step-4');
     Route::post('/insert-family-law-step-5', [StudentController::class, 'insertOrUpdateFamilyLawStep5'])->name('student.insert-family-law-step-5');
     Route::post('/insert-family-law-step-6', [StudentController::class, 'insertOrUpdateFamilyLawStep6'])->name('student.insert-family-law-step-6');
+    Route::post('/insert-family-law-step-7', [StudentController::class, 'insertOrUpdateFamilyLawStep7'])->name('student.insert-family-law-step-7');
+
     
 
 
