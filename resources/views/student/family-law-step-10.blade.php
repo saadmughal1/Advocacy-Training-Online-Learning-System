@@ -34,12 +34,15 @@
 
             
 
-            <div class="clearfix mb-20 text-center">
-                <div class="">
-                    <h5 class="text-blue text-center">Role Play Video</h5>
-                    <video class="w-100" src="{{ asset('/storage/'. $case->step_10_video) }}" controls type="video/mp4"></video>
+            @if (!empty( $case->step_10_video)){   
+                @endif
+                <div class="clearfix mb-20 text-center">
+                    <div class="">
+                        <h5 class="text-blue text-center">Role Play Video</h5>
+                        <video class="w-100" src="{{ asset('/storage/'. $case->step_10_video) }}" controls type="video/mp4"></video>
+                    </div>
                 </div>
-            </div>
+            }
 
 
             <h3 class="text-blue ">Procedural Steps</h3>

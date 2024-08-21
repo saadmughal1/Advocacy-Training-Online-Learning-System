@@ -6,7 +6,7 @@
 
     @includeIf('student.partials._navbar')
     @includeIf('student.partials._sidebar')
-    
+
     <div class="pd-20 card-box mb-30">
         <form action="">
             <div class="clearfix mb-20 text-center">
@@ -14,6 +14,17 @@
                     <h2 class="text-blue">Step: 2 - Sorting Facts from the Story</h2>
                 </div>
             </div>
+
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
 
 
             <div class="clearfix mb-20">
@@ -32,105 +43,117 @@
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Name of the Group *</label>
-                <div class="sm-12 col-md-10">
-                    <input type="text" class="form-control" placeholder="Enter name of teh group" required>
+                <div class="col-sm-12 col-md-10">
+                    <input type="text" name="group_name" class="form-control" placeholder="Enter name of the group"
+                        required>
                 </div>
             </div>
-
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Name of the Plaintiff *</label>
-                <div class="sm-12 col-md-10">
-                    <input type="text" class="form-control" placeholder="Name of the Plaintiff" required>
+                <div class="col-sm-12 col-md-10">
+                    <input type="text" name="plaintiff_name" class="form-control" placeholder="Name of the Plaintiff"
+                        required>
                 </div>
             </div>
-
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Name of the Defendant *</label>
-                <div class="sm-12 col-md-10">
-                    <input type="text" class="form-control" placeholder="Name of the Defendant" required>
+                <div class="col-sm-12 col-md-10">
+                    <input type="text" name="defendant_name" class="form-control" placeholder="Name of the Defendant"
+                        required>
                 </div>
             </div>
-
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Current place of residence of wife *</label>
-                <div class="sm-12 col-md-10">
-                    <input type="text" class="form-control" placeholder="Current place of residence of wife" required>
+                <div class="col-sm-12 col-md-10">
+                    <input type="text" name="wife_residence" class="form-control"
+                        placeholder="Current place of residence of wife" required>
                 </div>
             </div>
 
-
             <div class="form-group row">
-                <label class="col-sm-12 col-md-2 col-form-label">No of children</label>
-                <div class="sm-12 col-md-10">
-                    <input type="text" class="form-control" placeholder="No of children" required>
+                <label class="col-sm-12 col-md-2 col-form-label">Number of children</label>
+                <div class="col-sm-12 col-md-10">
+                    <input type="number" name="number_of_children" class="form-control" placeholder="Number of children">
                 </div>
             </div>
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Income of the wife *</label>
-                <div class="sm-12 col-md-10">
-                    <input type="text" class="form-control" placeholder="Income of the wife" required>
+                <div class="col-sm-12 col-md-10">
+                    <input type="number" step="0.01" name="wife_income" class="form-control"
+                        placeholder="Income of the wife" required>
                 </div>
             </div>
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Income of the husband/month *</label>
-                <div class="sm-12 col-md-10">
-                    <input type="text" class="form-control" placeholder="Income of the husband/month" required>
+                <div class="col-sm-12 col-md-10">
+                    <input type="number" step="0.01" name="husband_income" class="form-control"
+                        placeholder="Income of the husband/month" required>
                 </div>
             </div>
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Reason/Ground & date of starting of clash *</label>
-                <div class="sm-12 col-md-10">
-                    <input type="text" class="form-control" placeholder="Reason/Ground & date of starting of clash" required>
+                <div class="col-sm-12 col-md-10">
+                    <input type="text" name="clash_reason" class="form-control"
+                        placeholder="Reason/Ground & date of starting of clash" required>
                 </div>
             </div>
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Prayer(s) of the wife</label>
-                <div class="sm-12 col-md-10">
-                    <input type="text" class="form-control" placeholder="Prayer(s) of the wife" required>
+                <div class="col-sm-12 col-md-10">
+                    <textarea name="wife_prayers" class="form-control" placeholder="Prayer(s) of the wife"></textarea>
                 </div>
             </div>
 
 
+            @if (isset($data) && $data->file_attachment)
+                <input type="hidden" name="old_file" value="{{ $data->file_attachment }}">
+            @endif
+
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Attach file:</label>
                 <div class="sm-12 col-md-10">
-                    <input type="file" class="form-control" placeholder="" required>
+                    <input type="file" class="form-control" name="file_attachment" accept=".pdf">
                 </div>
             </div>
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Advisor Responce:</label>
-                <div class="sm-12 col-md-10">
-                    <textarea class="form-control" placeholder="Feedback Box"></textarea>
-                </div>
+                <div class="sm-12 col-md-10">{{ isset($data) ? $data->feedback ?? '' : '' }}</div>
             </div>
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Marks Secured:</label>
                 <div class="sm-12 col-md-10">
-                    <span>5/10</span>
+
+                    <span>{{ isset($data) ? $data->marks ?? '' : '' }}/10</span>
                 </div>
             </div>
 
-
+            <input type="hidden" name="fid" value="{{ isset($data) ? $data->id ?? '' : '' }}">
 
             <div class="form-group row">
                 <div class="col-lg-6 d-flex justify-content-end">
-                    <button type="submit" class="btn btn-primary">Update Details</button>
+                    {{-- <button type="submit" class="btn btn-primary">Update Details</button> --}}
                 </div>
                 <div class="col-lg-6 d-flex justify-content-start">
-                    <button type="submit" class="btn btn-primary">Next Step</button>
+                    <button type="submit" class="btn btn-primary">
+                        {{ isset($data) ? 'Update Details' : 'Submit' }}
+                    </button>
                 </div>
             </div>
 
         </form>
+
+
+
+
 
 
     </div>

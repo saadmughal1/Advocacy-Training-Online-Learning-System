@@ -41,11 +41,11 @@ class StudentController extends Controller
             ->join('advisors as a', 'a.id', '=', 'ac.advisor_id')
             ->leftJoin('early_bird_moot_cases as ebmc', function ($join) {
                 $join->on('sc.advisor_case_id', '=', 'ebmc.id')
-                     ->where('sc.case_type', '=', 'early_bird_moot');
+                    ->where('sc.case_type', '=', 'early_bird_moot');
             })
             ->leftJoin('family_law_cases as flc', function ($join) {
                 $join->on('sc.advisor_case_id', '=', 'flc.id')
-                     ->where('sc.case_type', '=', 'family_law');
+                    ->where('sc.case_type', '=', 'family_law');
             })
             ->where('s.id', $studentId)
             ->select(
@@ -60,16 +60,18 @@ class StudentController extends Controller
                 END as case_name')
             )
             ->get();
-        
-        
+
+
         return view('student.my-caseload', ['cases' => $studentCases]);
     }
 
-    public function insertFamilyLawStep1(Request $request)
+    public function insertOrUpdateFamilyLawStep1(Request $request)
     {
 
+        // return $request;
         $student_id = Auth::guard('student')->id();
-        $case_id = $request->input('caseid');
+        $fid = $request->input('fid');
+        $caseid = $request->input('caseid');
 
         $request->validate([
             'dob' => 'nullable|date_format:Y-m-d',
@@ -127,6 +129,7 @@ class StudentController extends Controller
             'grounds_for_divorce',
             'retirement_pension_savings_plans',
             'spouse_retirement_pension_savings_plans',
+            'aid'
         ]);
 
         if ($request->hasFile('file_attachment')) {
@@ -173,22 +176,32 @@ class StudentController extends Controller
         $data['children_details'] = json_encode($children);
         $data['children_from_previous_relationships'] = json_encode($previousChildren);
         $data['student_id'] = $student_id;
-        $data['case_id'] = $case_id;
-        $data['created_at'] = now();
+        $data['case_id'] = $caseid; 
         $data['updated_at'] = now();
 
-        DB::table('family_law_step_1')->insert($data);
 
-        session()->flash('message', 'Form Submitted.');
+        if ($fid) {
+            DB::table('family_law_step_1')
+                ->where('id', $fid)
+                ->update($data);
+            session()->flash('message', 'Form Updated.');
+        } else {
+            $data['created_at'] = now();
+            DB::table('family_law_step_1')->insert($data);
+            session()->flash('message', 'Form Submitted.');
+        }
+
 
         return redirect()->route('student.my-caseload');
     }
+
 
 
     public function startCase(Request $request)
     {
         $caseId = $request->query('caseId');
         $caseType = $request->query('caseType');
+        $aid = $request->query('aid');
 
         $studentId = Auth::guard('student')->id();
 
@@ -208,6 +221,7 @@ class StudentController extends Controller
             $dataExists = DB::table($tableName)
                 ->where('student_id', $studentId)
                 ->where('case_id', $caseId)
+                ->where('aid', $aid)
                 ->first();
 
             $viewName = str_replace('_', '-', $stepTablePrefix) . "-step-{$i}";
@@ -217,7 +231,8 @@ class StudentController extends Controller
                     'step' => $i,
                     'caseId' => $caseId,
                     'caseType' => $caseType,
-                    'studentId' => $studentId
+                    'studentId' => $studentId,
+                    'aid' => $aid
                 ]);
             }
 
@@ -227,7 +242,8 @@ class StudentController extends Controller
                     'caseId' => $caseId,
                     'caseType' => $caseType,
                     'studentId' => $studentId,
-                    'update' => true
+                    'update' => true,
+                    'aid' => $aid
                 ])->with('data', $dataExists);
             }
 
@@ -247,6 +263,7 @@ class StudentController extends Controller
         $step = $request->query('step');
         $caseType = $request->query('caseType');
         $studentId = $request->query('studentId');
+        $aid = $request->query('aid');
 
         $case = DB::table('family_law_cases')->where('id', $caseId)->first();
 
@@ -263,9 +280,9 @@ class StudentController extends Controller
             $dataExists = DB::table($tableName)
                 ->where('student_id', $studentId)
                 ->where('case_id', $caseId)
+                ->where('aid', $aid)
                 ->first();
 
-            // return $dataExists;
             return view('student.family-law-step-' . $step, ['case' => $case, 'caseId' => $caseId, 'caseType' => $caseType])->with('data', $dataExists);;
         }
 

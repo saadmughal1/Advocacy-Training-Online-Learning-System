@@ -29,6 +29,7 @@
         @endif
 
 
+
         <div class="clearfix mb-20">
             <div class="pull-left">
                 <h5 class="text-blue">Introduction:</h5>
@@ -62,10 +63,9 @@
         </div>
 
 
-        <form
-            action="{{ isset($data) ? route('student.update-family-law-step-1') : route('student.insert-family-law-step-1') }}"
-            method="POST" enctype="multipart/form-data">
+        <form action="{{ route('student.insert-family-law-step-1') }}" method="POST" enctype="multipart/form-data">
             @csrf
+            <input type="hidden" name="aid" value="{{ request()->query('aid') }}">
             <input type="hidden" name="caseid" value="{{ request('caseId') }}">
 
             {{-- <div class="form-group row">
@@ -482,10 +482,9 @@
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Attach file:</label>
                 <div class="sm-12 col-md-10">
-                    <input type="file" class="form-control" placeholder="" name="file_attachment">
+                    <input type="file" class="form-control" name="file_attachment" accept=".pdf">
                 </div>
             </div>
-
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Advisor Responce:</label>
@@ -499,6 +498,8 @@
                     <span>{{ isset($data) ? $data->marks ?? '' : '' }}/10</span>
                 </div>
             </div>
+
+            <input type="hidden" name="fid" value="{{ isset($data) ? $data->id ?? '' : '' }}">
 
             <div class="form-group row">
                 <div class="col-lg-6 d-flex justify-content-end">

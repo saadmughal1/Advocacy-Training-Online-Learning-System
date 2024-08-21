@@ -33,13 +33,15 @@
             </div>
 
 
-
-            <div class="clearfix mb-20 text-center">
-                <div class="">
-                    <h5 class="text-blue text-center">Role Play Video</h5>
-                    <video class="w-100" src="{{ asset('/storage/'. $case->step_11_video) }}" controls type="video/mp4"></video>
+            @if (!empty($case->step_11_video))
+                <div class="clearfix mb-20 text-center">
+                    <div class="">
+                        <h5 class="text-blue text-center">Role Play Video</h5>
+                        <video class="w-100" src="{{ asset('/storage/' . $case->step_11_video) }}" controls
+                            type="video/mp4"></video>
+                    </div>
                 </div>
-            </div>
+            @endif
 
 
             <div class="form-group row">
@@ -57,21 +59,24 @@
             </div>
 
             <div class="form-group row">
-                <label class="col-sm-12 col-md-2 col-form-label">Third para: Evidence presented and admitted by the court</label>
+                <label class="col-sm-12 col-md-2 col-form-label">Third para: Evidence presented and admitted by the
+                    court</label>
                 <div class="sm-12 col-md-10">
                     <textarea class="form-control" placeholder="Third para: Evidence presented and admitted by the court"></textarea>
                 </div>
             </div>
 
             <div class="form-group row">
-                <label class="col-sm-12 col-md-2 col-form-label">Fourth para: Relevant law(s) and how are they relevant</label>
+                <label class="col-sm-12 col-md-2 col-form-label">Fourth para: Relevant law(s) and how are they
+                    relevant</label>
                 <div class="sm-12 col-md-10">
                     <textarea class="form-control" placeholder="Fourth para: Relevant law(s) and how are they relevant"></textarea>
                 </div>
             </div>
 
             <div class="form-group row">
-                <label class="col-sm-12 col-md-2 col-form-label">Fifth para: Relevant case law(s) and how they are relevant</label>
+                <label class="col-sm-12 col-md-2 col-form-label">Fifth para: Relevant case law(s) and how they are
+                    relevant</label>
                 <div class="sm-12 col-md-10">
                     <textarea class="form-control" placeholder="Fifth para: Relevant case law(s) and how they are relevant"></textarea>
                 </div>
@@ -99,7 +104,8 @@
             </div>
 
             <div class="form-group row">
-                <label class="col-sm-12 col-md-2 col-form-label">To impeach the credit of witness, any question could be asked</label>
+                <label class="col-sm-12 col-md-2 col-form-label">To impeach the credit of witness, any question could be
+                    asked</label>
                 <div class="sm-12 col-md-10">
                     <textarea class="form-control" placeholder="To impeach the credit of witness, any question could be asked"></textarea>
                 </div>
@@ -175,7 +181,7 @@
 
         </form>
     </div>
-    
+
 
 
 

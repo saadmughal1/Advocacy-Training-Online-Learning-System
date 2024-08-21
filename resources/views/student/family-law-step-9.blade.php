@@ -6,7 +6,7 @@
 
     @includeIf('student.partials._navbar')
     @includeIf('student.partials._sidebar')
-    
+
     <div class="pd-20 card-box mb-30">
 
         <form action="">
@@ -32,14 +32,16 @@
                 </div>
             </div>
 
-            
 
-            <div class="clearfix mb-20 text-center">
-                <div class="">
-                    <h5 class="text-blue text-center">Role Play Video</h5>
-                    <video class="w-100" src="{{ asset('/storage/'. $case->step_9_video) }}" controls type="video/mp4"></video>
+            @if (!empty($case->step_9_video))
+                <div class="clearfix mb-20 text-center">
+                    <div class="">
+                        <h5 class="text-blue text-center">Role Play Video</h5>
+                        <video class="w-100" src="{{ asset('/storage/' . $case->step_9_video) }}" controls
+                            type="video/mp4"></video>
+                    </div>
                 </div>
-            </div>
+            @endif
 
 
             <h3 class="text-blue ">Procedural Steps</h3>
@@ -50,7 +52,7 @@
                     <textarea class="form-control" placeholder="Oath taking "></textarea>
                 </div>
             </div>
-            
+
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Address of the party/witness Statement</label>
                 <div class="sm-12 col-md-10">
@@ -108,11 +110,11 @@
             </div>
 
 
-            
-    
 
-            
-          
+
+
+
+
 
 
             <div class="form-group row">

@@ -32,25 +32,28 @@
                 </div>
             </div>
 
-            
 
-            <div class="clearfix mb-20 text-center">
-                <div class="">
-                    <h5 class="text-blue text-center">Role Play Video</h5>
-                    <video class="w-100" src="{{ asset('/storage/'. $case->step_12_video) }}" controls type="video/mp4"></video>
+            @if (!empty($case->step_12_video))
+                <div class="clearfix mb-20 text-center">
+                    <div class="">
+                        <h5 class="text-blue text-center">Role Play Video</h5>
+                        <video class="w-100" src="{{ asset('/storage/' . $case->step_12_video) }}" controls
+                            type="video/mp4"></video>
+                    </div>
                 </div>
-            </div>
+            @endif
 
 
             <h3 class="text-blue ">Procedural Skills</h3>
 
             <div class="form-group row">
-                <label class="col-sm-12 col-md-2 col-form-label">Enter the Introduction of the Reconciliator/Mediator</label>
+                <label class="col-sm-12 col-md-2 col-form-label">Enter the Introduction of the
+                    Reconciliator/Mediator</label>
                 <div class="sm-12 col-md-10">
                     <textarea class="form-control" placeholder="Enter the Introduction of the Reconciliator/Mediator"></textarea>
                 </div>
             </div>
-            
+
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Enter the Confidentiality assurance</label>
                 <div class="sm-12 col-md-10">
@@ -75,7 +78,7 @@
             </div>
 
 
-            
+
             <h3 class="text-blue ">Substantive skills</h3>
 
             <div class="form-group row">
@@ -92,7 +95,7 @@
                 </div>
             </div>
 
-            
+
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Helped parties to reach suggestions</label>
                 <div class="sm-12 col-md-10">

@@ -33,13 +33,14 @@
             </div>
 
             
-
+            @if (!empty($case->step_7_video))
             <div class="clearfix mb-20 text-center">
                 <div class="">
                     <h5 class="text-blue text-center">Role Play Video</h5>
                 </div>
                 <video class="w-100" src="{{ asset('/storage/'. $case->step_7_video) }}" controls type="video/mp4"></video>
             </div>
+            @endif
 
 
             <h3 class="text-blue ">Procedural Skills</h3>

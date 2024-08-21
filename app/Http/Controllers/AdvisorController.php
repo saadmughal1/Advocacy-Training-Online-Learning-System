@@ -206,9 +206,12 @@ class AdvisorController extends Controller
 
     public function getStudentCaseFeedback(Request $request)
     {
+
         $caseType = $request->input('caseType');
         $caseId = $request->input('caseId');
         $sid = $request->input('sid');
+        $advisorId = Auth::guard('advisor')->id();
+
 
         $steps = [
             'family_law' => 14,
@@ -236,6 +239,7 @@ class AdvisorController extends Controller
                 $stepData = DB::table($tableName)
                     ->where('student_id', $sid)
                     ->where('case_id', $caseId)
+                    ->where('aid', $advisorId)
                     ->first();
 
                 $stepDetail = [
@@ -254,7 +258,6 @@ class AdvisorController extends Controller
             }
 
             // return $response;
-
             return view('advisor.family-law-feedback', ['response' => $response]);
         } elseif ($caseType === 'early_bird_moot') {
 
@@ -293,5 +296,39 @@ class AdvisorController extends Controller
         } else {
             return response()->json(['error' => 'Invalid case type'], 400);
         }
+    }
+
+
+    public function addFeedbackMarksFamilyLawCase(Request $request)
+    {
+        $fid = $request->query('fid');
+        $marks = $request->query('marks');
+        $feedback = $request->query('feedback');
+        $step = $request->query('step');
+        $tableName = 'family_law_step_' . $step;
+
+        DB::table($tableName)
+            ->where('id', $fid)
+            ->update([
+                'marks' => $marks,
+                'feedback' => $feedback,
+            ]);
+
+        return redirect()->back()->with('status', 'Feedback and marks updated successfully.');
+    }
+
+
+    public function nextStepFamilyLaw(Request $request){
+        $fid = $request->query('fid');
+        $step = $request->query('step');
+        $tableName = 'family_law_step_' . $step;
+
+        DB::table($tableName)
+            ->where('id', $fid)
+            ->update([
+                'status' => 1
+            ]);
+
+        return redirect()->back()->with('status', '');
     }
 }

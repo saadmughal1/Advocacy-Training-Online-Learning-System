@@ -79,7 +79,9 @@ Route::prefix('advisor')->middleware(AuthenticateAdvisor::class)->group(function
     
     Route::get('/student-feedback', [AdvisorController::class, 'getStudentCaseFeedback'])->name('advisor.student-feedback');
 
-    // return view('advisor.student-feedback');
+    Route::get('/add-feedback-marks-family-law-case', [AdvisorController::class, 'addFeedbackMarksFamilyLawCase'])->name('advisor.add-feedback-marks-family-law-case');
+    Route::get('/next-step-family-law', [AdvisorController::class, 'nextStepFamilyLaw'])->name('advisor.next-step-family-law');
+
     
     
     // Route::get('/family-law-steps-list', [AdvisorController::class, "getStudentCurrentStep"])->name('advisor.family-law-steps-list');
@@ -129,8 +131,8 @@ Route::prefix('student')->middleware(AuthenticateStudent::class)->group(function
 
     
 
-    Route::post('/insert-family-law-step-1', [StudentController::class, 'insertFamilyLawStep1'])->name('student.insert-family-law-step-1');
-    Route::post('/update-family-law-step-1', [StudentController::class, 'updateFamilyLawStep1'])->name('student.update-family-law-step-1');
+    Route::post('/insert-family-law-step-1', [StudentController::class, 'insertOrUpdateFamilyLawStep1'])->name('student.insert-family-law-step-1');
+    // Route::post('/update-family-law-step-1', [StudentController::class, 'updateFamilyLawStep1'])->name('student.update-family-law-step-1');
 
 
 
