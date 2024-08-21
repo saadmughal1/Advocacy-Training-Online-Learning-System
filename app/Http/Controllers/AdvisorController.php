@@ -334,7 +334,7 @@ class AdvisorController extends Controller
         return redirect()->back()->with('status', '');
     }
 
-    public function downloadFamilyLawStep5AllFiles(Request $request)
+    public function downloadFamilyLawStepMultipleFilesInZip(Request $request)
     {
         $fileAttachments = $request->input('file_attachment');
 
@@ -345,7 +345,7 @@ class AdvisorController extends Controller
         $fileNames = explode(',', $fileAttachments);
 
         $zip = new ZipArchive;
-        $zipFileName = 'family-law-step-5-data.zip';
+        $zipFileName = 'family-law-data.zip';
         $zipPath = storage_path('app/public/' . $zipFileName);
 
         if ($zip->open($zipPath, ZipArchive::CREATE) === TRUE) {

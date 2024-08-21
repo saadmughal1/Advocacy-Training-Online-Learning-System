@@ -81,7 +81,7 @@ Route::prefix('advisor')->middleware(AuthenticateAdvisor::class)->group(function
 
     Route::get('/add-feedback-marks-family-law-case', [AdvisorController::class, 'addFeedbackMarksFamilyLawCase'])->name('advisor.add-feedback-marks-family-law-case');
     Route::get('/next-step-family-law', [AdvisorController::class, 'nextStepFamilyLaw'])->name('advisor.next-step-family-law');
-    Route::get('/download-files', [AdvisorController::class, 'downloadFamilyLawStep5AllFiles'])->name('downloadFiles');
+    Route::get('/download-files', [AdvisorController::class, 'downloadFamilyLawStepMultipleFilesInZip'])->name('downloadFiles');
     
     
     // Route::get('/family-law-steps-list', [AdvisorController::class, "getStudentCurrentStep"])->name('advisor.family-law-steps-list');
@@ -136,6 +136,7 @@ Route::prefix('student')->middleware(AuthenticateStudent::class)->group(function
     Route::post('/insert-family-law-step-3', [StudentController::class, 'insertOrUpdateFamilyLawStep3'])->name('student.insert-family-law-step-3');
     Route::post('/insert-family-law-step-4', [StudentController::class, 'insertOrUpdateFamilyLawStep4'])->name('student.insert-family-law-step-4');
     Route::post('/insert-family-law-step-5', [StudentController::class, 'insertOrUpdateFamilyLawStep5'])->name('student.insert-family-law-step-5');
+    Route::post('/insert-family-law-step-6', [StudentController::class, 'insertOrUpdateFamilyLawStep6'])->name('student.insert-family-law-step-6');
     
 
 

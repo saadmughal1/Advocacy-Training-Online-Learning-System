@@ -85,7 +85,7 @@
         <div class="col-sm-12 col-md-10">
             @if (!empty($data['form-data']->file_attachment))
                 <a href="{{ route('downloadFiles', ['file_attachment' => $data['form-data']->file_attachment]) }}"
-                    class="btn btn-primary">Download All Files</a>
+                    class="btn btn-primary">Download</a>
             @else
                 Not Provided
             @endif
