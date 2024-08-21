@@ -318,7 +318,8 @@ class AdvisorController extends Controller
     }
 
 
-    public function nextStepFamilyLaw(Request $request){
+    public function nextStepFamilyLaw(Request $request)
+    {
         $fid = $request->query('fid');
         $step = $request->query('step');
         $tableName = 'family_law_step_' . $step;

@@ -61,135 +61,14 @@
                 <p></p>
             </div>
         </div>
-
+ 
 
         <form action="{{ route('student.insert-family-law-step-1') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="aid" value="{{ request()->query('aid') }}">
             <input type="hidden" name="caseid" value="{{ request('caseId') }}">
 
-            {{-- <div class="form-group row">
-                <label class="col-sm-12 col-md-2 col-form-label">Select the ground of your Case:</label>
-                <div class="sm-12 col-md-10">
-                    <div class="checkbox-group">
-                        <label for="caseGround1">
-                            <input type="checkbox" id="caseGround1" name="caseGround[]"
-                                value="Whereabouts unknow for 4 years, Kindly consult proviso(a) of section 2">
-                            Whereabouts unknow for 4 years, Kindly consult proviso(a) of section 2
-                        </label>
-                        <br>
-                        <label for="caseGround2">
-                            <input type="checkbox" id="caseGround2" name="caseGround[]"
-                                value="Failure to provide maintainence for 2 years">
-                            Failure to provide maintainence for 2 years
-                        </label>
-                        <br>
-                        <label for="caseGround3">
-                            <input type="checkbox" id="caseGround3" name="caseGround[]"
-                                value="Husband has taken an additional wife">
-                            Husband has taken an additional wife
-                        </label>
-                        <br>
-                        <label for="caseGround4">
-                            <input type="checkbox" id="caseGround4" name="caseGround[]" value="Imprisonment for 7 years">
-                            Imprisonment for 7 years
-                        </label>
-                        <br>
-                        <label for="caseGround5">
-                            <input type="checkbox" id="caseGround5" name="caseGround[]"
-                                value="Failure to perfomr marital obligations for 3 years">
-                            Failure to perfomr marital obligations for 3 years
-                        </label>
-                        <br>
-                        <label for="caseGround6">
-                            <input type="checkbox" id="caseGround6" name="caseGround[]"
-                                value="Impotency of the Husband,Kindly consult priviso(b) section 2">
-                            Impotency of the Husband,Kindly consult priviso(b) section 2
-                        </label>
-                        <br>
-                        <label for="caseGround7">
-                            <input type="checkbox" id="caseGround7" name="caseGround[]" value="Insanity for 2 years">
-                            Insanity for 2 years
-                        </label>
-                        <br>
-                        <label for="caseGround8">
-                            <input type="checkbox" id="caseGround8" name="caseGround[]" value="Suffering from leprsy">
-                            Suffering from leprsy
-                        </label>
-                        <br>
-                        <label for="caseGround9">
-                            <input type="checkbox" id="caseGround9" name="caseGround[]"
-                                value="Suffering from virulent venereal disease">
-                            Suffering from virulent venereal disease
-                        </label>
-                        <br>
-                        <label for="caseGround10">
-                            <input type="checkbox" id="caseGround10" name="caseGround[]" value="Option of puberty">
-                            Option of puberty
-                        </label>
-                        <br>
-                        <label for="caseGround11">
-                            <input type="checkbox" id="caseGround11" name="caseGround[]" value="cruelty of Husband">
-                            cruelty of Husband
-                        </label>
-                        <br>
-                        <label for="caseGround12">
-                            <input type="checkbox" id="caseGround12" name="caseGround[]"
-                                value="Habitual Assault by Husband">
-                            Habitual Assault by Husband
-                        </label>
-                        <br>
-                        <label for="caseGround13">
-                            <input type="checkbox" id="caseGround13" name="caseGround[]"
-                                value="Husband Making life miserable by conduct not amounting to physical ill-treatment">
-                            Husband Making life miserable by conduct not amounting to physical ill-treatment
-                        </label>
-                        <br>
-                        <label for="caseGround14">
-                            <input type="checkbox" id="caseGround14" name="caseGround[]"
-                                value="Association with infamous, evil reputed women">
-                            Association with infamous, evil reputed women
-                        </label>
-                        <br>
-                        <label for="caseGround15">
-                            <input type="checkbox" id="caseGround15" name="caseGround[]"
-                                value="Forces wife to lead immoral life">
-                            Forces wife to lead immoral life
-                        </label>
-                        <br>
-                        <label for="caseGround16">
-                            <input type="checkbox" id="caseGround16" name="caseGround[]"
-                                value="Disposes of property of wife">
-                            Disposes of property of wife
-                        </label>
-                        <br>
-                        <label for="caseGround17">
-                            <input type="checkbox" id="caseGround17" name="caseGround[]"
-                                value="Prevents the wife to exercise legal right over property">
-                            Prevents the wife to exercise legal right over property
-                        </label>
-                        <br>
-                        <label for="caseGround18">
-                            <input type="checkbox" id="caseGround18" name="caseGround[]"
-                                value="Obstructs religous obligations of wife">
-                            Obstructs religous obligations of wife
-                        </label>
-                        <br>
-                        <label for="caseGround19">
-                            <input type="checkbox" id="caseGround19" name="caseGround[]"
-                                value="en-equlaity of treatment between wifes as per Quran">
-                            en-equlaity of treatment between wifes as per Quran
-                        </label>
-                        <br>
-                        <label for="caseGround20">
-                            <input type="checkbox" id="caseGround20" name="caseGround[]"
-                                value="Any other recognized valid grant under muslim law">
-                            Any other recognized valid grant under muslim law
-                        </label>
-
-                    </div>
-                </div>
-            </div> --}}
+          
 
 
 

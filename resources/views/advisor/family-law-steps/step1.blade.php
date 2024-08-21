@@ -1,9 +1,4 @@
 <div class="pd-20 card-box mb-30">
-    {{-- <div class="clearfix mb-20 text-center">
-        <div class="">
-            <h2 class="text-blue">Step: 1 - Interviewing the Client</h2>
-        </div>
-    </div> --}}
 
     <div class="clearfix mb-20">
         <div class="pull-left">
@@ -19,7 +14,7 @@
             <p>{{ $data['predetails']['instructions'] }}</p>
         </div>
     </div>
-
+ 
 
     @if ($data['predetails']['video'] != 'No video available')
         <div class="clearfix mb-20 text-center">
