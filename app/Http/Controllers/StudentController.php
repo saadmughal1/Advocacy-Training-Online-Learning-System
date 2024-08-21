@@ -300,6 +300,58 @@ class StudentController extends Controller
         return redirect()->route('student.my-caseload');
     }
 
+    public function insertOrUpdateFamilyLawStep4(Request $request)
+    {
+        $student_id = Auth::guard('student')->id();
+        $fid = $request->input('fid');
+        $caseid = $request->input('caseid');
+
+        $request->validate([
+            'case_title' => 'nullable|string|max:255',
+            'citation_details' => 'nullable|string',
+            'headnote_relevant_laws' => 'nullable|string',
+            'case_facts' => 'nullable|string',
+            'court_verdict' => 'nullable|string',
+            'additional_info' => 'nullable|string',
+        ]);
+
+        $data = $request->only([
+            'case_title',
+            'citation_details',
+            'headnote_relevant_laws',
+            'case_facts',
+            'court_verdict',
+            'additional_info',
+            'aid'
+        ]);
+
+        if ($request->hasFile('file_attachment')) {
+            $file = $request->file('file_attachment');
+            $filePath = $file->store('documents', 'public');
+            $data['file_attachment'] = $filePath;
+        } else if ($request->input('old_file')) {
+            $data['file_attachment'] = $request->input('old_file');
+        }
+
+        $data['student_id'] = $student_id;
+        $data['case_id'] = $caseid;
+        $data['updated_at'] = now();
+
+        if ($fid) {
+            DB::table('family_law_step_4')
+                ->where('id', $fid)
+                ->update($data);
+            session()->flash('message', 'Form Updated.');
+        } else {
+            $data['created_at'] = now();
+            DB::table('family_law_step_4')->insert($data);
+            session()->flash('message', 'Form Submitted.');
+        }
+
+        return redirect()->route('student.my-caseload');
+    }
+
+
     public function startCase(Request $request)
     {
         $caseId = $request->query('caseId');
