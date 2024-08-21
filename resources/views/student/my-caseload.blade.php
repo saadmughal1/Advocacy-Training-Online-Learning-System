@@ -16,17 +16,17 @@
 
         <!-- Display Flash Message -->
         @if (session('info'))
-            <div class="alert alert-info">
+            <div class="alert alert-info" id="info-message">
                 {{ session('info') }}
             </div>
         @endif
 
 
         @if (session('message'))
-        <div class="alert alert-info">
-            {{ session('message') }}
-        </div>
-    @endif
+            <div class="alert alert-info" id="success-message">
+                {{ session('message') }}
+            </div>
+        @endif
 
 
         @if ($cases->isEmpty())
@@ -38,10 +38,10 @@
                         <th scope="col">#</th>
                         <th scope="col">Advisor</th>
                         <th scope="col">Case Type</th>
-                        <th scope="col">Case Name</th> 
+                        <th scope="col">Case Name</th>
                         <th scope="col"></th>
                     </tr>
-                </thead> 
+                </thead>
                 <tbody>
                     @foreach ($cases as $index => $case)
                         <tr>
@@ -51,7 +51,7 @@
                             <td>{{ $case->case_name }}</td>
                             <td>
                                 <a class="btn btn-primary"
-                                    href="{{ route('student.start-case', ['caseId' => $case->student_case_id,'caseType'=>$case->case_type,'aid'=>$case->advisor_id]) }}">
+                                    href="{{ route('student.start-case', ['caseId' => $case->student_case_id, 'caseType' => $case->case_type, 'aid' => $case->advisor_id]) }}">
                                     Start Case
                                 </a>
                             </td>
@@ -70,4 +70,47 @@
             background-image: linear-gradient(45deg, #23074d, #cc5333) !important;
         }
     </style>
+@endpush
+
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const successMessage = document.getElementById('success-message');
+
+            if (successMessage) {
+                setTimeout(function() {
+                        successMessage.style.transition = 'opacity 1s ease-out';
+                        successMessage.style.opacity = '0';
+
+                        setTimeout(function() {
+                                successMessage.remove();
+                            }
+
+                            , 1000);
+                    }
+
+                    , 2000);
+            }
+
+
+            const infoMessage = document.getElementById('info-message');
+
+            if (infoMessage) {
+                setTimeout(function() {
+                        infoMessage.style.transition = 'opacity 1s ease-out';
+                        infoMessage.style.opacity = '0';
+
+                        setTimeout(function() {
+                                infoMessage.remove();
+                            }
+
+                            , 1000);
+                    }
+
+                    , 2000);
+            }
+
+        });
+    </script>
 @endpush

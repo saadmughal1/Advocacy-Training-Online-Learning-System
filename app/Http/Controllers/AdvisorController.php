@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use ZipArchive;
 
 class AdvisorController extends Controller
 {
@@ -331,5 +332,36 @@ class AdvisorController extends Controller
             ]);
 
         return redirect()->back()->with('status', '');
+    }
+
+    public function downloadFamilyLawStep5AllFiles(Request $request)
+    {
+        $fileAttachments = $request->input('file_attachment');
+
+        if (empty($fileAttachments)) {
+            return back()->with('error', 'No files to download.');
+        }
+
+        $fileNames = explode(',', $fileAttachments);
+
+        $zip = new ZipArchive;
+        $zipFileName = 'family-law-step-5-data.zip';
+        $zipPath = storage_path('app/public/' . $zipFileName);
+
+        if ($zip->open($zipPath, ZipArchive::CREATE) === TRUE) {
+            foreach ($fileNames as $fileName) {
+                $filePath = public_path('storage/' . $fileName);
+
+                if (file_exists($filePath)) {
+                    $nameInZip = basename($filePath);
+                    $zip->addFile($filePath, $nameInZip);
+                }
+            }
+            $zip->close();
+        } else {
+            return back()->with('error', 'Failed to create ZIP file.');
+        }
+
+        return response()->download($zipPath)->deleteFileAfterSend(true);
     }
 }

@@ -1,117 +1,140 @@
 <div class="pd-20 card-box mb-30">
-        
 
     <div class="clearfix mb-20">
         <div class="pull-left">
             <h5 class="text-blue">Introduction:</h5>
-            <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Excepturi delectus, dolor temporibus nam
-                pariatur in ratione, numquam perferendis voluptates aut aspernatur quidem. Sequi eum aut maiores
-                facere repudiandae ad aperiam facilis sapiente molestias, dignissimos quod ex adipisci ratione
-                ducimus. Excepturi cum fuga repellat nam laboriosam blanditiis, voluptas ut odio mollitia.
-            </p>
+            <p>{{ $data['predetails']['introduction'] }}</p>
         </div>
     </div>
+
 
     <div class="clearfix mb-20">
         <div class="pull-left">
             <h5 class="text-blue">Instructions:</h5>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus minima amet totam, quasi vel
-                consequuntur.</p>
+            <p>{{ $data['predetails']['instructions'] }}</p>
         </div>
     </div>
 
-    <div class="form-group row">
-        <label class="col-sm-12 col-md-2 col-form-label">Header</label>
-        <div class="sm-12 col-md-10">
-            <p class="form-control">Name of the Court</p>
-            <p class="form-control">Name, description and place of residence of the plaintiff</p>
-            <p class="form-control">Name, description and place of residence of the defendant</p>
+
+
+
+
+    <div class="form-group row border p-3">
+        <div class="col-sm-12 text-center">
+            <h4>Header</h4>
+        </div>
+        <div class="col-sm-12 col-md-10">
+            <p class=""><b>Court Name:</b> {{ $data['form-data']->court_name ?? 'Not Provided' }}</p>
+            <p class=""><b>Plaintiff Details:</b> {{ $data['form-data']->plaintiff_details ?? 'Not Provided' }}
+            </p>
+            <p class=""><b>Defendant Details:</b> {{ $data['form-data']->defendant_details ?? 'Not Provided' }}
+            </p>
         </div>
     </div>
 
-    <div class="form-group row">
-        <label class="col-sm-12 col-md-2 col-form-label">Subject of the plaint</label>
-        <div class="sm-12 col-md-10">
-            <p class="form-control">Suit for dissolution of marriage</p>
+
+    <div class="form-group row border p-3">
+        <div class="col-sm-12 text-center">
+            <h4>Subject of the plaint</h4>
+        </div>
+        <div class="col-sm-12 col-md-10">
+            <p class=""><b>Suit for dissolution of marriage:</b>
+                {{ $data['form-data']->plaint_subject ?? 'Not Provided' }}</p>
         </div>
     </div>
 
-    <div class="form-group row">
-        <label class="col-sm-12 col-md-2 col-form-label">Facts relating to the dispute</label>
-        <div class="sm-12 col-md-10">
-            <p class="form-control">Cause of action details</p>
-            <p class="form-control">Territorial jurisdiction of the court</p>
-            <p class="form-control">Court fee: 1000</p>
+
+    <div class="form-group row border p-3">
+        <div class="col-sm-12 text-center">
+            <h4>Facts Relating to the Dispute</h4>
+        </div>
+        <div class="col-sm-12 col-md-10">
+            <p class=""><b>Cause of Action:</b> {{ $data['form-data']->cause_of_action ?? 'Not Provided' }}</p>
+            <p class=""><b>Territorial Jurisdiction:</b>
+                {{ $data['form-data']->territorial_jurisdiction ?? 'Not Provided' }}</p>
+            <p class=""><b>Court Fee:</b> {{ $data['form-data']->court_fee ?? 'Not Provided' }}</p>
         </div>
     </div>
 
-    <div class="form-group row">
-        <label class="col-sm-12 col-md-2 col-form-label">Prayer</label>
-        <div class="sm-12 col-md-10">
-            <p class="form-control">Relief which the plaintiff claims</p>
+
+    <div class="form-group row border p-3">
+        <div class="col-sm-12 text-center">
+            <h4>Prayer</h4>
+        </div>
+        <div class="col-sm-12 col-md-10">
+            <p class=""><b>Relief Claimed:</b> {{ $data['form-data']->relief_claimed ?? 'Not Provided' }}</p>
         </div>
     </div>
 
-    <div class="form-group row">
-        <label class="col-sm-12 col-md-2 col-form-label">Schedule of witnesses</label>
-        <div class="sm-12 col-md-10">
-            <p class="form-control">Number of witnesses: 3</p>
-            <p class="form-control">Names and addresses of the witnesses</p>
+    <div class="form-group row border p-3">
+        <div class="col-sm-12 text-center">
+            <h4>Schedule of Witnesses</h4>
+        </div>
+        <div class="col-sm-12 col-md-10">
+            <p class=""><b>Number of Witnesses:</b> {{ $data['form-data']->witnesses_count ?? 'Not Provided' }}
+            </p>
+            <p class=""><b>Witnesses Details:</b> {{ $data['form-data']->witnesses_details ?? 'Not Provided' }}
+            </p>
         </div>
     </div>
 
-    <div class="form-group row">
-        <label class="col-sm-12 col-md-2 col-form-label">Make sure, You must attach the following documents</label>
-        <div class="sm-12 col-md-10">
-            <div class="checkbox-group">
-                <p class="form-control">Copies of the plaint</p>
-                <p class="form-control">Schedule of the witnesses</p>
-                <p class="form-control">Precise statement of witnesses</p>
-                <p class="form-control">List of documents relied upon</p>
-                <p class="form-control">Copies of documents relied upon</p>
-                <p class="form-control">List of documents in possession</p>
-                <p class="form-control">Copies of documents in possession</p>
+
+
+    <div class="form-group row border p-3">
+        <label class="col-sm-12 col-md-2 col-form-label">Attach file:</label>
+        <div class="col-sm-12 col-md-10">
+            @if (!empty($data['form-data']->file_attachment))
+                <a href="{{ route('downloadFiles', ['file_attachment' => $data['form-data']->file_attachment]) }}"
+                    class="btn btn-primary">Download All Files</a>
+            @else
+                Not Provided
+            @endif
+        </div>
+    </div>
+
+
+
+
+    <form action="{{ route('advisor.add-feedback-marks-family-law-case') }}" method="GET">
+        @csrf
+        <input type="hidden" class="form-control" name="fid" value="{{ $data['form-data']->id ?? '' }}">
+        <input type="hidden" class="form-control" name="step" value="5">
+        <div class="form-group row">
+            <label class="col-sm-12 col-md-2 col-form-label">Give Feedback:</label>
+            <div class="sm-12 col-md-10">
+                <textarea class="form-control" name="feedback">{{ $data['form-data']->feedback ?? '' }}</textarea>
             </div>
         </div>
-    </div>
 
-    <div class="form-group row">
-        <label class="col-sm-12 col-md-2 col-form-label">Upload attachments of the plaint:</label>
-        <div class="sm-12 col-md-10">
-            <p class="form-control">No file attached</p>
+        <div class="form-group row">
+            <label class="col-sm-12 col-md-2 col-form-label">Give Marks</label>
+            <div class="sm-12 col-md-10">
+                <input type="number" class="form-control" name="marks" value="{{ $data['form-data']->marks ?? '' }}"
+                    min="0" max="10">
+            </div>
         </div>
-    </div>
+
+        @if (isset($data['form-data']->status) && $data['form-data']->status == 0)
+            <div class="form-group row">
+                <div class="col-lg-12 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Update Status</button>
+                </div>
+            </div>
+        @endif
+    </form>
 
 
 
-    <div class="form-group row">
-        <label class="col-sm-12 col-md-2 col-form-label">Add your feedback</label>
-        <div class="sm-12 col-md-10">
-            <textarea class="form-control"></textarea>
-        </div>
-    </div>
-
-    <div class="form-group row">
-        <div class="col-lg-12 d-flex justify-content-end">
-            <button type="button" class="btn btn-primary">Send Feedback</button>
-        </div>
-    </div>
-
-    <div class="form-group row">
-        <label class="col-sm-12 col-md-2 col-form-label">Give Marks</label>
-        <div class="sm-12 col-md-10">
-            <input type="number" class="form-control">
-        </div>
-    </div>
-
-    <div class="form-group row">
-        <div class="col-lg-12 d-flex justify-content-end">
-            <button type="button" class="btn btn-primary">Add Marks</button>
-        </div>
-    </div>
 </div>
 
-<div class="mb-20 d-flex justify-content-center">
-    <button type="button" class="btn btn-primary">Unlock Next Step</button>
-</div>
+@if (!empty($data['form-data']->marks))
+    @if ($data['form-data']->status == 0)
+        <form action="{{ route('advisor.next-step-family-law') }}" method="GET">
+            <input type="hidden" class="form-control" name="fid" value="{{ $data['form-data']->id ?? '' }}">
+            <input type="hidden" class="form-control" name="step" value="5">
+            <div class="mb-20 d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">Unlock Next Step</button>
+            </div>
+        </form>
+    @endif
+@endif
