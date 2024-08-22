@@ -1,11 +1,5 @@
 <div class="pd-20 card-box mb-30">
 
-    <div class="clearfix mb-20 text-center">
-        <div>
-            <h2 class="text-blue">Step 9: Examination in chief</h2>
-        </div>
-    </div>
-
     <div class="clearfix mb-20">
         <div class="pull-left">
             <h5 class="text-blue">Introduction:</h5>

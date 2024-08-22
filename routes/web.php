@@ -75,15 +75,15 @@ Route::prefix('advisor')->middleware(AuthenticateAdvisor::class)->group(function
     Route::get('/students-in-case', [AdvisorController::class, 'getAssignedStudentsByCaseId'])->name('advisor.students-in-case');
 
 
-    
-    
+
+
     Route::get('/student-feedback', [AdvisorController::class, 'getStudentCaseFeedback'])->name('advisor.student-feedback');
 
     Route::get('/add-feedback-marks-family-law-case', [AdvisorController::class, 'addFeedbackMarksFamilyLawCase'])->name('advisor.add-feedback-marks-family-law-case');
     Route::get('/next-step-family-law', [AdvisorController::class, 'nextStepFamilyLaw'])->name('advisor.next-step-family-law');
     Route::get('/download-files', [AdvisorController::class, 'downloadFamilyLawStepMultipleFilesInZip'])->name('downloadFiles');
-    
-    
+
+
     // Route::get('/family-law-steps-list', [AdvisorController::class, "getStudentCurrentStep"])->name('advisor.family-law-steps-list');
     // Route::view('/early-bird-moot-steps-list', 'advisor.early-bird-moot-steps-list')->name('advisor.early-bird-moot-steps-list');
     // Route::get('/test', [AdvisorController::class, "getStudentCurrentStep"])->name('advisor.test');
@@ -129,7 +129,7 @@ Route::prefix('student')->middleware(AuthenticateStudent::class)->group(function
     Route::get('/family-law-step-14', [StudentController::class, 'familyLawStepsPreDetail'])->name('student.family-law-step-14');
 
 
-    
+
 
     Route::post('/insert-family-law-step-1', [StudentController::class, 'insertOrUpdateFamilyLawStep1'])->name('student.insert-family-law-step-1');
     Route::post('/insert-family-law-step-2', [StudentController::class, 'insertOrUpdateFamilyLawStep2'])->name('student.insert-family-law-step-2');
@@ -140,9 +140,10 @@ Route::prefix('student')->middleware(AuthenticateStudent::class)->group(function
     Route::post('/insert-family-law-step-7', [StudentController::class, 'insertOrUpdateFamilyLawStep7'])->name('student.insert-family-law-step-7');
     Route::post('/insert-family-law-step-8', [StudentController::class, 'insertOrUpdateFamilyLawStep8'])->name('student.insert-family-law-step-8');
     Route::post('/insert-family-law-step-9', [StudentController::class, 'insertOrUpdateFamilyLawStep9'])->name('student.insert-family-law-step-9');
+    Route::post('/insert-family-law-step-10', [StudentController::class, 'insertOrUpdateFamilyLawStep10'])->name('student.insert-family-law-step-10');
 
 
-    
+
 
 
 

@@ -1,156 +1,128 @@
 <div class="pd-20 card-box mb-30">
-    <form action="">
-       
 
-        <div class="clearfix mb-20">
-            <div class="pull-left">
-                <h5 class="text-blue">Introduction:</h5>
-                <p>
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Excepturi delectus, dolor temporibus
-                    nam pariatur in ratione, numquam perferendis voluptates aut aspernatur quidem. Sequi eum aut
-                    maiores facere repudiandae ad aperiam facilis sapiente molestias, dignissimos quod ex adipisci
-                    ratione ducimus. Excepturi cum fuga repellat nam laboriosam blanditiis, voluptas ut odio
-                    mollitia.
-                </p>
-            </div>
+    <div class="clearfix mb-20">
+        <div class="pull-left">
+            <h5 class="text-blue">Introduction:</h5>
+            <p>{{ $data['predetails']['introduction'] }}</p>
         </div>
+    </div>
 
-        <div class="clearfix mb-20">
-            <div class="pull-left">
-                <h5 class="text-blue">Instructions:</h5>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus minima amet totam, quasi
-                    vel consequuntur.</p>
-            </div>
+
+    <div class="clearfix mb-20">
+        <div class="pull-left">
+            <h5 class="text-blue">Instructions:</h5>
+            <p>{{ $data['predetails']['instructions'] }}</p>
         </div>
+    </div>
 
+
+    @if ($data['predetails']['video'] != 'No video available')
         <div class="clearfix mb-20 text-center">
             <div class="">
                 <h5 class="text-blue text-center">Role Play Video</h5>
-                <video class="w-100" src="../vendors/documents/videos/demo.mp4" controls type="video/mp4"></video>
+                <video class="w-100" src="{{ asset('/storage/' . $data['predetails']['video']) }}" controls
+                    type="video/mp4"></video>
             </div>
         </div>
+    @endif
 
-        <h3 class="text-blue ">Procedural Steps</h3>
 
+    <div class="form-group row border p-3">
+        <div class="col-sm-12 text-center">
+            <h4>Procedural Steps</h4>
+        </div>
+        <div class="col-sm-12 col-md-10">
+            <p class=""><b>Oath Taking:</b> {{ $data['form-data']->oath_taking ?? 'Not Provided' }}</p>
+            <p class=""><b>Address of Party/Witness Statement:</b>
+                {{ $data['form-data']->address_party_witness_statement ?? 'Not Provided' }}</p>
+            <p class=""><b>Signature of Party/Witness:</b>
+                {{ $data['form-data']->signature_party_witness ?? 'Not Provided' }}</p>
+            <p class=""><b>Counter Signature of Judge:</b>
+                {{ $data['form-data']->counter_signature_judge ?? 'Not Provided' }}</p>
+        </div>
+    </div>
+
+    <div class="form-group row border p-3">
+        <div class="col-sm-12 text-center">
+            <h4>Substantive Steps</h4>
+        </div>
+        <div class="col-sm-12 col-md-10">
+            <p class=""><b>Straight Questions:</b> {{ $data['form-data']->straight_questions ?? 'Not Provided' }}
+            </p>
+            <p class=""><b>No Leading Questions:</b>
+                {{ $data['form-data']->no_leading_questions ?? 'Not Provided' }}</p>
+            <p class=""><b>Objections by Other Party:</b>
+                {{ $data['form-data']->objections_other_party ?? 'Not Provided' }}</p>
+            <p class=""><b>Statement According to Pleadings:</b>
+                {{ $data['form-data']->statement_according_pleadings ?? 'Not Provided' }}</p>
+
+            <p class=""><b>Impeach Credit of Witness:</b>
+                {{ $data['form-data']->impeach_credit_witness ?? 'Not Provided' }}</p>
+
+            <p class=""><b>Only Relevant Questions:</b>
+                {{ $data['form-data']->only_relevant_questions ?? 'Not Provided' }}</p>
+
+        </div>
+    </div>
+
+
+
+    <div class="form-group row border p-3">
+        <label class="col-sm-12 col-md-2 col-form-label">Attach file:</label>
+        <div class="col-sm-12 col-md-10">
+            @if (!empty($data['form-data']->file_attachment))
+                {{-- <a href="{{ asset('/storage/' . $data['form-data']->file_attachment) }}" class="btn btn-primary" download>Download PDF</a> --}}
+                <a href="{{ asset('/storage/' . $data['form-data']->file_attachment) }}" class="btn btn-primary"
+                    target="_blank">View File</a>
+            @else
+                Not Provided
+            @endif
+        </div>
+    </div>
+
+
+
+    <form action="{{ route('advisor.add-feedback-marks-family-law-case') }}" method="GET">
+        @csrf
+        <input type="hidden" class="form-control" name="fid" value="{{ $data['form-data']->id ?? '' }}">
+        <input type="hidden" class="form-control" name="step" value="10">
         <div class="form-group row">
-            <label class="col-sm-12 col-md-2 col-form-label">Oath taking</label>
+            <label class="col-sm-12 col-md-2 col-form-label">Give Feedback:</label>
             <div class="sm-12 col-md-10">
-                <p class="form-control">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pretium
-                    ligula ut libero fermentum, ac tristique turpis scelerisque.</p>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="col-sm-12 col-md-2 col-form-label">Address of the party/witness Statement</label>
-            <div class="sm-12 col-md-10">
-                <p class="form-control">Sed euismod magna id malesuada vehicula. Pellentesque habitant morbi
-                    tristique senectus et netus et malesuada fames ac turpis egestas.</p>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="col-sm-12 col-md-2 col-form-label">Signature of the party/witness</label>
-            <div class="sm-12 col-md-10">
-                <p class="form-control">Fusce quis lorem non lectus suscipit facilisis. Suspendisse potenti.
-                    Aliquam erat volutpat.</p>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="col-sm-12 col-md-2 col-form-label">Counter signature of the Judge</label>
-            <div class="sm-12 col-md-10">
-                <p class="form-control">Maecenas accumsan nulla eget libero consequat, sed varius nunc eleifend.
-                    Donec sed neque eu nunc rutrum fermentum.</p>
-            </div>
-        </div>
-
-        <h3 class="text-blue ">Substantive steps</h3>
-
-        <div class="form-group row">
-            <label class="col-sm-12 col-md-2 col-form-label">Straight questions</label>
-            <div class="sm-12 col-md-10">
-                <p class="form-control">Integer dignissim sapien sed quam accumsan volutpat. In ut eros vel purus
-                    rutrum aliquet.</p>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="col-sm-12 col-md-2 col-form-label">No leading questions</label>
-            <div class="sm-12 col-md-10">
-                <p class="form-control">Curabitur sit amet felis nec ipsum vestibulum lobortis eget non libero.
-                    Cras varius turpis a velit rutrum, et mattis tortor placerat.</p>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="col-sm-12 col-md-2 col-form-label">Objections taken by other party</label>
-            <div class="sm-12 col-md-10">
-                <p class="form-control">Nam congue ex eu elit eleifend dignissim. Duis ut nunc nec ligula volutpat
-                    volutpat.</p>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="col-sm-12 col-md-2 col-form-label">Statement according to the pleadings</label>
-            <div class="sm-12 col-md-10">
-                <p class="form-control">Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere
-                    cubilia curae; Ut nec nulla at lorem malesuada molestie.</p>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="col-sm-12 col-md-2 col-form-label">To impeach the credit of witness, any question could
-                be asked</label>
-            <div class="sm-12 col-md-10">
-                <p class="form-control">Suspendisse potenti. Aliquam erat volutpat. Nam congue ex eu elit eleifend
-                    dignissim. Duis ut nunc nec ligula volutpat volutpat.</p>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="col-sm-12 col-md-2 col-form-label">Only relevant questions could be asked</label>
-            <div class="sm-12 col-md-10">
-                <p class="form-control">Integer dignissim sapien sed quam accumsan volutpat. In ut eros vel purus
-                    rutrum aliquet.</p>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="col-sm-12 col-md-2 col-form-label">Attach the transcrip:</label>
-            <div class="sm-12 col-md-10">
-                <p class="form-control">No file attached</p>
-            </div>
-        </div>
-
-
-        <div class="form-group row">
-            <label class="col-sm-12 col-md-2 col-form-label">Add your feedback</label>
-            <div class="sm-12 col-md-10">
-                <textarea class="form-control"></textarea>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <div class="col-lg-12 d-flex justify-content-end">
-                <button type="button" class="btn btn-primary">Send Feedback</button>
+                <textarea class="form-control" name="feedback">{{ $data['form-data']->feedback ?? '' }}</textarea>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="col-sm-12 col-md-2 col-form-label">Give Marks</label>
             <div class="sm-12 col-md-10">
-                <input type="number" class="form-control">
+                <input type="number" class="form-control" name="marks" value="{{ $data['form-data']->marks ?? '' }}"
+                    min="0" max="10">
             </div>
         </div>
 
-        <div class="form-group row">
-            <div class="col-lg-12 d-flex justify-content-end">
-                <button type="button" class="btn btn-primary">Add Marks</button>
+        @if (isset($data['form-data']->status) && $data['form-data']->status == 0)
+            <div class="form-group row">
+                <div class="col-lg-12 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Update Status</button>
+                </div>
             </div>
-        </div>
+        @endif
     </form>
+
+
+
 </div>
 
-<div class="mb-20 d-flex justify-content-center">
-    <button type="button" class="btn btn-primary">Unlock Next Step</button>
-</div>
+
+@if (!empty($data['form-data']->marks))
+    @if ($data['form-data']->status == 0)
+        <form action="{{ route('advisor.next-step-family-law') }}" method="GET">
+            <input type="hidden" class="form-control" name="fid" value="{{ $data['form-data']->id ?? '' }}">
+            <input type="hidden" class="form-control" name="step" value="10">
+            <div class="mb-20 d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">Unlock Next Step</button>
+            </div>
+        </form>
+    @endif
+@endif
