@@ -795,71 +795,110 @@ class StudentController extends Controller
         return redirect()->route('student.my-caseload');
     }
 
-    
+
     public function insertOrUpdateFamilyLawStep12(Request $request)
-{
-    $student_id = Auth::guard('student')->id();
-    $fid = $request->input('fid');
-    $caseid = $request->input('caseid');
+    {
+        $student_id = Auth::guard('student')->id();
+        $fid = $request->input('fid');
+        $caseid = $request->input('caseid');
 
-    $request->validate([
-        'introduction_reconciliator' => 'nullable|string',
-        'confidentiality_assurance' => 'nullable|string',
-        'individual_session' => 'nullable|string',
-        'joint_session' => 'nullable|string',
-        'neutrality_impartiality' => 'nullable|string',
-        'change_positions' => 'nullable|string',
-        'reach_suggestions' => 'nullable|string',
-        'finalize_suggestions' => 'nullable|string',
-        'reach_agreement' => 'nullable|string',
-    ]);
+        $request->validate([
+            'introduction_reconciliator' => 'nullable|string',
+            'confidentiality_assurance' => 'nullable|string',
+            'individual_session' => 'nullable|string',
+            'joint_session' => 'nullable|string',
+            'neutrality_impartiality' => 'nullable|string',
+            'change_positions' => 'nullable|string',
+            'reach_suggestions' => 'nullable|string',
+            'finalize_suggestions' => 'nullable|string',
+            'reach_agreement' => 'nullable|string',
+        ]);
 
-    $data = $request->only([
-        'introduction_reconciliator',
-        'confidentiality_assurance',
-        'individual_session',
-        'joint_session',
-        'neutrality_impartiality',
-        'change_positions',
-        'reach_suggestions',
-        'finalize_suggestions',
-        'reach_agreement',
-        'aid'
-    ]);
+        $data = $request->only([
+            'introduction_reconciliator',
+            'confidentiality_assurance',
+            'individual_session',
+            'joint_session',
+            'neutrality_impartiality',
+            'change_positions',
+            'reach_suggestions',
+            'finalize_suggestions',
+            'reach_agreement',
+            'aid'
+        ]);
 
 
-    if ($request->hasFile('file_attachment')) {
-        $file = $request->file('file_attachment');
-        $filePath = $file->store('documents', 'public');
-        $data['file_attachment'] = $filePath;
-    } else if ($request->input('old_file')) {
-        $data['file_attachment'] = $request->input('old_file');
+        if ($request->hasFile('file_attachment')) {
+            $file = $request->file('file_attachment');
+            $filePath = $file->store('documents', 'public');
+            $data['file_attachment'] = $filePath;
+        } else if ($request->input('old_file')) {
+            $data['file_attachment'] = $request->input('old_file');
+        }
+        // Add common fields
+        $data['student_id'] = $student_id;
+        $data['case_id'] = $caseid;
+        $data['updated_at'] = now();
+
+        if ($fid) {
+            // Update the existing record
+            DB::table('family_law_step_12')
+                ->where('id', $fid)
+                ->update($data);
+            session()->flash('message', 'Form Updated.');
+        } else {
+            // Insert a new record
+            $data['created_at'] = now();
+            DB::table('family_law_step_12')->insert($data);
+            session()->flash('message', 'Form Submitted.');
+        }
+
+        // Redirect to the appropriate route
+        return redirect()->route('student.my-caseload');
     }
-    // Add common fields
-    $data['student_id'] = $student_id;
-    $data['case_id'] = $caseid;
-    $data['updated_at'] = now();
 
-    if ($fid) {
-        // Update the existing record
-        DB::table('family_law_step_12')
-            ->where('id', $fid)
-            ->update($data);
-        session()->flash('message', 'Form Updated.');
-    } else {
-        // Insert a new record
-        $data['created_at'] = now();
-        DB::table('family_law_step_12')->insert($data);
-        session()->flash('message', 'Form Submitted.');
+
+    public function insertOrUpdateFamilyLawStep13(Request $request)
+    {
+
+        $student_id = Auth::guard('student')->id();
+        $fid = $request->input('fid');
+        $caseid = $request->input('caseid');
+
+        $data = $request->only([
+            'aid'
+        ]);
+
+        if ($request->hasFile('file_attachment')) {
+            $file = $request->file('file_attachment');
+            $filePath = $file->store('documents', 'public');
+            $data['file_attachment'] = $filePath;
+        } else if ($request->input('old_file')) {
+            $data['file_attachment'] = $request->input('old_file');
+        }
+        // Add common fields
+        $data['student_id'] = $student_id;
+        $data['case_id'] = $caseid;
+        $data['updated_at'] = now();
+
+        if ($fid) {
+            // Update the existing record
+            DB::table('family_law_step_13')
+                ->where('id', $fid)
+                ->update($data);
+            session()->flash('message', 'Form Updated.');
+        } else {
+            // Insert a new record
+            $data['created_at'] = now();
+            DB::table('family_law_step_13')->insert($data);
+            session()->flash('message', 'Form Submitted.');
+        }
+
+        // Redirect to the appropriate route
+        return redirect()->route('student.my-caseload');
     }
 
-    // Redirect to the appropriate route
-    return redirect()->route('student.my-caseload');
-}
 
-    
-
-    public function insertOrUpdateFamilyLawStep13(Request $request) {}
     public function insertOrUpdateFamilyLawStep14(Request $request) {}
 
 

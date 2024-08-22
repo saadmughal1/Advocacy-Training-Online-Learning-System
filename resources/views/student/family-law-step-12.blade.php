@@ -127,9 +127,6 @@
 
 
 
-
-
-
             @if (isset($data) && $data->file_attachment)
                 <input type="hidden" name="old_file" value="{{ $data->file_attachment }}">
             @endif
