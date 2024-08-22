@@ -9,148 +9,165 @@
 
     <div class="pd-20 card-box mb-30">
 
-        <form action="">
+        <div class="clearfix mb-20 text-center">
+            <div class="">
+                <h2 class="text-blue">Step 12: Post-trial Reconciliation</h2>
+            </div>
+        </div>
+
+
+        <div class="clearfix mb-20">
+            <div class="pull-left">
+                <h5 class="text-blue">Introduction:</h5>
+                <p>{{ $case->step_12_introduction }}</p>
+            </div>
+        </div>
+
+
+        <div class="clearfix mb-20">
+            <div class="pull-left">
+                <h5 class="text-blue">Instructions:</h5>
+                <p>{{ $case->step_12_instructions }}</p>
+            </div>
+        </div>
+
+
+        @if (!empty($case->step_12_video))
             <div class="clearfix mb-20 text-center">
                 <div class="">
-                    <h2 class="text-blue">Step 12: Post-trial Reconciliation</h2>
+                    <h5 class="text-blue text-center">Role Play Video</h5>
+                    <video class="w-100" src="{{ asset('/storage/' . $case->step_12_video) }}" controls
+                        type="video/mp4"></video>
                 </div>
             </div>
+        @endif
 
 
-            <div class="clearfix mb-20">
-                <div class="pull-left">
-                    <h5 class="text-blue">Introduction:</h5>
-                    <p>{{ $case->step_12_introduction }}</p>
-                </div>
-            </div>
+
+        <form action="{{ route('student.insert-family-law-step-12') }}" method="POST" enctype="multipart/form-data">
 
 
-            <div class="clearfix mb-20">
-                <div class="pull-left">
-                    <h5 class="text-blue">Instructions:</h5>
-                    <p>{{ $case->step_12_instructions }}</p>
-                </div>
-            </div>
+            @csrf
+            <input type="hidden" name="aid" value="{{ request()->query('aid') }}">
+            <input type="hidden" name="caseid" value="{{ request('caseId') }}">
 
 
-            @if (!empty($case->step_12_video))
-                <div class="clearfix mb-20 text-center">
-                    <div class="">
-                        <h5 class="text-blue text-center">Role Play Video</h5>
-                        <video class="w-100" src="{{ asset('/storage/' . $case->step_12_video) }}" controls
-                            type="video/mp4"></video>
-                    </div>
-                </div>
-            @endif
 
-
-            <h3 class="text-blue ">Procedural Skills</h3>
+            <h3 class="text-blue">Procedural Skills</h3>
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Enter the Introduction of the
                     Reconciliator/Mediator</label>
                 <div class="sm-12 col-md-10">
-                    <textarea class="form-control" placeholder="Enter the Introduction of the Reconciliator/Mediator"></textarea>
+                    <textarea class="form-control" name="introduction_reconciliator"
+                        placeholder="Enter the Introduction of the Reconciliator/Mediator">{{ isset($data) ? $data->introduction_reconciliator ?? '' : '' }}</textarea>
                 </div>
             </div>
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Enter the Confidentiality assurance</label>
                 <div class="sm-12 col-md-10">
-                    <textarea class="form-control" placeholder="Enter the Confidentiality assurance "></textarea>
+                    <textarea class="form-control" name="confidentiality_assurance" placeholder="Enter the Confidentiality assurance">{{ isset($data) ? $data->confidentiality_assurance ?? '' : '' }}</textarea>
                 </div>
             </div>
 
-            <h3 class="text-blue ">Coaxing</h3>
+            <h3 class="text-blue">Coaxing</h3>
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Enter the individual session</label>
                 <div class="sm-12 col-md-10">
-                    <textarea class="form-control" placeholder="Enter the individual session"></textarea>
+                    <textarea class="form-control" name="individual_session" placeholder="Enter the individual session">{{ isset($data) ? $data->individual_session ?? '' : '' }}</textarea>
                 </div>
             </div>
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Enter the Joint session</label>
                 <div class="sm-12 col-md-10">
-                    <textarea class="form-control" placeholder="Enter the Joint session"></textarea>
+                    <textarea class="form-control" name="joint_session" placeholder="Enter the Joint session">{{ isset($data) ? $data->joint_session ?? '' : '' }}</textarea>
                 </div>
             </div>
 
-
-
-            <h3 class="text-blue ">Substantive skills</h3>
+            <h3 class="text-blue">Substantive skills</h3>
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Neutrality/Impartiality</label>
                 <div class="sm-12 col-md-10">
-                    <textarea class="form-control" placeholder="Neutrality/Impartiality "></textarea>
+                    <textarea class="form-control" name="neutrality_impartiality" placeholder="Neutrality/Impartiality">{{ isset($data) ? $data->neutrality_impartiality ?? '' : '' }}</textarea>
                 </div>
             </div>
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Helped parties to change positions</label>
                 <div class="sm-12 col-md-10">
-                    <textarea class="form-control" placeholder="Helped parties to change positions "></textarea>
+                    <textarea class="form-control" name="change_positions" placeholder="Helped parties to change positions">{{ isset($data) ? $data->change_positions ?? '' : '' }}</textarea>
                 </div>
             </div>
-
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Helped parties to reach suggestions</label>
                 <div class="sm-12 col-md-10">
-                    <textarea class="form-control" placeholder="Helped parties to reach suggestions "></textarea>
+                    <textarea class="form-control" name="reach_suggestions" placeholder="Helped parties to reach suggestions">{{ isset($data) ? $data->reach_suggestions ?? '' : '' }}</textarea>
                 </div>
             </div>
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Helped parties to finalize suggestions</label>
                 <div class="sm-12 col-md-10">
-                    <textarea class="form-control" placeholder="Helped parties to finalize suggestions"></textarea>
+                    <textarea class="form-control" name="finalize_suggestions" placeholder="Helped parties to finalize suggestions">{{ isset($data) ? $data->finalize_suggestions ?? '' : '' }}</textarea>
                 </div>
             </div>
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Helped parties to reach agreement</label>
                 <div class="sm-12 col-md-10">
-                    <textarea class="form-control" placeholder="Helped parties to reach agreement "></textarea>
+                    <textarea class="form-control" name="reach_agreement" placeholder="Helped parties to reach agreement">{{ isset($data) ? $data->reach_agreement ?? '' : '' }}</textarea>
                 </div>
             </div>
 
 
+
+
+
+
+
+            @if (isset($data) && $data->file_attachment)
+                <input type="hidden" name="old_file" value="{{ $data->file_attachment }}">
+            @endif
+
             <div class="form-group row">
-                <label class="col-sm-12 col-md-2 col-form-label">Attach agreement/compromise File:</label>
+                <label class="col-sm-12 col-md-2 col-form-label">Attach file:</label>
                 <div class="sm-12 col-md-10">
-                    <input type="file" class="form-control" placeholder="" required>
+                    <input type="file" class="form-control" name="file_attachment" accept=".pdf">
                 </div>
             </div>
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Advisor Responce:</label>
-                <div class="sm-12 col-md-10">
-                    <textarea class="form-control" placeholder="Feedback Box"></textarea>
-                </div>
+                <div class="sm-12 col-md-10">{{ isset($data) ? $data->feedback ?? '' : '' }}</div>
             </div>
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Marks Secured:</label>
                 <div class="sm-12 col-md-10">
-                    <span>5/10</span>
+
+                    <span>{{ isset($data) ? $data->marks ?? '' : '' }}/10</span>
                 </div>
             </div>
 
-
+            <input type="hidden" name="fid" value="{{ isset($data) ? $data->id ?? '' : '' }}">
 
             <div class="form-group row">
-
                 <div class="col-lg-6 d-flex justify-content-end">
-                    <button type="submit" class="btn btn-primary">Update Details</button>
+                    {{-- <button type="submit" class="btn btn-primary">Update Details</button> --}}
                 </div>
-
                 <div class="col-lg-6 d-flex justify-content-start">
-                    <button type="submit" class="btn btn-primary">Next Step</button>
+                    <button type="submit" class="btn btn-primary">
+                        {{ isset($data) ? 'Update Details' : 'Submit' }}
+                    </button>
                 </div>
             </div>
+
+
 
         </form>
     </div>
