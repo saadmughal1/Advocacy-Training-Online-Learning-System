@@ -399,7 +399,6 @@
 
 
 @endsection
-
 @push('styles')
     <style>
         a>.card-box {
@@ -412,6 +411,12 @@
         }
     </style>
 @endpush
+
+
+
+
+
+
 
 @push('scripts')
     <script>

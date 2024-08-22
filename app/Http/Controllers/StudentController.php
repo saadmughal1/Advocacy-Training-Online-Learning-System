@@ -504,7 +504,7 @@ class StudentController extends Controller
         $student_id = Auth::guard('student')->id();
         $fid = $request->input('fid');
         $caseid = $request->input('caseid');
-    
+
         $request->validate([
             'reconciliator_intro' => 'nullable|string',
             'confidentiality_assurance' => 'nullable|string',
@@ -516,7 +516,7 @@ class StudentController extends Controller
             'finalize_suggestions' => 'nullable|string',
             'reach_agreement' => 'nullable|string',
         ]);
-    
+
         $data = $request->only([
             'reconciliator_intro',
             'confidentiality_assurance',
@@ -537,11 +537,11 @@ class StudentController extends Controller
         } else if ($request->input('old_file')) {
             $data['file_attachment'] = $request->input('old_file');
         }
-    
+
         $data['student_id'] = $student_id;
         $data['case_id'] = $caseid;
         $data['updated_at'] = now();
-    
+
         if ($fid) {
             DB::table('family_law_step_7')
                 ->where('id', $fid)
@@ -552,10 +552,76 @@ class StudentController extends Controller
             DB::table('family_law_step_7')->insert($data);
             session()->flash('message', 'Form Submitted.');
         }
-    
+
         return redirect()->route('student.my-caseload');
     }
-    
+
+
+    public function insertOrUpdateFamilyLawStep8(Request $request)
+    {
+        
+        $student_id = Auth::guard('student')->id();
+        $fid = $request->input('fid');
+        $caseid = $request->input('caseid');
+
+        $data = $request->only([
+            'aid'
+        ]);
+
+
+        if ($request->hasFile('file_attachment')) {
+            $file = $request->file('file_attachment');
+            $filePath = $file->store('documents', 'public');
+            $data['file_attachment'] = $filePath;
+        }
+
+        $issue_law_data = [];
+        if ($request->has('issue_law')) {
+            foreach ($request->issue_law as $issueLawData) {
+                if (!empty($issueLawData['law']) && !empty($issueLawData['prove'])) {
+                    $issue_law_data[] = [
+                        'law' => $issueLawData['law'],
+                        'prove' => $issueLawData['prove'],
+                    ];
+                }
+            }
+        }
+
+
+        $issue_fact_data = [];
+        if ($request->has('issue_fact')) {
+            foreach ($request->issue_fact as $issueFactData) {
+                if (!empty($issueFactData['fact']) && !empty($issueFactData['prove'])) {
+                    $issue_fact_data[] = [
+                        'fact' => $issueFactData['fact'],
+                        'prove' => $issueFactData['prove'],
+                    ];
+                }
+            }
+        }
+
+        $data['issue_law'] = json_encode($issue_law_data);
+        $data['issue_fact'] = json_encode($issue_fact_data);
+        $data['student_id'] = $student_id;
+        $data['case_id'] = $caseid;
+        $data['updated_at'] = now();
+
+
+        if ($fid) {
+            DB::table('family_law_step_8')
+                ->where('id', $fid)
+                ->update($data);
+            session()->flash('message', 'Form Updated.');
+        } else {
+            $data['created_at'] = now();
+            DB::table('family_law_step_8')->insert($data);
+            session()->flash('message', 'Form Submitted.');
+        }
+
+
+        return redirect()->route('student.my-caseload');
+    }
+
 
 
 
