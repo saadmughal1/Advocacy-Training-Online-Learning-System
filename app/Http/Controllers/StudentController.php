@@ -24,6 +24,7 @@ class StudentController extends Controller
 
         return redirect()->back()->with('error', 'Invalid Username or Password');
     }
+    
     public function logout()
     {
         Auth::guard('student')->logout();
@@ -250,7 +251,6 @@ class StudentController extends Controller
         return redirect()->route('student.my-caseload');
     }
 
-
     public function insertOrUpdateFamilyLawStep3(Request $request)
     {
         $student_id = Auth::guard('student')->id();
@@ -350,7 +350,6 @@ class StudentController extends Controller
 
         return redirect()->route('student.my-caseload');
     }
-
 
     public function insertOrUpdateFamilyLawStep5(Request $request)
     {
@@ -556,7 +555,6 @@ class StudentController extends Controller
         return redirect()->route('student.my-caseload');
     }
 
-
     public function insertOrUpdateFamilyLawStep8(Request $request)
     {
 
@@ -677,7 +675,6 @@ class StudentController extends Controller
         return redirect()->route('student.my-caseload');
     }
 
-
     public function insertOrUpdateFamilyLawStep10(Request $request)
     {
         $student_id = Auth::guard('student')->id();
@@ -795,7 +792,6 @@ class StudentController extends Controller
         return redirect()->route('student.my-caseload');
     }
 
-
     public function insertOrUpdateFamilyLawStep12(Request $request)
     {
         $student_id = Auth::guard('student')->id();
@@ -857,7 +853,6 @@ class StudentController extends Controller
         return redirect()->route('student.my-caseload');
     }
 
-
     public function insertOrUpdateFamilyLawStep13(Request $request)
     {
 
@@ -898,9 +893,45 @@ class StudentController extends Controller
         return redirect()->route('student.my-caseload');
     }
 
+    public function insertOrUpdateFamilyLawStep14(Request $request)
+    {
 
-    public function insertOrUpdateFamilyLawStep14(Request $request) {}
+        $student_id = Auth::guard('student')->id();
+        $fid = $request->input('fid');
+        $caseid = $request->input('caseid');
 
+        $data = $request->only([
+            'aid'
+        ]);
+
+        if ($request->hasFile('file_attachment')) {
+            $file = $request->file('file_attachment');
+            $filePath = $file->store('documents', 'public');
+            $data['file_attachment'] = $filePath;
+        } else if ($request->input('old_file')) {
+            $data['file_attachment'] = $request->input('old_file');
+        }
+        // Add common fields
+        $data['student_id'] = $student_id;
+        $data['case_id'] = $caseid;
+        $data['updated_at'] = now();
+
+        if ($fid) {
+            // Update the existing record
+            DB::table('family_law_step_14')
+                ->where('id', $fid)
+                ->update($data);
+            session()->flash('message', 'Form Updated.');
+        } else {
+            // Insert a new record
+            $data['created_at'] = now();
+            DB::table('family_law_step_14')->insert($data);
+            session()->flash('message', 'Form Submitted.');
+        }
+
+        // Redirect to the appropriate route
+        return redirect()->route('student.my-caseload');
+    }
 
     public function startCase(Request $request)
     {
