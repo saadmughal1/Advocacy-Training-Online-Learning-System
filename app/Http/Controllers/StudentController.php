@@ -24,7 +24,7 @@ class StudentController extends Controller
 
         return redirect()->back()->with('error', 'Invalid Username or Password');
     }
-    
+
     public function logout()
     {
         Auth::guard('student')->logout();
@@ -63,8 +63,16 @@ class StudentController extends Controller
             ->get();
 
 
+        foreach ($studentCases as $case) {
+            $caseId = $case->student_case_id;
+            $caseType = $case->case_type;
+            $advisorId = $case->advisor_id;
+            $case->status = $this->isCaseFinished($caseId, $caseType, $advisorId);
+        }
+
         return view('student.my-caseload', ['cases' => $studentCases]);
     }
+
 
     public function insertOrUpdateFamilyLawStep1(Request $request)
     {
@@ -986,8 +994,7 @@ class StudentController extends Controller
             // If data exists and status is 1, continue to the next step
         }
 
-
-        return redirect()->route('student.my-caseload')->with('info', 'All steps are completed.');
+        return redirect()->route('student.my-caseload')->with('info', 'Case Closed.');
     }
 
     public function familyLawStepsPreDetail(Request $request)
@@ -1020,5 +1027,42 @@ class StudentController extends Controller
         }
 
         return view('student.family-law-step-' . $step, ['case' => $case, 'caseId' => $caseId, 'caseType' => $caseType]);
+    }
+
+    public function isCaseFinished($CaseId, $CaseType, $Aid)
+    {
+        $caseId = $CaseId;
+        $caseType = $CaseType;
+        $aid = $Aid;
+
+        $studentId = Auth::guard('student')->id();
+
+        $stepTablePrefix = $caseType === 'family_law' ? 'family_law' : 'early_bird_moot';
+
+        $steps = [
+            'family_law' => 14,
+            'early_bird_moot' => 2,
+        ];
+
+        $numberOfSteps = $steps[$stepTablePrefix];
+        $lastTableName = "{$stepTablePrefix}_step_{$numberOfSteps}";
+
+        $dataExists = DB::table($lastTableName)
+            ->where('student_id', $studentId)
+            ->where('case_id', $caseId)
+            ->where('aid', $aid)
+            ->first();
+
+        // $viewName = str_replace('_', '-', $stepTablePrefix) . "-step-{$numberOfSteps}";
+
+        if (!$dataExists) {
+            return false;
+        }
+
+        if ($dataExists->status == 0) {
+            return false;
+        }
+
+        return true;
     }
 }
