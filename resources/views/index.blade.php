@@ -5,11 +5,14 @@
 @section('content')
 
 
-    <div class="container d-flex justify-content-between pb-5">
-        <a class="btn btn-primary" href="{{ route('admin.home') }}">Admin Login</a>
-        <a class="btn btn-primary" href="{{ route('advisor.home') }}">Advisor Login</a>
-        <a class="btn btn-primary" href="{{ route('student.home') }}">Student Login</a>
+    <div class="container d-flex justify-content-center pb-5">
+        <div>
+            <a class="btn btn-primary" href="{{ route('admin.home') }}">Admin Login</a>
+            <a class="btn btn-primary" href="{{ route('advisor.home') }}">Advisor Login</a>
+            <a class="btn btn-primary" href="{{ route('student.home') }}">Student Login</a>
+        </div>
     </div>
+
 @endsection
 
 @push('styles')
