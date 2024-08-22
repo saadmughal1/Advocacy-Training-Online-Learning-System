@@ -737,6 +737,64 @@ class StudentController extends Controller
         return redirect()->route('student.my-caseload');
     }
 
+    public function insertOrUpdateFamilyLawStep11(Request $request)
+    {
+        $student_id = Auth::guard('student')->id();
+        $fid = $request->input('fid');
+        $caseid = $request->input('caseid');
+
+        $request->validate([
+            'opening_para_facts' => 'nullable|string',
+            'second_para_issues' => 'nullable|string',
+            'third_para_evidence' => 'nullable|string',
+            'fourth_para_relevant_law' => 'nullable|string',
+            'fifth_para_relevant_case_law' => 'nullable|string',
+            'sixth_para_closing_prayer' => 'nullable|string',
+        ]);
+
+        $data = $request->only([
+            'opening_para_facts',
+            'second_para_issues',
+            'third_para_evidence',
+            'fourth_para_relevant_law',
+            'fifth_para_relevant_case_law',
+            'sixth_para_closing_prayer',
+            'aid'
+        ]);
+
+
+        if ($request->hasFile('file_attachment')) {
+            $file = $request->file('file_attachment');
+            $filePath = $file->store('documents', 'public');
+            $data['file_attachment'] = $filePath;
+        } else if ($request->input('old_file')) {
+            $data['file_attachment'] = $request->input('old_file');
+        }
+
+
+        $outlook_based = $request->has('outlook_based') ? $request->outlook_based : [];
+        $data['outlook_based'] = json_encode($outlook_based);
+
+        $data['student_id'] = $student_id;
+        $data['case_id'] = $caseid;
+        $data['updated_at'] = now();
+
+        if ($fid) {
+            // Update existing record
+            DB::table('family_law_step_11')
+                ->where('id', $fid)
+                ->update($data);
+            session()->flash('message', 'Form Updated.');
+        } else {
+            // Insert new record
+            $data['created_at'] = now();
+            DB::table('family_law_step_11')->insert($data);
+            session()->flash('message', 'Form Submitted.');
+        }
+
+        return redirect()->route('student.my-caseload');
+    }
+
 
     public function startCase(Request $request)
     {
