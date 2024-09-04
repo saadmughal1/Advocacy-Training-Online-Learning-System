@@ -104,20 +104,23 @@ class AdvisorController extends Controller
         $caseType = $request->query('case_type');
         $advisor_case_table_id = $request->query('advisor_case_table_id');
 
-        $students = DB::table('advisor_cases as ac')
-            ->join('advisor_case_student as acs', 'acs.advisor_case_id', '=', 'ac.id')
-            ->join('students as s', 's.id', '=', 'acs.student_id')
-            ->where('ac.advisor_id', $advisorId)
-            ->where('ac.case_type', $caseType)
-            ->where('ac.case_id', 1)
-            ->whereNotIn('acs.id', function ($query) use ($caseId, $caseType) {
-                $query->select('sc.acsid')
-                    ->from('student_cases as sc')
-                    ->where('sc.advisor_case_id', $caseId)
-                    ->where('sc.case_type', $caseType);
-            })
-            ->select('s.*', 'acs.id as acsid')
-            ->get();
+        $students = DB::table('advisor_case_student as acs')
+        ->join('advisor_cases as ac', function ($join) {
+            $join->on('acs.advisor_case_id', '=', 'ac.id')
+                 ->on('acs.advisor_id', '=', 'ac.advisor_id');
+        })
+        ->join('students as s', 's.id', '=', 'acs.student_id')
+        ->where('ac.case_type', $caseType)
+        ->where('ac.case_id', $caseId)
+        ->where('ac.advisor_id', $advisorId)
+        ->whereNotIn('acs.id', function ($query) use ($caseId, $caseType) {
+            $query->select('sc.acsid')
+                  ->from('student_cases as sc')
+                  ->where('sc.advisor_case_id', $caseId)
+                  ->where('sc.case_type', $caseType);
+        })
+        ->select('s.*', 'acs.id as acsid')
+        ->get();
 
         return view('advisor.view-students', [
             'caseName' => $caseName,

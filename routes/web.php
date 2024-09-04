@@ -16,8 +16,12 @@ Route::prefix('admin')->middleware(AuthenticateAdmin::class)->group(function () 
     Route::view('/', 'admin.index')->name('admin.home');
 
     Route::view('/login', 'admin.login')->name('admin.login');
+    
     Route::post('/login', [AdminController::class, "login"])->name("admin.login");
     Route::get('/logout', [AdminController::class, "logout"])->name("admin.logout");
+
+
+
 
     Route::view('/create-advisor-account', 'admin.create-advisor-account')->name('admin.create-advisor-account');
     Route::post('/create-advisor-account', [AdminController::class, "createAdvisorAccount"])->name("admin.create-advisor-account");
@@ -57,6 +61,7 @@ Route::prefix('admin')->middleware(AuthenticateAdmin::class)->group(function () 
 
 
 
+
 Route::prefix('advisor')->middleware(AuthenticateAdvisor::class)->group(function () {
 
     Route::view('/', 'advisor.index')->name('advisor.home');
@@ -90,7 +95,6 @@ Route::prefix('advisor')->middleware(AuthenticateAdvisor::class)->group(function
 
 
 });
-
 
 
 

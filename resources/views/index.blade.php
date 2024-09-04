@@ -21,5 +21,9 @@
             background-image: linear-gradient(45deg, #0f0c29, #302b63, #24243e) !important;
             padding: 10px !important;
         }
+
+        .main-container{
+            padding: 80px 20px 2px 20px !important;
+        }
     </style>
 @endpush

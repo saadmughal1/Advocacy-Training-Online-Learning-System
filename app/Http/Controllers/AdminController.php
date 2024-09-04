@@ -315,16 +315,16 @@ class AdminController extends Controller
         $caseType = str_replace('-', '_', $caseType);
 
 
-        
+
         $advisors = DB::table('advisors AS a')
-               ->select('a.*')
-               ->whereNotIn('a.id', function ($query) use ($caseId, $caseType) {
-                   $query->select('ac.advisor_id')
-                        ->from('advisor_cases AS ac')
-                        ->where('ac.case_id', $caseId)
-                        ->where('ac.case_type', $caseType);
-               })
-               ->get();
+            ->select('a.*')
+            ->whereNotIn('a.id', function ($query) use ($caseId, $caseType) {
+                $query->select('ac.advisor_id')
+                    ->from('advisor_cases AS ac')
+                    ->where('ac.case_id', $caseId)
+                    ->where('ac.case_type', $caseType);
+            })
+            ->get();
 
         return response()->json($advisors);
     }
@@ -372,6 +372,7 @@ class AdminController extends Controller
         foreach ($students as $studentId) {
             DB::table('advisor_case_student')->insert([
                 'advisor_case_id' => $advisorCaseId,
+                'advisor_id' => $advisorId,
                 'student_id' => $studentId,
                 'created_at' => now(),
                 'updated_at' => now()
