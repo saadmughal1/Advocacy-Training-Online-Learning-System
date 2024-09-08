@@ -167,7 +167,7 @@
                         $("#student-names").show();
                         response.forEach(function(student, index) {
                             $('#studentTableBody').append('<tr>' +
-                                '<th scope="row"><input type="checkbox" name="students[]" value="' +
+                                '<th scope="row"><input autocomplete="off" type="checkbox" name="students[]" value="' +
                                 student.id + '"></th>' +
                                 '<th scope="row">' + (index + 1) + '</th>' +
                                 '<td>' + student.username + '</td>' +

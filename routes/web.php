@@ -6,17 +6,18 @@ use App\Http\Controllers\StudentController;
 use App\Http\Middleware\AuthenticateAdmin;
 use App\Http\Middleware\AuthenticateAdvisor;
 use App\Http\Middleware\AuthenticateStudent;
+use App\Http\Middleware\NoCache;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'index')->name("home");
 
 
-Route::prefix('admin')->middleware(AuthenticateAdmin::class)->group(function () {
+Route::prefix('admin')->middleware([AuthenticateAdmin::class, NoCache::class])->group(function () {
 
     Route::view('/', 'admin.index')->name('admin.home');
 
     Route::view('/login', 'admin.login')->name('admin.login');
-    
+
     Route::post('/login', [AdminController::class, "login"])->name("admin.login");
     Route::get('/logout', [AdminController::class, "logout"])->name("admin.logout");
 
@@ -62,7 +63,7 @@ Route::prefix('admin')->middleware(AuthenticateAdmin::class)->group(function () 
 
 
 
-Route::prefix('advisor')->middleware(AuthenticateAdvisor::class)->group(function () {
+Route::prefix('advisor')->middleware([AuthenticateAdvisor::class, NoCache::class])->group(function () {
 
     Route::view('/', 'advisor.index')->name('advisor.home');
 
@@ -97,15 +98,7 @@ Route::prefix('advisor')->middleware(AuthenticateAdvisor::class)->group(function
 });
 
 
-
-
-
-
-
-
-
-
-Route::prefix('student')->middleware(AuthenticateStudent::class)->group(function () {
+Route::prefix('student')->middleware([AuthenticateStudent::class, NoCache::class])->group(function () {
 
     Route::view('/', 'student.index')->name('student.home');
 

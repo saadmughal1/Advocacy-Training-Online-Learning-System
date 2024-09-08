@@ -24,8 +24,8 @@
         <form action="{{ route('advisor.assign-case') }}" method="POST" class="overflow-auto">
             @csrf
             <input type="hidden" name="case_id" value="{{ request()->query('case_id') }}">
-            <input type="hidden" name="case_name" value="{{ request()->query('case_name') }}">
-            <input type="hidden" name="case_type" value="{{ request()->query('case_type') }}">
+            <input autocomplete="off" type="hidden" name="case_name" value="{{ request()->query('case_name') }}">
+            <input autocomplete="off" type="hidden" name="case_type" value="{{ request()->query('case_type') }}">
 
 
             @if ($studentsNotInStudentCases->isEmpty())
@@ -47,7 +47,7 @@
                                 <th scope="row">{{ ++$index }}</th>
                                 <td>{{ $student->username }}</td>
                                 <td>{{ $student->email }}</td>
-                                <td><input type="checkbox" name="students[]" value="{{ $student->id }}:{{ $student->acsid }}"></td>
+                                <td><input autocomplete="off" type="checkbox" name="students[]" value="{{ $student->id }}:{{ $student->acsid }}"></td>
                             </tr>
                         @endforeach
                     </tbody>

@@ -27,7 +27,7 @@
                 <label class="col-sm-12 col-md-2 col-form-label">Username</label>
                 <div class="col-sm-12 col-md-10">
                     <input class="form-control @error('username') is-invalid @enderror" type="text"
-                        placeholder="Enter advisor username" name="username" value="{{ old('username') }}" />
+                        placeholder="Enter advisor username" name="username" value="{{ old('username') }}" autocomplete="off"/>
                     @error('username')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -37,7 +37,7 @@
                 <label class="col-sm-12 col-md-2 col-form-label">Email</label>
                 <div class="col-sm-12 col-md-10">
                     <input class="form-control @error('email') is-invalid @enderror" placeholder="Enter advisor email"
-                        type="email" name="email" value="{{ old('email') }}" />
+                        type="email" name="email" value="{{ old('email') }}" autocomplete="off"/>
                     @error('email')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -47,7 +47,7 @@
                 <label class="col-sm-12 col-md-2 col-form-label">Ph Number</label>
                 <div class="col-sm-12 col-md-10">
                     <input class="form-control @error('phno') is-invalid @enderror" type="number"
-                        placeholder="Enter advisor phone number" name="phno" value="{{ old('phno') }}" />
+                        placeholder="Enter advisor phone number" name="phno" value="{{ old('phno') }}" autocomplete="off"/>
                     @error('phno')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -57,7 +57,7 @@
                 <label class="col-sm-12 col-md-2 col-form-label">Password</label>
                 <div class="col-sm-12 col-md-10">
                     <input class="form-control @error('password') is-invalid @enderror" type="password"
-                        placeholder="Enter advisor password" name="password" />
+                        placeholder="Enter advisor password" name="password" autocomplete="off"/>
                     @error('password')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
