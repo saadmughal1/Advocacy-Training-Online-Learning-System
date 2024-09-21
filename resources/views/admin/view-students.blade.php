@@ -21,16 +21,24 @@
         @endif
 
         <div class="clearfix mb-20">
-            <div class="pull-left">
+            {{-- <div class="pull-left">
                 <h4 class="text-blue h4">Students</h4>
-            </div>
+            </div> --}}
+            <form action="{{route('admin.search-student')}}" method="GET">
+                <div class="form-group row">
+                    <div class="col-sm-12 col-md-10 mt-2">
+                        <input class="form-control" type="search" placeholder="Search Students" name="search" autocomplete="off" required />
+                    </div>
+                    <div class="col-sm-12 col-md-2 d-flex justify-content-end mt-2">
+                        <button class="btn btn-primary w-100">Search</button>
+                    </div>
+                </div>
+            </form>
         </div>
 
+
         @if ($students->isEmpty())
-            <p class="text-center"><b>No students found.</b>
-                <br>
-                <a href="{{ route('admin.create-student-account') }}">Create Student Account</a>
-            </p>
+            <p class="text-center"><b>No students found.</b></p>
         @else
             <table class="table table-bordered">
                 <thead>

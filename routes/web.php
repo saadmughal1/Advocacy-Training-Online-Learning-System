@@ -22,6 +22,10 @@ Route::prefix('admin')->middleware([AuthenticateAdmin::class, NoCache::class])->
     Route::get('/logout', [AdminController::class, "logout"])->name("admin.logout");
 
 
+    Route::get('/search-student', [AdminController::class, "searchStudent"])->name("admin.search-student");
+    Route::get('/search-advisor', [AdminController::class, "searchAdvisor"])->name("admin.search-advisor");
+
+
 
 
     Route::view('/create-advisor-account', 'admin.create-advisor-account')->name('admin.create-advisor-account');

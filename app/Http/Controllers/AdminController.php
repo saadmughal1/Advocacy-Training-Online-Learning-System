@@ -440,4 +440,24 @@ class AdminController extends Controller
 
         return view('admin.advisor-caseload', ['advisorCases' => $advisorCases]);
     }
+
+    public function searchStudent(Request $request)
+    {
+        $searchTerm = $request->input('search');
+
+        $students = DB::table('students')->where('username', 'LIKE', '%' . $searchTerm . '%')
+            ->get();
+
+        return view('admin.view-students', ['students' => $students]);
+    }
+
+    public function searchAdvisor(Request $request)
+    {
+        $searchTerm = $request->input('search');
+
+        $advisors = DB::table('advisors')->where('username', 'LIKE', '%' . $searchTerm . '%')
+            ->get();
+
+        return view('admin.view-advisors', ['advisors' => $advisors]);
+    }
 }
