@@ -14,7 +14,7 @@
             <p>{{ $data['predetails']['instructions'] }}</p>
         </div>
     </div>
- 
+
 
     @if ($data['predetails']['video'] != 'No video available')
         <div class="clearfix mb-20 text-center">
@@ -25,6 +25,9 @@
             </div>
         </div>
     @endif
+
+
+
 
 
     <div class="clearfix mb-20 text-center">
@@ -228,7 +231,7 @@
     </div>
 
 
-    
+
     <div class="form-group row border p-3">
         <div class="col-sm-12 text-center">
             <h4>Health Insurance for Children</h4>

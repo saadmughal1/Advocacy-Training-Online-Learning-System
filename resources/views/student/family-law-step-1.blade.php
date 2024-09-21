@@ -55,20 +55,21 @@
         @endif
 
 
+
         <div class="clearfix mb-20 text-center">
             <div class="">
                 <h6 class="text-blue">FAMILY LAW CLIENT INTERVIEW FORM</h6>
                 <p></p>
             </div>
         </div>
- 
+
 
         <form action="{{ route('student.insert-family-law-step-1') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="aid" value="{{ request()->query('aid') }}">
             <input type="hidden" name="caseid" value="{{ request('caseId') }}">
 
-          
+
 
 
 

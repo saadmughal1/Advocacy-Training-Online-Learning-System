@@ -59,7 +59,7 @@
             </div>
 
 
-
+            {{-- step 1 --}}
             <div class="pd-20 card-box mb-30">
                 <div class="clearfix">
                     <div class="pull-left">
@@ -88,8 +88,10 @@
                     </div>
                 </div>
 
+
+
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Video Link</label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Video</label>
                     <div class="col-sm-12 col-md-10">
                         <input class="form-control" type="file" accept="video/mp4" name="step-1-video" />
                         @error('step-1-video')
@@ -100,7 +102,7 @@
 
             </div>
 
-
+            {{-- step 2 --}}
             <div class="pd-20 card-box mb-30">
                 <div class="clearfix">
                     <div class="pull-left">
@@ -131,7 +133,7 @@
 
             </div>
 
-
+            {{-- step 3 --}}
             <div class="pd-20 card-box mb-30">
                 <div class="clearfix">
                     <div class="pull-left">
@@ -162,7 +164,7 @@
 
             </div>
 
-
+            {{-- step 4 --}}
             <div class="pd-20 card-box mb-30">
                 <div class="clearfix">
                     <div class="pull-left">
@@ -193,7 +195,7 @@
 
             </div>
 
-
+            {{-- step 5 --}}
             <div class="pd-20 card-box mb-30">
                 <div class="clearfix">
                     <div class="pull-left">
@@ -224,7 +226,7 @@
 
             </div>
 
-
+            {{-- step 6 --}}
             <div class="pd-20 card-box mb-30">
                 <div class="clearfix">
                     <div class="pull-left">
@@ -255,8 +257,7 @@
 
             </div>
 
-
-
+            {{-- step 7 --}}
             <div class="pd-20 card-box mb-30">
                 <div class="clearfix">
                     <div class="pull-left">
@@ -286,7 +287,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Video Link</label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Video</label>
                     <div class="col-sm-12 col-md-10">
                         <input class="form-control" type="file" accept="video/mp4" name="step-7-video" />
                         @error('step-7-video')
@@ -297,8 +298,7 @@
 
             </div>
 
-
-
+            {{-- step 8 --}}
             <div class="pd-20 card-box mb-30">
                 <div class="clearfix">
                     <div class="pull-left">
@@ -329,7 +329,7 @@
 
             </div>
 
-
+            {{-- step 9 --}}
             <div class="pd-20 card-box mb-30">
                 <div class="clearfix">
                     <div class="pull-left">
@@ -359,7 +359,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Video Link</label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Video</label>
                     <div class="col-sm-12 col-md-10">
                         <input class="form-control" type="file" accept="video/mp4" name="step-9-video" />
                         @error('step-9-video')
@@ -370,6 +370,7 @@
 
             </div>
 
+            {{-- step 10 --}}
             <div class="pd-20 card-box mb-30">
                 <div class="clearfix">
                     <div class="pull-left">
@@ -399,7 +400,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Video Link</label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Video</label>
                     <div class="col-sm-12 col-md-10">
                         <input class="form-control" type="file" accept="video/mp4" name="step-10-video" />
                         @error('step-10-video')
@@ -410,6 +411,7 @@
 
             </div>
 
+            {{-- step 11 --}}
             <div class="pd-20 card-box mb-30">
                 <div class="clearfix">
                     <div class="pull-left">
@@ -439,7 +441,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Video Link</label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Video</label>
                     <div class="col-sm-12 col-md-10">
                         <input class="form-control" type="file" accept="video/mp4" name="step-11-video" />
                         @error('step-11-video')
@@ -450,6 +452,7 @@
 
             </div>
 
+            {{-- step 12 --}}
             <div class="pd-20 card-box mb-30">
                 <div class="clearfix">
                     <div class="pull-left">
@@ -479,7 +482,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Video Link</label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Video</label>
                     <div class="col-sm-12 col-md-10">
                         <input class="form-control" type="file" accept="video/mp4" name="step-12-video" />
                         @error('step-12-video')
@@ -489,6 +492,7 @@
                 </div>
             </div>
 
+            {{-- step 13 --}}
             <div class="pd-20 card-box mb-30">
                 <div class="clearfix">
                     <div class="pull-left">
@@ -519,7 +523,7 @@
 
             </div>
 
-
+            {{-- step 13 --}}
             <div class="pd-20 card-box mb-30">
                 <div class="clearfix">
                     <div class="pull-left">
@@ -574,7 +578,8 @@
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Enter the name of case</label>
                     <div class="col-sm-12 col-md-10">
-                        <input class="form-control" type="text" name="case-name" placeholder="Enter the name of case" />
+                        <input class="form-control" type="text" name="case-name"
+                            placeholder="Enter the name of case" />
                         @error('case-name')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -607,9 +612,6 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
     <script>
-
-
-
         $(document).ready(function() {
 
             var caseType = "{{ session('case_type') }}";
@@ -634,7 +636,7 @@
                 updateContent();
             });
         });
-    
+
         document.addEventListener('DOMContentLoaded', function() {
             const successMessage = document.getElementById('success-message');
             if (successMessage) {

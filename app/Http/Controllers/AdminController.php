@@ -188,14 +188,16 @@ class AdminController extends Controller
             'step-14-instructions' => 'required|string',
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        // $validator = Validator::make($request->all(), $rules);
 
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput()
-                ->with('case_type', 'family-law');
-        }
+        // if ($validator->fails()) {
+        //     return redirect()->back()
+        //         ->withErrors($validator)
+        //         ->withInput()
+        //         ->with('case_type', 'family-law');
+        // }
+
+
 
         $step1VideoPath = $request->file('step-1-video') ? $request->file('step-1-video')->store('videos', 'public') : null;
         $step7VideoPath = $request->file('step-7-video') ? $request->file('step-7-video')->store('videos', 'public') : null;
@@ -203,6 +205,10 @@ class AdminController extends Controller
         $step10VideoPath = $request->file('step-10-video') ? $request->file('step-10-video')->store('videos', 'public') : null;
         $step11VideoPath = $request->file('step-11-video') ? $request->file('step-11-video')->store('videos', 'public') : null;
         $step12VideoPath = $request->file('step-12-video') ? $request->file('step-12-video')->store('videos', 'public') : null;
+
+
+
+
 
         DB::table('family_law_cases')->insert([
             'case_name' => $request->input('case-name'),
@@ -271,6 +277,9 @@ class AdminController extends Controller
         return redirect()->back()
             ->with('success', 'Case initiated successfully!');
     }
+
+
+
     public function getCasesByType(Request $request)
     {
         $request->validate([
@@ -280,10 +289,24 @@ class AdminController extends Controller
         $caseType = $request->input('case_type');
 
         if ($caseType === 'family-law') {
-            $cases = DB::table('family_law_cases')->get();
+            $cases = DB::table('family_law_cases as flc')
+                ->leftJoin('advisor_cases as ac', function ($join) {
+                    $join->on('ac.case_id', '=', 'flc.id')
+                        ->where('ac.case_type', 'family_law');
+                })
+                ->whereNull('ac.case_id')
+                ->select('flc.*')
+                ->get();
             return response()->json($cases);
         } else if ($caseType === 'early-bird-moot') {
-            $cases = DB::table('early_bird_moot_cases')->get();
+            $cases = DB::table('early_bird_moot_cases as ebm')
+                ->leftJoin('advisor_cases as ac', function ($join) {
+                    $join->on('ac.case_id', '=', 'ebm.id')
+                        ->where('ac.case_type', 'early_bird_moot');
+                })
+                ->whereNull('ac.case_id')
+                ->select('ebm.*')
+                ->get();
             return response()->json($cases);
         } else {
             return response()->json([
@@ -291,6 +314,9 @@ class AdminController extends Controller
             ], 400);
         }
     }
+
+
+
     public function login(Request $request)
     {
         $credentials = $request->validate([
