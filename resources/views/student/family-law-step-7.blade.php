@@ -31,13 +31,19 @@
             </div>
         </div>
 
+       
         @if (!empty($case->step_7_video))
             <div class="clearfix mb-20 text-center">
                 <div class="">
                     <h5 class="text-blue text-center">Role Play Video</h5>
+
+                    @if (filter_var($case->step_7_video, FILTER_VALIDATE_URL))
+                        <a href="{{ $case->step_7_video }}" target="_blank" class="btn btn-primary mt-3">View Video</a>
+                    @else
+                        <video class="w-100" src="{{ asset('/storage/' . $case->step_7_video) }}" controls
+                            type="video/mp4"></video>
+                    @endif
                 </div>
-                <video class="w-100" src="{{ asset('/storage/' . $case->step_7_video) }}" controls
-                    type="video/mp4"></video>
             </div>
         @endif
 

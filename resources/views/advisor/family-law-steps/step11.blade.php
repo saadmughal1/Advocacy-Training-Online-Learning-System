@@ -18,12 +18,20 @@
     </div>
 
 
+
     @if ($data['predetails']['video'] != 'No video available')
         <div class="clearfix mb-20 text-center">
             <div class="">
                 <h5 class="text-blue text-center">Role Play Video</h5>
-                <video class="w-100" src="{{ asset('/storage/' . $data['predetails']['video']) }}" controls
-                    type="video/mp4"></video>
+
+                @if (filter_var($data['predetails']['video'], FILTER_VALIDATE_URL))
+                    <a href="{{ $data['predetails']['video'] }}" target="_blank" class="btn btn-primary mt-3">View
+                        Video</a>
+                @else
+                    <video class="w-100" src="{{ asset('/storage/' . $data['predetails']['video']) }}" controls
+                        type="video/mp4"></video>
+                @endif
+
             </div>
         </div>
     @endif
@@ -51,7 +59,7 @@
         </div>
     </div>
 
-    
+
     <div class="form-group row border p-3">
         <div class="col-sm-12 text-center">
             <h4>The outlook based on the following:</h4>

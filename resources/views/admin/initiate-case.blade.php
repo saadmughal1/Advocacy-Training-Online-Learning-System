@@ -93,6 +93,8 @@
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Video</label>
                     <div class="col-sm-12 col-md-10">
+                        <input placeholder="Video Url" class="form-control mb-3" type="url" name="step-1-video-url" />
+                        <p class="text-center">OR</p>
                         <input class="form-control" type="file" accept="video/mp4" name="step-1-video" />
                         @error('step-1-video')
                             <div class="text-danger">{{ $message }}</div>
@@ -289,6 +291,9 @@
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Video</label>
                     <div class="col-sm-12 col-md-10">
+                        <input placeholder="Video Url" class="form-control mb-3" type="url"
+                            name="step-7-video-url" />
+                        <p class="text-center">OR</p>
                         <input class="form-control" type="file" accept="video/mp4" name="step-7-video" />
                         @error('step-7-video')
                             <div class="text-danger">{{ $message }}</div>
@@ -361,6 +366,9 @@
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Video</label>
                     <div class="col-sm-12 col-md-10">
+                        <input placeholder="Video Url" class="form-control mb-3" type="url"
+                            name="step-9-video-url" />
+                        <p class="text-center">OR</p>
                         <input class="form-control" type="file" accept="video/mp4" name="step-9-video" />
                         @error('step-9-video')
                             <div class="text-danger">{{ $message }}</div>
@@ -402,6 +410,9 @@
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Video</label>
                     <div class="col-sm-12 col-md-10">
+                        <input placeholder="Video Url" class="form-control mb-3" type="url"
+                            name="step-10-video-url" />
+                        <p class="text-center">OR</p>
                         <input class="form-control" type="file" accept="video/mp4" name="step-10-video" />
                         @error('step-10-video')
                             <div class="text-danger">{{ $message }}</div>
@@ -443,6 +454,8 @@
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Video</label>
                     <div class="col-sm-12 col-md-10">
+                        <input placeholder="Video Url" class="form-control mb-3" type="url" name="step-11-video-url" />
+                        <p class="text-center">OR</p>
                         <input class="form-control" type="file" accept="video/mp4" name="step-11-video" />
                         @error('step-11-video')
                             <div class="text-danger">{{ $message }}</div>
@@ -484,6 +497,8 @@
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Video</label>
                     <div class="col-sm-12 col-md-10">
+                        <input placeholder="Video Url" class="form-control mb-3" type="url" name="step-12-video-url" />
+                        <p class="text-center">OR</p>
                         <input class="form-control" type="file" accept="video/mp4" name="step-12-video" />
                         @error('step-12-video')
                             <div class="text-danger">{{ $message }}</div>

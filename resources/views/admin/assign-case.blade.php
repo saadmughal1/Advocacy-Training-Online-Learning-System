@@ -22,7 +22,7 @@
                         style="width: 100%; height: 38px">
                         <option value="">Select Case Type</option>
                         <option value="family-law">Family Law</option>
-                        <option value="early-bird-moot">Early Bird Moot</option>
+                        {{-- <option value="early-bird-moot">Early Bird Moot</option> --}}
                     </select>
                 </div>
             </div>

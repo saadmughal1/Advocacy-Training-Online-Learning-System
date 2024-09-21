@@ -198,13 +198,44 @@ class AdminController extends Controller
         // }
 
 
+        $step1VideoUrl = $request->input('step-1-video-url');
+        $step7VideoUrl = $request->input('step-7-video-url');
+        $step9VideoUrl = $request->input('step-9-video-url');
+        $step10VideoPUrl = $request->input('step-10-video-url');
+        $step11VideoPUrl = $request->input('step-11-video-url');
+        $step12VideoPUrl = $request->input('step-12-video-url');
 
-        $step1VideoPath = $request->file('step-1-video') ? $request->file('step-1-video')->store('videos', 'public') : null;
-        $step7VideoPath = $request->file('step-7-video') ? $request->file('step-7-video')->store('videos', 'public') : null;
-        $step9VideoPath = $request->file('step-9-video') ? $request->file('step-9-video')->store('videos', 'public') : null;
-        $step10VideoPath = $request->file('step-10-video') ? $request->file('step-10-video')->store('videos', 'public') : null;
-        $step11VideoPath = $request->file('step-11-video') ? $request->file('step-11-video')->store('videos', 'public') : null;
-        $step12VideoPath = $request->file('step-12-video') ? $request->file('step-12-video')->store('videos', 'public') : null;
+
+
+        $step1VideoPath = $request->input('step-1-video-url') ?: ($request->file('step-1-video') ? $request->file('step-1-video')->store('videos', 'public') : null);
+
+
+        $step7VideoPath = $request->input('step-7-video-url')
+            ?: ($request->file('step-7-video') ? $request->file('step-7-video')->store('videos', 'public') : null);
+
+
+        $step9VideoPath = $request->input('step-9-video-url')
+            ?: ($request->file('step-9-video') ? $request->file('step-9-video')->store('videos', 'public') : null);
+
+
+        $step10VideoPath = $request->input('step-10-video-url')
+            ?: ($request->file('step-10-video') ? $request->file('step-10-video')->store('videos', 'public') : null);
+
+
+        $step11VideoPath = $request->input('step-11-video-url')
+            ?: ($request->file('step-11-video') ? $request->file('step-11-video')->store('videos', 'public') : null);
+
+
+        $step12VideoPath = $request->input('step-12-video-url')
+            ?: ($request->file('step-12-video') ? $request->file('step-12-video')->store('videos', 'public') : null);
+
+
+        // $step1VideoPath = $request->file('step-1-video') ? $request->file('step-1-video')->store('videos', 'public') : null;
+        // $step7VideoPath = $request->file('step-7-video') ? $request->file('step-7-video')->store('videos', 'public') : null;
+        // $step9VideoPath = $request->file('step-9-video') ? $request->file('step-9-video')->store('videos', 'public') : null;
+        // $step10VideoPath = $request->file('step-10-video') ? $request->file('step-10-video')->store('videos', 'public') : null;
+        // $step11VideoPath = $request->file('step-11-video') ? $request->file('step-11-video')->store('videos', 'public') : null;
+        // $step12VideoPath = $request->file('step-12-video') ? $request->file('step-12-video')->store('videos', 'public') : null;
 
 
 
