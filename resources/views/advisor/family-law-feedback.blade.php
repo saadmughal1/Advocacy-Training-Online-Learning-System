@@ -30,13 +30,14 @@
     <div class="accordion accordion-flush" id="family-law-steps-accordion">
         @foreach ($response as $index => $step)
             <div class="accordion-item">
-                <button {{ $response[$index]['form-data'] === null ? 'disabled' : 'style=background:#e6e6e6;' }}
+                <button
+                    {{ $response[$index]['form-data'] === null ? 'disabled style=background:#dc3545;' : 'style=background:#198754;' }}
                     class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                     data-bs-target="#flush-collapse{{ $loop->iteration }}" aria-expanded="false"
                     aria-controls="flush-collapse{{ $loop->iteration }}">
-                    <h6 class="text-blue">
+                    <h6 class="text-light">
                         Step: {{ $loop->iteration }} - {{ $steps_titles[$loop->iteration - 1] }}
-                        {!! $loop->iteration-1 != 0 && $response['step' . $loop->iteration-1]['status'] === 0
+                        {!! $loop->iteration - 1 != 0 && $response['step' . $loop->iteration - 1]['status'] === 0
                             ? '<i class="bi bi-lock-fill"></i>'
                             : '<i class="bi bi-unlock-fill"></i>' !!}
                     </h6>
