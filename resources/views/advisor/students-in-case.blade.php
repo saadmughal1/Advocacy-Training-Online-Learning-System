@@ -25,7 +25,7 @@
                         <th scope="col">#</th>
                         <th scope="col">Username</th>
                         <th scope="col">Email</th>
-                        {{-- <th scope="col">Phone Number</th> --}}
+                        <th scope="col"></th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -35,7 +35,12 @@
                             <th scope="row">{{ $index + 1 }}</th>
                             <td>{{ $student->username }}</td>
                             <td>{{ $student->email }}</td>
-                            {{-- <td>{{ $student->phone_number }}</td> --}}
+                            <td class="text-center">
+                                <a class="btn btn-primary"
+                                    href="{{ route('advisor.query', ['sid' => $student->id, 'username' => $student->username]) }}">
+                                    Chat
+                                </a>
+                            </td>
                             <td>
                                 <a class="btn btn-primary"
                                     href="{{ route('advisor.student-feedback', ['caseType' => request('caseType'), 'caseId' => request('caseId'), 'sid' => $student->id]) }}">View

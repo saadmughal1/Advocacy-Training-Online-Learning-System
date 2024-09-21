@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class StudentController extends Controller
 {
@@ -1064,5 +1065,47 @@ class StudentController extends Controller
         }
 
         return true;
+    }
+
+
+
+    public function query(Request $request)
+    {
+        $aid = $request->input('aid');
+        $sid = Auth::guard('student')->id();
+
+        $messages = DB::table('messages')
+            ->where('advisor_id', $aid)
+            ->where('student_id', $sid)
+            ->get();
+
+        if ($messages->isEmpty()) {
+            DB::table('messages')->insert([
+                'advisor_id' => $aid,
+                'student_id' => $sid,
+                'student_message' => '',
+                'advisor_message' => '',
+                'created_at' => now(),      // timestamps
+                'updated_at' => now(),
+            ]);
+        }
+
+        return view('student.query', compact('messages'));
+    }
+    public function sendMessage(Request $request)
+    {
+        $message = $request->input('message');
+        $aid = $request->input('aid');
+        $sid = Auth::guard('student')->id();
+
+        DB::table('messages')
+            ->where('advisor_id', $aid)
+            ->where('student_id', $sid)
+            ->update([
+                'student_message' => $message,
+                'updated_at' => now(),
+            ]);
+        Session::flash('message', 'Message sent successfully!');
+        return redirect()->back();
     }
 }

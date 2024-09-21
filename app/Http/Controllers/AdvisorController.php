@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use ZipArchive;
 
 class AdvisorController extends Controller
@@ -105,22 +106,22 @@ class AdvisorController extends Controller
         $advisor_case_table_id = $request->query('advisor_case_table_id');
 
         $students = DB::table('advisor_case_student as acs')
-        ->join('advisor_cases as ac', function ($join) {
-            $join->on('acs.advisor_case_id', '=', 'ac.id')
-                 ->on('acs.advisor_id', '=', 'ac.advisor_id');
-        })
-        ->join('students as s', 's.id', '=', 'acs.student_id')
-        ->where('ac.case_type', $caseType)
-        ->where('ac.case_id', $caseId)
-        ->where('ac.advisor_id', $advisorId)
-        ->whereNotIn('acs.id', function ($query) use ($caseId, $caseType) {
-            $query->select('sc.acsid')
-                  ->from('student_cases as sc')
-                  ->where('sc.advisor_case_id', $caseId)
-                  ->where('sc.case_type', $caseType);
-        })
-        ->select('s.*', 'acs.id as acsid')
-        ->get();
+            ->join('advisor_cases as ac', function ($join) {
+                $join->on('acs.advisor_case_id', '=', 'ac.id')
+                    ->on('acs.advisor_id', '=', 'ac.advisor_id');
+            })
+            ->join('students as s', 's.id', '=', 'acs.student_id')
+            ->where('ac.case_type', $caseType)
+            ->where('ac.case_id', $caseId)
+            ->where('ac.advisor_id', $advisorId)
+            ->whereNotIn('acs.id', function ($query) use ($caseId, $caseType) {
+                $query->select('sc.acsid')
+                    ->from('student_cases as sc')
+                    ->where('sc.advisor_case_id', $caseId)
+                    ->where('sc.case_type', $caseType);
+            })
+            ->select('s.*', 'acs.id as acsid')
+            ->get();
 
         return view('advisor.view-students', [
             'caseName' => $caseName,
@@ -181,8 +182,6 @@ class AdvisorController extends Controller
         return redirect()->route('advisor.view-students', ['case_id' => $caseId, 'case_name' => $caseName, 'case_type' => $caseType])
             ->with('success', 'Students assigned successfully');
     }
-
-
     public function getAssignedStudentsByCaseId(Request $request)
     {
         $caseType = $request->query('caseType');
@@ -207,7 +206,6 @@ class AdvisorController extends Controller
 
         return view('advisor.students-in-case', ['students' => $students]);
     }
-
     public function getStudentCaseFeedback(Request $request)
     {
 
@@ -301,8 +299,6 @@ class AdvisorController extends Controller
             return response()->json(['error' => 'Invalid case type'], 400);
         }
     }
-
-
     public function addFeedbackMarksFamilyLawCase(Request $request)
     {
         $fid = $request->query('fid');
@@ -320,8 +316,6 @@ class AdvisorController extends Controller
 
         return redirect()->back()->with('status', 'Feedback and marks updated successfully.');
     }
-
-
     public function nextStepFamilyLaw(Request $request)
     {
         $fid = $request->query('fid');
@@ -336,7 +330,6 @@ class AdvisorController extends Controller
 
         return redirect()->back()->with('status', '');
     }
-
     public function downloadFamilyLawStepMultipleFilesInZip(Request $request)
     {
         $fileAttachments = $request->input('file_attachment');
@@ -366,5 +359,46 @@ class AdvisorController extends Controller
         }
 
         return response()->download($zipPath)->deleteFileAfterSend(true);
+    }
+
+
+    public function query(Request $request)
+    {
+        $sid = $request->input('sid');
+        $aid = Auth::guard('advisor')->id();
+
+        $messages = DB::table('messages')
+            ->where('advisor_id', $aid)
+            ->where('student_id', $sid)
+            ->get();
+
+        if ($messages->isEmpty()) {
+            DB::table('messages')->insert([
+                'advisor_id' => $aid,
+                'student_id' => $sid,
+                'student_message' => '',
+                'advisor_message' => '',
+                'created_at' => now(),      // timestamps
+                'updated_at' => now(),
+            ]);
+        }
+
+        return view('advisor.query', compact('messages'));
+    }
+    public function sendMessage(Request $request)
+    {
+        $message = $request->input('message');
+        $sid = $request->input('sid');
+        $aid = Auth::guard('advisor')->id();
+
+        DB::table('messages')
+            ->where('advisor_id', $aid)
+            ->where('student_id', $sid)
+            ->update([
+                'advisor_message' => $message,
+                'updated_at' => now(),
+            ]);
+        Session::flash('message', 'Message sent successfully!');
+        return redirect()->back();
     }
 }

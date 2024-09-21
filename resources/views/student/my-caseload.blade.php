@@ -40,6 +40,7 @@
                         <th scope="col">Case Type</th>
                         <th scope="col">Case Name</th>
                         <th scope="col"></th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,7 +50,13 @@
                             <td>{{ $case->advisor_username }}</td>
                             <td>{{ $case->case_type }}</td>
                             <td>{{ $case->case_name }}</td>
-                            <td>
+                            <td class="text-center">
+                                <a class="btn btn-primary"
+                                    href="{{ route('student.query', ['aid' => $case->advisor_id, 'username' => $case->advisor_username]) }}">
+                                    Chat
+                                </a>
+                            </td>
+                            <td class="text-center">
                                 @if ($case->status == false)
                                     <a class="btn btn-primary"
                                         href="{{ route('student.start-case', ['caseId' => $case->student_case_id, 'caseType' => $case->case_type, 'aid' => $case->advisor_id]) }}">

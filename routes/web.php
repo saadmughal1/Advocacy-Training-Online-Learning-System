@@ -84,7 +84,8 @@ Route::prefix('advisor')->middleware([AuthenticateAdvisor::class, NoCache::class
 
     Route::get('/students-in-case', [AdvisorController::class, 'getAssignedStudentsByCaseId'])->name('advisor.students-in-case');
 
-
+    Route::get('/query', [AdvisorController::class, 'query'])->name('advisor.query');
+    Route::post('/send-message', [AdvisorController::class, 'sendMessage'])->name('advisor.send-message');
 
 
     Route::get('/student-feedback', [AdvisorController::class, 'getStudentCaseFeedback'])->name('advisor.student-feedback');
@@ -112,6 +113,10 @@ Route::prefix('student')->middleware([AuthenticateStudent::class, NoCache::class
 
     Route::get('/my-caseload', [StudentController::class, 'displayMyCases'])->name('student.my-caseload');
     Route::get('/start-case', [StudentController::class, 'startCase'])->name('student.start-case');
+
+    Route::get('/query', [StudentController::class, 'query'])->name('student.query');
+    Route::post('/send-message', [StudentController::class, 'sendMessage'])->name('student.send-message');
+
 
     // Family Law
     Route::get('/family-law-step-1', [StudentController::class, 'familyLawStepsPreDetail'])->name('student.family-law-step-1');
