@@ -13,8 +13,8 @@ class AdminController extends Controller
     public function createAdvisorAccount(Request $request)
     {
         $validatedData = $request->validate([
-            'username' => 'required|string|unique:advisors,username',
-            'email' => 'required|string|email',
+            'username' => 'required|string',
+            'email' => 'required|string|email|unique:advisors,email',
             'phno' => 'required|string',
             'password' => 'required|alpha_num:ascii',
         ]);
@@ -82,8 +82,8 @@ class AdminController extends Controller
     public function createStudentAccount(Request $request)
     {
         $validatedData = $request->validate([
-            'username' => 'required|string|unique:students,username',
-            'email' => 'required|string|email',
+            'username' => 'required|string',
+            'email' => 'required|string|email|unique:students,email',
             'phno' => 'required|string',
             'password' => 'required|alpha_num:ascii',
         ]);
@@ -502,7 +502,7 @@ class AdminController extends Controller
     {
         $searchTerm = $request->input('search');
 
-        $students = DB::table('students')->where('username', 'LIKE', '%' . $searchTerm . '%')
+        $students = DB::table('students')->where('email', 'LIKE', '%' . $searchTerm . '%')
             ->get();
 
         return view('admin.view-students', ['students' => $students]);
@@ -512,7 +512,7 @@ class AdminController extends Controller
     {
         $searchTerm = $request->input('search');
 
-        $advisors = DB::table('advisors')->where('username', 'LIKE', '%' . $searchTerm . '%')
+        $advisors = DB::table('advisors')->where('email', 'LIKE', '%' . $searchTerm . '%')
             ->get();
 
         return view('admin.view-advisors', ['advisors' => $advisors]);

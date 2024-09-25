@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('advisors', function (Blueprint $table) {
             $table->id();
-            $table->string('username')->unique();
-            $table->string('email');
+            $table->string('username');
+            $table->string('email')->unique();
             $table->string('phone_number');
             $table->string('password');
             $table->rememberToken();
