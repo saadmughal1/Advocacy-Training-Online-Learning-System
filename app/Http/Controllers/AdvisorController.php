@@ -14,18 +14,18 @@ class AdvisorController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'username' => 'required|string',
+            'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
-        $advisor = DB::table('advisors')->where('username', $credentials['username'])->first();
+        $advisor = DB::table('advisors')->where('email', $credentials['email'])->first();
 
         if ($advisor && $advisor->password === $credentials['password']) {
             Auth::guard('advisor')->loginUsingId($advisor->id);
             return redirect()->route('advisor.home');
         }
 
-        return redirect()->back()->with('error', 'Invalid Username or Password');
+        return redirect()->back()->with('error', 'Invalid Email or Password');
     }
     public function logout()
     {

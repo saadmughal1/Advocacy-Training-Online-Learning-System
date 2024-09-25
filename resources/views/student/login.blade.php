@@ -18,13 +18,13 @@
                         <form action="{{ route('student.login') }}" method="POST">
                             @csrf
                             <div class="input-group custom mb-0 mt-4">
-                                <input type="text" class="form-control form-control-lg" placeholder="Username"
-                                    name="username" value="{{ old('username') }}" />
+                                <input type="text" class="form-control form-control-lg" placeholder="Email"
+                                    name="email" value="{{ old('email') }}" required/>
                                 <div class="input-group-append custom">
                                     <span class="input-group-text"><i class="icon-copy dw dw-user1"></i></span>
                                 </div>
                             </div>
-                            @error('username')
+                            @error('email')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
 
