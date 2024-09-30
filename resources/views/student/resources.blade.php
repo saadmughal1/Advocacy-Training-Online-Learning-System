@@ -1,55 +1,35 @@
 @extends('../layouts/app')
 
-@section('page-title', 'Display Cases')
+@section('page-title', 'Resources')
 
 @section('content')
 
-    @includeIf('admin.partials._navbar')
-    @includeIf('admin.partials._sidebar')
+    @includeIf('student.partials._navbar')
+    @includeIf('student.partials._sidebar')
 
     <div class="pd-20 card-box mb-30 overflow-auto">
-        @if (session('message'))
-            <div class="alert alert-success" id="success-message">
-                {{ session('message') }}
-            </div>
-        @endif
-
-        @if (session('error'))
-            <div class="alert alert-danger" id="error-message">
-                {{ session('error') }}
-            </div>
-        @endif
 
         <div class="clearfix mb-20">
             <div class="pull-left">
-                <h4 class="text-blue h4">Display Cases</h4>
+                <h4 class="text-blue h4">Resources</h4>
             </div>
         </div>
 
-        @if ($cases->isEmpty())
-            <p class="text-center"><b>No cases found.</b></p>
+        @if ($resources->isEmpty())
+            <p class="text-center"><b>No Resources found.</b></p>
         @else
             <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Case Type</th>
-                        <th scope="col">Case Name</th>
-                        <th></th>
-                        <th></th>
+                        <th scope="col">Url</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($cases as $index => $case)
+                    @foreach ($resources as $index => $resource)
                         <tr>
                             <th scope="row">{{ $index + 1 }}</th>
-                            <td>{{ $case['case_type'] }}</td>
-                            <td>{{ $case['case_name'] }}</td>
-                            <td><a href="{{ route('admin.resources', ['caseId' => $case['id']]) }}"
-                                    class="btn btn-primary">Resources</a></td>
-                            <td><a href="{{ route('admin.training-material', ['caseId' => $case['id']]) }}"
-                                    class="btn btn-primary">Training
-                                    Material</a></td>
+                            <td><a target="_blank" href="{{ $resource->url }}">{{ $resource->url }}</a></td>
                         </tr>
                     @endforeach
                 </tbody>

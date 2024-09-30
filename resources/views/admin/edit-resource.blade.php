@@ -1,13 +1,13 @@
 @extends('../layouts/app')
 
-@section('page-title', 'Display Cases')
+@section('page-title', 'Edit Resources')
 
 @section('content')
 
     @includeIf('admin.partials._navbar')
     @includeIf('admin.partials._sidebar')
 
-    <div class="pd-20 card-box mb-30 overflow-auto">
+    <div class="pd-20 card-box mb-30">
         @if (session('message'))
             <div class="alert alert-success" id="success-message">
                 {{ session('message') }}
@@ -20,42 +20,31 @@
             </div>
         @endif
 
-        <div class="clearfix mb-20">
+        <div class="clearfix">
             <div class="pull-left">
-                <h4 class="text-blue h4">Display Cases</h4>
+                <h4 class="text-blue h4">Edit Resource</h4>
             </div>
         </div>
 
-        @if ($cases->isEmpty())
-            <p class="text-center"><b>No cases found.</b></p>
-        @else
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Case Type</th>
-                        <th scope="col">Case Name</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($cases as $index => $case)
-                        <tr>
-                            <th scope="row">{{ $index + 1 }}</th>
-                            <td>{{ $case['case_type'] }}</td>
-                            <td>{{ $case['case_name'] }}</td>
-                            <td><a href="{{ route('admin.resources', ['caseId' => $case['id']]) }}"
-                                    class="btn btn-primary">Resources</a></td>
-                            <td><a href="{{ route('admin.training-material', ['caseId' => $case['id']]) }}"
-                                    class="btn btn-primary">Training
-                                    Material</a></td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        @endif
+        <form action="{{ route('admin.update-resource', $resource->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="caseId" value="{{ $resource->caseid }}">
+            <div class="form-group row">
+                <label class="col-sm-12 col-md-2 col-form-label">Url</label>
+                <div class="col-sm-12 col-md-10">
+                    <input class="form-control @error('url') is-invalid @enderror" type="url" placeholder="Enter URL"
+                        name="url" value="{{ old('url', $resource->url) }}" autocomplete="off" required />
+                    @error('url')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
 
+            <div class="form-group row d-flex justify-content-end">
+                <button class="btn btn-primary">Update</button>
+            </div>
+        </form>
     </div>
 
 @endsection

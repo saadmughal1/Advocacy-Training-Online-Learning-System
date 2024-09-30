@@ -360,8 +360,6 @@ class AdvisorController extends Controller
 
         return response()->download($zipPath)->deleteFileAfterSend(true);
     }
-
-
     public function query(Request $request)
     {
         $sid = $request->input('sid');
@@ -400,5 +398,145 @@ class AdvisorController extends Controller
             ]);
         Session::flash('message', 'Message sent successfully!');
         return redirect()->back();
+    }
+    public function resources($caseId)
+    {
+        $resources = DB::table('resources')
+            ->where('caseid', $caseId)
+            ->where('advisor_id', Auth::guard('advisor')->id())
+            ->get();
+
+        return view('advisor.resources', [
+            'resources' => $resources,
+            'caseId' => $caseId
+        ]);
+    }
+    public function addResource(Request $request)
+    {
+        $request->validate([
+            'caseId' => 'required|integer',
+            'url' => 'required|url',
+        ]);
+
+        $caseId = $request->input('caseId');
+        $url = $request->input('url');
+
+        DB::table('resources')->insert([
+            'caseid' => $caseId,
+            'url' => $url,
+            'advisor_id' => Auth::guard('advisor')->id(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->route('advisor.resources', ['caseId' => $caseId])
+            ->with('success', 'Resource added successfully.');
+    }
+    public function editResource($id)
+    {
+        $resource = DB::table('resources')->where('id', $id)->first();
+
+        if (!$resource) {
+            return redirect()->route('advisor.resources')->with('error', 'Resource not found.');
+        }
+
+        return view('advisor.edit-resource', compact('resource'));
+    }
+    public function updateResource(Request $request, $id)
+    {
+        $request->validate([
+            'url' => 'required|url',
+            'caseId' => 'required|integer',
+        ]);
+
+        $updated = DB::table('resources')
+            ->where('id', $id)
+            ->update([
+                'url' => $request->input('url'),
+                'caseid' => $request->input('caseId'),
+            ]);
+
+
+        if ($updated) {
+            return redirect()->route('advisor.resources', ['caseId' => $request->input('caseId')])->with('success', 'Resource updated successfully.');
+        } else {
+            return redirect()->back()->with('error', 'Failed to update resource. Please try again.');
+        }
+    }
+    public function deleteResource($id, $caseId)
+    {
+        DB::table('resources')->where('id', $id)->delete();
+        return redirect()->route('advisor.resources', ['caseId' => $caseId])->with('success', 'Resource deleted successfully.');
+    }
+
+    public function trainingMaterial($caseId)
+    {
+        $advisorId = Auth::guard('advisor')->id();
+        $training_material = DB::table('training_material')
+            ->where('caseid', $caseId)
+            ->where('advisor_id', $advisorId)
+            ->get();
+
+        return view('advisor.training-material', [
+            'training_material' => $training_material,
+            'caseId' => $caseId
+        ]);
+    }
+    public function addTrainingMaterial(Request $request)
+    {
+        $request->validate([
+            'zip_file' => 'required|file|mimes:zip|max:2048',
+            'file_name' => 'required|string|max:255',
+        ]);
+
+        $filePath = $request->file('zip_file')->store('training-material', 'public');
+
+        DB::table('training_material')->insert([
+            'material' => $filePath,
+            'file_name' => $request->input('file_name'),
+            'caseid' => $request->input('caseId'),
+            'advisor_id' => Auth::guard('advisor')->id(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->route('advisor.training-material', ['caseId' => $request->caseId])->with('success', 'Training material added successfully!');
+    }
+    public function downloadTrainingMaterial($id)
+    {
+        $material = DB::table('training_material')->where('id', $id)->first();
+
+        if ($material) {
+
+            $filePath = storage_path('app/public/' . $material->material);
+
+            if (file_exists($filePath)) {
+                $originalFileName = basename($material->material);
+                $fileNameToUse = !empty($material->file_name) ? $material->file_name . '.zip' : $originalFileName;
+                return response()->download($filePath, $fileNameToUse)->setStatusCode(200);
+            } else {
+                return redirect()->back()->with('error', 'File not found.');
+            }
+        }
+
+        return redirect()->back()->with('error', 'Training material not found.');
+    }
+    public function deleteTrainingMaterial($id)
+    {
+        $material = DB::table('training_material')->where('id', $id)->first();
+
+        if ($material) {
+            $filePath = storage_path('app/public/' . $material->material);
+
+            if (file_exists($filePath)) {
+                unlink($filePath); // Delete the file
+            }
+
+            DB::table('training_material')->where('id', $id)->delete();
+
+            return redirect()->route('advisor.training-material', ['caseId' => $material->caseid])->with('success', 'Training material deleted successfully!');
+        }
+
+        return redirect()->back()->with('error', 'Training material not found.');
     }
 }

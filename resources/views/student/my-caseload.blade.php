@@ -41,6 +41,8 @@
                         <th scope="col">Case Name</th>
                         <th scope="col"></th>
                         <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -67,6 +69,12 @@
                                 @endif
 
                             </td>
+
+                            <td><a href="{{ route('student.resources', ['caseId' => $case->student_case_id]) }}"
+                                    class="btn btn-primary">Resources</a></td>
+                            <td><a href="{{ route('student.training-material', ['caseId' => $case->student_case_id]) }}"
+                                    class="btn btn-primary">Training
+                                    Material</a></td>
                         </tr>
                     @endforeach
                 </tbody>

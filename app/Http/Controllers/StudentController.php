@@ -25,13 +25,11 @@ class StudentController extends Controller
 
         return redirect()->back()->with('error', 'Invalid Email or Password');
     }
-
     public function logout()
     {
         Auth::guard('student')->logout();
         return redirect()->route('student.login');
     }
-
     public function displayMyCases()
     {
         $studentId = Auth::guard('student')->id();
@@ -73,8 +71,6 @@ class StudentController extends Controller
 
         return view('student.my-caseload', ['cases' => $studentCases]);
     }
-
-
     public function insertOrUpdateFamilyLawStep1(Request $request)
     {
 
@@ -204,7 +200,6 @@ class StudentController extends Controller
 
         return redirect()->route('student.my-caseload');
     }
-
     public function insertOrUpdateFamilyLawStep2(Request $request)
     {
         $student_id = Auth::guard('student')->id();
@@ -259,7 +254,6 @@ class StudentController extends Controller
 
         return redirect()->route('student.my-caseload');
     }
-
     public function insertOrUpdateFamilyLawStep3(Request $request)
     {
         $student_id = Auth::guard('student')->id();
@@ -308,7 +302,6 @@ class StudentController extends Controller
 
         return redirect()->route('student.my-caseload');
     }
-
     public function insertOrUpdateFamilyLawStep4(Request $request)
     {
         $student_id = Auth::guard('student')->id();
@@ -359,7 +352,6 @@ class StudentController extends Controller
 
         return redirect()->route('student.my-caseload');
     }
-
     public function insertOrUpdateFamilyLawStep5(Request $request)
     {
         $student_id = Auth::guard('student')->id();
@@ -428,8 +420,6 @@ class StudentController extends Controller
 
         return redirect()->route('student.my-caseload');
     }
-
-
     public function insertOrUpdateFamilyLawStep6(Request $request)
     {
         $student_id = Auth::guard('student')->id();
@@ -506,7 +496,6 @@ class StudentController extends Controller
 
         return redirect()->route('student.my-caseload');
     }
-
     public function insertOrUpdateFamilyLawStep7(Request $request)
     {
         $student_id = Auth::guard('student')->id();
@@ -563,7 +552,6 @@ class StudentController extends Controller
 
         return redirect()->route('student.my-caseload');
     }
-
     public function insertOrUpdateFamilyLawStep8(Request $request)
     {
 
@@ -628,7 +616,6 @@ class StudentController extends Controller
 
         return redirect()->route('student.my-caseload');
     }
-
     public function insertOrUpdateFamilyLawStep9(Request $request)
     {
         $student_id = Auth::guard('student')->id();
@@ -683,7 +670,6 @@ class StudentController extends Controller
 
         return redirect()->route('student.my-caseload');
     }
-
     public function insertOrUpdateFamilyLawStep10(Request $request)
     {
         $student_id = Auth::guard('student')->id();
@@ -742,7 +728,6 @@ class StudentController extends Controller
 
         return redirect()->route('student.my-caseload');
     }
-
     public function insertOrUpdateFamilyLawStep11(Request $request)
     {
         $student_id = Auth::guard('student')->id();
@@ -800,7 +785,6 @@ class StudentController extends Controller
 
         return redirect()->route('student.my-caseload');
     }
-
     public function insertOrUpdateFamilyLawStep12(Request $request)
     {
         $student_id = Auth::guard('student')->id();
@@ -861,7 +845,6 @@ class StudentController extends Controller
         // Redirect to the appropriate route
         return redirect()->route('student.my-caseload');
     }
-
     public function insertOrUpdateFamilyLawStep13(Request $request)
     {
 
@@ -901,7 +884,6 @@ class StudentController extends Controller
         // Redirect to the appropriate route
         return redirect()->route('student.my-caseload');
     }
-
     public function insertOrUpdateFamilyLawStep14(Request $request)
     {
 
@@ -941,7 +923,6 @@ class StudentController extends Controller
         // Redirect to the appropriate route
         return redirect()->route('student.my-caseload');
     }
-
     public function startCase(Request $request)
     {
         $caseId = $request->query('caseId');
@@ -997,7 +978,6 @@ class StudentController extends Controller
 
         return redirect()->route('student.my-caseload')->with('info', 'Case Closed.');
     }
-
     public function familyLawStepsPreDetail(Request $request)
     {
         $caseId = $request->query('caseId');
@@ -1029,7 +1009,6 @@ class StudentController extends Controller
 
         return view('student.family-law-step-' . $step, ['case' => $case, 'caseId' => $caseId, 'caseType' => $caseType]);
     }
-
     public function isCaseFinished($CaseId, $CaseType, $Aid)
     {
         $caseId = $CaseId;
@@ -1066,9 +1045,6 @@ class StudentController extends Controller
 
         return true;
     }
-
-
-
     public function query(Request $request)
     {
         $aid = $request->input('aid');
@@ -1107,5 +1083,49 @@ class StudentController extends Controller
             ]);
         Session::flash('message', 'Message sent successfully!');
         return redirect()->back();
+    }
+
+    public function resources($caseId)
+    {
+        $resources = DB::table('resources')
+            ->where('caseid', $caseId)
+            ->get();
+        return view('student.resources', [
+            'resources' => $resources,
+            'caseId' => $caseId
+        ]);
+    }
+
+    public function trainingMaterial($caseId)
+    {
+        $adminId = Auth::guard('admin')->id();
+        $training_material = DB::table('training_material')
+            ->where('caseid', $caseId)
+            ->get();
+
+        return view('student.training-material', [
+            'training_material' => $training_material,
+            'caseId' => $caseId
+        ]);
+    }
+
+    public function downloadTrainingMaterial($id)
+    {
+        $material = DB::table('training_material')->where('id', $id)->first();
+
+        if ($material) {
+
+            $filePath = storage_path('app/public/' . $material->material);
+
+            if (file_exists($filePath)) {
+                $originalFileName = basename($material->material);
+                $fileNameToUse = !empty($material->file_name) ? $material->file_name . '.zip' : $originalFileName;
+                return response()->download($filePath, $fileNameToUse)->setStatusCode(200);
+            } else {
+                return redirect()->back()->with('error', 'File not found.');
+            }
+        }
+
+        return redirect()->back()->with('error', 'Training material not found.');
     }
 }

@@ -308,9 +308,6 @@ class AdminController extends Controller
         return redirect()->back()
             ->with('success', 'Case initiated successfully!');
     }
-
-
-
     public function getCasesByType(Request $request)
     {
         $request->validate([
@@ -345,9 +342,6 @@ class AdminController extends Controller
             ], 400);
         }
     }
-
-
-
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -385,8 +379,6 @@ class AdminController extends Controller
 
         return response()->json($advisors);
     }
-
-
     public function getStudents()
     {
         $students = DB::table('students')->get();
@@ -452,27 +444,28 @@ class AdminController extends Controller
     public function displayCases()
     {
         $earlyBirdMootCases = DB::table('early_bird_moot_cases')
-            ->select('case_name')
+            ->select('case_name', 'id')
             ->get()
             ->map(function ($case) {
                 return [
                     'case_name' => $case->case_name,
-                    'case_type' => 'Early Bird Moot'
+                    'case_type' => 'Early Bird Moot',
+                    'id' => $case->id
                 ];
             });
         $familyLawCases = DB::table('family_law_cases')
-            ->select('case_name')
+            ->select('case_name', 'id')
             ->get()
             ->map(function ($case) {
                 return [
                     'case_name' => $case->case_name,
-                    'case_type' => 'Family Law'
+                    'case_type' => 'Family Law',
+                    'id' => $case->id
                 ];
             });
         $cases = $earlyBirdMootCases->merge($familyLawCases);
         return view('admin.display-cases', compact('cases'));
     }
-
     public function advisorCaseLoad()
     {
         // Retrieve all advisors with their assigned cases and case names
@@ -497,7 +490,6 @@ class AdminController extends Controller
 
         return view('admin.advisor-caseload', ['advisorCases' => $advisorCases]);
     }
-
     public function searchStudent(Request $request)
     {
         $searchTerm = $request->input('search');
@@ -507,7 +499,6 @@ class AdminController extends Controller
 
         return view('admin.view-students', ['students' => $students]);
     }
-
     public function searchAdvisor(Request $request)
     {
         $searchTerm = $request->input('search');
@@ -516,5 +507,147 @@ class AdminController extends Controller
             ->get();
 
         return view('admin.view-advisors', ['advisors' => $advisors]);
+    }
+    public function resources($caseId)
+    {
+        $adminId = Auth::guard('admin')->id();
+        $resources = DB::table('resources')
+            ->where('caseid', $caseId)
+            ->where('admin_id', $adminId)
+            ->get();
+
+        return view('admin.resources', [
+            'resources' => $resources,
+            'caseId' => $caseId
+        ]);
+    }
+    public function addResource(Request $request)
+    {
+        $request->validate([
+            'caseId' => 'required|integer',
+            'url' => 'required|url',
+        ]);
+
+        $caseId = $request->input('caseId');
+        $url = $request->input('url');
+
+
+
+        DB::table('resources')->insert([
+            'caseid' => $caseId,
+            'url' => $url,
+            'admin_id' => Auth::guard('admin')->id(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->route('admin.resources', ['caseId' => $caseId])
+            ->with('success', 'Resource added successfully.');
+    }
+    public function editResource($id)
+    {
+        $resource = DB::table('resources')->where('id', $id)->first();
+
+        if (!$resource) {
+            return redirect()->route('admin.resources')->with('error', 'Resource not found.');
+        }
+
+        return view('admin.edit-resource', compact('resource'));
+    }
+    public function updateResource(Request $request, $id)
+    {
+        $request->validate([
+            'url' => 'required|url',
+            'caseId' => 'required|integer',
+        ]);
+
+        $updated = DB::table('resources')
+            ->where('id', $id)
+            ->update([
+                'url' => $request->input('url'),
+                'caseid' => $request->input('caseId'),
+            ]);
+
+
+        if ($updated) {
+            return redirect()->route('admin.resources', ['caseId' => $request->input('caseId')])->with('success', 'Resource updated successfully.');
+        } else {
+            return redirect()->back()->with('error', 'Failed to update resource. Please try again.');
+        }
+    }
+    public function deleteResource($id, $caseId)
+    {
+        DB::table('resources')->where('id', $id)->delete();
+        return redirect()->route('admin.resources', ['caseId' => $caseId])->with('success', 'Resource deleted successfully.');
+    }
+    public function trainingMaterial($caseId)
+    {
+        $adminId = Auth::guard('admin')->id();
+        $training_material = DB::table('training_material')
+            ->where('caseid', $caseId)
+            ->where('admin_id', $adminId)
+            ->get();
+
+        return view('admin.training-material', [
+            'training_material' => $training_material,
+            'caseId' => $caseId
+        ]);
+    }
+    public function addTrainingMaterial(Request $request)
+    {
+        $request->validate([
+            'zip_file' => 'required|file|mimes:zip|max:2048',
+            'file_name' => 'required|string|max:255',
+        ]);
+
+        $filePath = $request->file('zip_file')->store('training-material', 'public');
+
+        DB::table('training_material')->insert([
+            'material' => $filePath,
+            'file_name' => $request->input('file_name'),
+            'caseid' => $request->input('caseId'),
+            'admin_id' => Auth::guard('admin')->id(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->route('admin.training-material', ['caseId' => $request->caseId])->with('success', 'Training material added successfully!');
+    }
+    public function downloadTrainingMaterial($id)
+    {
+        $material = DB::table('training_material')->where('id', $id)->first();
+
+        if ($material) {
+
+            $filePath = storage_path('app/public/' . $material->material);
+
+            if (file_exists($filePath)) {
+                $originalFileName = basename($material->material);
+                $fileNameToUse = !empty($material->file_name) ? $material->file_name . '.zip' : $originalFileName;
+                return response()->download($filePath, $fileNameToUse)->setStatusCode(200);
+            } else {
+                return redirect()->back()->with('error', 'File not found.');
+            }
+        }
+
+        return redirect()->back()->with('error', 'Training material not found.');
+    }
+    public function deleteTrainingMaterial($id)
+    {
+        $material = DB::table('training_material')->where('id', $id)->first();
+
+        if ($material) {
+            $filePath = storage_path('app/public/' . $material->material);
+
+            if (file_exists($filePath)) {
+                unlink($filePath); // Delete the file
+            }
+
+            DB::table('training_material')->where('id', $id)->delete();
+
+            return redirect()->route('admin.training-material', ['caseId' => $material->caseid])->with('success', 'Training material deleted successfully!');
+        }
+
+        return redirect()->back()->with('error', 'Training material not found.');
     }
 }

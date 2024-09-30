@@ -62,10 +62,25 @@ Route::prefix('admin')->middleware([AuthenticateAdmin::class, NoCache::class])->
     Route::post('/assign-case', [AdminController::class, 'assignCase'])->name('admin.assign-case');
 
     Route::get('/advisor-caseload', [AdminController::class, "advisorCaseLoad"])->name("admin.advisor-caseload");
+
+
+
+    Route::get('/resources/{caseId}', [AdminController::class, "resources"])->name("admin.resources");
+    Route::post('/add-resource', [AdminController::class, "addResource"])->name("admin.add-resource");
+    Route::get('/edit-resource/{id}/{caseId}', [AdminController::class, "EditResource"])->name("admin.edit-resource");
+    Route::delete('/edit-delete/{id}/{caseId}', [AdminController::class, "deleteResource"])->name("admin.delete-resource");
+    Route::put('/update-resource/{id}', [AdminController::class, "updateResource"])->name("admin.update-resource");
+
+
+    Route::get('/training-material/{caseId}', [AdminController::class, "trainingMaterial"])->name("admin.training-material");
+    Route::post('/add-training-material', [AdminController::class, "addTrainingMaterial"])->name("admin.add-training-material");
+
+    Route::get('/download-training-material/{id}', [AdminController::class, 'downloadTrainingMaterial'])
+        ->name('admin.download-training-material');
+
+    Route::delete('/delete-training-material/{id}', [AdminController::class, 'deleteTrainingMaterial'])
+        ->name('admin.delete-training-material');
 });
-
-
-
 
 Route::prefix('advisor')->middleware([AuthenticateAdvisor::class, NoCache::class])->group(function () {
 
@@ -100,8 +115,24 @@ Route::prefix('advisor')->middleware([AuthenticateAdvisor::class, NoCache::class
     // Route::get('/test', [AdvisorController::class, "getStudentCurrentStep"])->name('advisor.test');
 
 
-});
 
+
+    Route::get('/resources/{caseId}', [AdvisorController::class, "resources"])->name("advisor.resources");
+    Route::post('/add-resource', [AdvisorController::class, "addResource"])->name("advisor.add-resource");
+    Route::get('/edit-resource/{id}/{caseId}', [AdvisorController::class, "EditResource"])->name("advisor.edit-resource");
+    Route::delete('/edit-delete/{id}/{caseId}', [AdvisorController::class, "deleteResource"])->name("advisor.delete-resource");
+    Route::put('/update-resource/{id}', [AdvisorController::class, "updateResource"])->name("advisor.update-resource");
+
+
+    Route::get('/training-material/{caseId}', [AdvisorController::class, "trainingMaterial"])->name("advisor.training-material");
+    Route::post('/add-training-material', [AdvisorController::class, "addTrainingMaterial"])->name("advisor.add-training-material");
+
+    Route::get('/download-training-material/{id}', [AdvisorController::class, 'downloadTrainingMaterial'])
+        ->name('advisor.download-training-material');
+
+    Route::delete('/delete-training-material/{id}', [AdvisorController::class, 'deleteTrainingMaterial'])
+        ->name('advisor.delete-training-material');
+});
 
 Route::prefix('student')->middleware([AuthenticateStudent::class, NoCache::class])->group(function () {
 
@@ -159,9 +190,11 @@ Route::prefix('student')->middleware([AuthenticateStudent::class, NoCache::class
 
 
 
-
-
-
+    Route::get('/resources/{caseId}', [StudentController::class, "resources"])->name("student.resources");
+    Route::get('/training-material/{caseId}', [StudentController::class, "trainingMaterial"])->name("student.training-material");
+    Route::get('/download-training-material/{id}', [StudentController::class, 'downloadTrainingMaterial'])
+        ->name(name: 'student.download-training-material');
+        
 
 
 
