@@ -24,7 +24,7 @@
                         <th scope="col">Advisor Name</th>
                         <th scope="col">Case Type</th>
                         <th scope="col">Case Name</th>
-                        {{-- <th scope="col"></th> --}}
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,9 +35,12 @@
                             <td>{{ $advisorCase->username }}</td>
                             <td>{{ ucfirst(str_replace('_', ' ', $advisorCase->case_type)) }}</td>
                             <td>{{ $advisorCase->case_name }}</td>
-                            {{-- <td>
-                                <a href="">View Students</a>
-                            </td> --}}
+                            <td>
+                                <a class="btn btn-primary"
+                                    href="{{ route('admin.students-in-advisor-case', ['caseType' => $advisorCase->case_type, 'caseId' => $advisorCase->case_id, 'advisorId' => $advisorCase->advisor_id]) }}">
+                                    View Students
+                                </a>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

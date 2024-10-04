@@ -80,6 +80,14 @@ Route::prefix('admin')->middleware([AuthenticateAdmin::class, NoCache::class])->
 
     Route::delete('/delete-training-material/{id}', [AdminController::class, 'deleteTrainingMaterial'])
         ->name('admin.delete-training-material');
+
+
+
+
+
+    Route::get('/students-in-advisor-case', [AdminController::class, 'getAssignedStudentsByCaseId'])->name('admin.students-in-advisor-case');
+    Route::get('/student-feedback', [AdminController::class, 'getStudentCaseFeedback'])->name('admin.student-feedback');
+    Route::get('/unlock-current-step-family-law', [AdminController::class, 'unlockCurrentStepFamilyLaw'])->name('admin.unlock-current-next-step-family-law');
 });
 
 Route::prefix('advisor')->middleware([AuthenticateAdvisor::class, NoCache::class])->group(function () {
@@ -194,7 +202,7 @@ Route::prefix('student')->middleware([AuthenticateStudent::class, NoCache::class
     Route::get('/training-material/{caseId}', [StudentController::class, "trainingMaterial"])->name("student.training-material");
     Route::get('/download-training-material/{id}', [StudentController::class, 'downloadTrainingMaterial'])
         ->name(name: 'student.download-training-material');
-        
+
 
 
 

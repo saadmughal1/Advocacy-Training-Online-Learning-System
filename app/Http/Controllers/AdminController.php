@@ -650,4 +650,134 @@ class AdminController extends Controller
 
         return redirect()->back()->with('error', 'Training material not found.');
     }
+
+    public function getAssignedStudentsByCaseId(Request $request)
+    {
+        $caseType = $request->query('caseType');
+        $caseId = $request->query('caseId');
+        $advisorId = $request->query('advisorId');
+
+        $students = DB::table('advisor_cases as ac')
+            ->join('advisor_case_student as acs', 'acs.advisor_case_id', '=', 'ac.id')
+            ->join('students as s', 's.id', '=', 'acs.student_id')
+            ->where('ac.advisor_id', $advisorId)
+            ->where('ac.case_type', $caseType)
+            ->where('ac.case_id', $caseId)
+            ->whereIn('acs.id', function ($query) use ($caseId, $caseType) {
+                $query->select('sc.acsid')
+                    ->from('student_cases as sc')
+                    ->where('sc.advisor_case_id', $caseId)
+                    ->where('sc.case_type', $caseType);
+            })
+            ->select('s.*', 'acs.id as acsid')
+            ->get();
+        return view('admin.students-in-advisor-case', ['students' => $students]);
+    }
+    public function getStudentCaseFeedback(Request $request)
+    {
+
+        $caseType = $request->input('caseType');
+        $caseId = $request->input('caseId');
+        $sid = $request->input('sid');
+        $advisorId = Auth::guard('advisor')->id();
+
+
+        $steps = [
+            'family_law' => 14,
+            'early_bird_moot' => 2
+        ];
+
+        $numberOfSteps = $steps[$caseType] ?? 0;
+
+        $response = [];
+
+
+        if ($caseType === 'family_law') {
+
+            $caseDetails = DB::table('family_law_cases')
+                ->where('id', $caseId)
+                ->first();
+
+            if (!$caseDetails) {
+                return response()->json(['error' => 'Case not found'], 404);
+            }
+
+            for ($i = 1; $i <= $numberOfSteps; $i++) {
+                $tableName = "{$caseType}_step_{$i}";
+
+                $stepData = DB::table($tableName)
+                    ->where('student_id', $sid)
+                    ->where('case_id', $caseId)
+                    ->where('aid', $advisorId)
+                    ->first();
+
+                $stepDetail = [
+                    'available' => $stepData ? true : false,
+                    'status' => $stepData ? $stepData->status : 0,
+                    'form-data' => $stepData
+                ];
+
+                $stepDetail['predetails'] = [
+                    'introduction' => $caseDetails->{'step_' . $i . '_introduction'} ?? 'No introduction available',
+                    'instructions' => $caseDetails->{'step_' . $i . '_instructions'} ?? 'No instructions available',
+                    'video' => $caseDetails->{'step_' . $i . '_video'} ?? 'No video available'
+                ];
+
+                $response["step{$i}"] = $stepDetail;
+            }
+
+            // return $response;
+            return view('admin.family-law-feedback', ['response' => $response]);
+        } elseif ($caseType === 'early_bird_moot') {
+
+            $caseDetails = DB::table('early_bird_moot_cases')
+                ->where('id', $caseId)
+                ->first();
+
+            if (!$caseDetails) {
+                return response()->json(['error' => 'Case not found'], 404);
+            }
+
+            for ($i = 1; $i <= $numberOfSteps; $i++) {
+                $tableName = "{$caseType}_step_{$i}";
+
+                $stepData = DB::table($tableName)
+                    ->where('student_id', $sid)
+                    ->where('case_id', $caseId)
+                    ->first();
+
+                $stepDetail = [
+                    'available' => $stepData ? true : false,
+                    'status' => $stepData ? $stepData->status : 0,
+                    'data' => $stepData
+                ];
+
+                $stepDetail['predetails'] = [
+                    'introduction' => $caseDetails->{'step_' . $i . '_introduction'} ?? 'No introduction available',
+                    'instructions' => $caseDetails->{'step_' . $i . '_instructions'} ?? 'No instructions available',
+                    'video' => $caseDetails->{'step_' . $i . '_video'} ?? 'No video available'
+                ];
+
+                $response["step{$i}"] = $stepDetail;
+            }
+
+            return view('admin.early-bird-moot-feedback', ['response' => $response]);
+        } else {
+            return response()->json(['error' => 'Invalid case type'], 400);
+        }
+    }
+    public function unlockCurrentStepFamilyLaw(Request $request)
+    {
+        $fid = $request->query('fid');
+        $step = $request->query('step');
+        $tableName = 'family_law_step_' . $step;
+
+        DB::table($tableName)
+            ->where('id', $fid)
+            ->update([
+                'status' => 0
+            ]);
+
+        return redirect()->back()->with('status', '');
+    }
 }
