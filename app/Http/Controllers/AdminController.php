@@ -650,7 +650,6 @@ class AdminController extends Controller
 
         return redirect()->back()->with('error', 'Training material not found.');
     }
-
     public function getAssignedStudentsByCaseId(Request $request)
     {
         $caseType = $request->query('caseType');
@@ -779,5 +778,54 @@ class AdminController extends Controller
             ]);
 
         return redirect()->back()->with('status', '');
+    }
+    public function searchCase(Request $request)
+    {
+        $searchTerm = $request->input('search');
+
+        $cases = DB::table('family_law_cases')
+            ->select('case_name', 'id')
+            ->where('case_name', 'LIKE', '%' . $searchTerm . '%') // Search condition
+            ->get()
+            ->map(function ($case) {
+                return [
+                    'case_name' => $case->case_name,
+                    'case_type' => 'Family Law',
+                    'id' => $case->id
+                ];
+            });
+
+        return view('admin.display-cases', compact('cases'));
+    }
+
+    public function searchAdvisorCase(Request $request)
+    {
+        $searchTerm = $request->input('search');
+
+        // Retrieve all advisors with their assigned cases and case names, filtering by search term
+        $advisorCases = DB::table('advisors')
+            ->join('advisor_cases', 'advisors.id', '=', 'advisor_cases.advisor_id')
+            ->leftJoin('family_law_cases', function ($join) {
+                $join->on('advisor_cases.case_id', '=', 'family_law_cases.id')
+                    ->where('advisor_cases.case_type', 'family_law');
+            })
+            ->leftJoin('early_bird_moot_cases', function ($join) {
+                $join->on('advisor_cases.case_id', '=', 'early_bird_moot_cases.id')
+                    ->where('advisor_cases.case_type', 'early_bird_moot');
+            })
+            ->select(
+                'advisors.id as advisor_id',
+                'advisors.username',
+                'advisor_cases.case_id',
+                'advisor_cases.case_type',
+                DB::raw('COALESCE(family_law_cases.case_name, early_bird_moot_cases.case_name) as case_name')
+            )
+            ->where(function ($query) use ($searchTerm) {
+                $query->where('advisors.username', 'LIKE', '%' . $searchTerm . '%')
+                    ->orWhere(DB::raw('COALESCE(family_law_cases.case_name, early_bird_moot_cases.case_name)'), 'LIKE', '%' . $searchTerm . '%');
+            })
+            ->get();
+
+        return view('admin.advisor-caseload', ['advisorCases' => $advisorCases]);
     }
 }

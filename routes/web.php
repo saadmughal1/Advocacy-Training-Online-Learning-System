@@ -25,7 +25,10 @@ Route::prefix('admin')->middleware([AuthenticateAdmin::class, NoCache::class])->
     Route::get('/search-student', [AdminController::class, "searchStudent"])->name("admin.search-student");
     Route::get('/search-advisor', [AdminController::class, "searchAdvisor"])->name("admin.search-advisor");
 
+    Route::get('/search-case', [AdminController::class, "searchCase"])->name("admin.search-case");
 
+    Route::get('/search-advisor-case', [AdminController::class, "searchAdvisorCase"])->name("admin.search-advisor-cases");
+ 
 
 
     Route::view('/create-advisor-account', 'admin.create-advisor-account')->name('admin.create-advisor-account');
